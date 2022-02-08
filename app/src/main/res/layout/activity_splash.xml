@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#264713">
+
+    <LinearLayout
+        android:layout_width="750px"
+        android:layout_height="750px"
+        android:layout_gravity="center"
+        android:background="@drawable/film"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:shadowColor="#4D000000"
+            android:shadowDy="17.0"
+            android:shadowRadius="1.0"
+            android:layout_marginTop="100dp"
+            android:text="하루뭅"
+            android:textAlignment="center"
+            android:textColor="#FFFEF3"
+            android:textSize="60dp"
+            android:fontFamily="@font/dohyun" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:shadowColor="#4D000000"
+            android:shadowDy="10.0"
+            android:shadowRadius="1.0"
+            android:text="하루에 하나씩 영화기록"
+            android:textAlignment="center"
+            android:textColor="#FFFEF3"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+</LinearLayout>
