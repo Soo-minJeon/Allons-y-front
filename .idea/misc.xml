@@ -5,9 +5,10 @@
       <map>
         <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/drawable/b2_rectangle.xml" value="0.162" />
         <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/drawable/b_rectangle.xml" value="0.101" />
+        <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/drawable/no_actionbar.xml" value="0.209" />
         <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/layout/activity_login.xml" value="0.264" />
-        <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/layout/activity_main1.xml" value="0.264" />
-        <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/layout/activity_signup.xml" value="0.264" />
+        <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/layout/activity_main1.xml" value="0.2" />
+        <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/layout/activity_signup.xml" value="0.23508771929824562" />
         <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/layout/activity_splash.xml" value="0.264" />
         <entry key="..\:/1 Allonsy Project/Allons-y-front/app/src/main/res/layout/fragment_blank.xml" value="0.10104166666666667" />
         <entry key="app/src/main/res/font/font_1.xml" value="0.19791666666666666" />

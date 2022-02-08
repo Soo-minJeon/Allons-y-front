@@ -41,6 +41,7 @@
                 android:layout_gravity="center"/>
 
             <EditText
+                android:id="@+id/id"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:textColor="#264713"
@@ -58,6 +59,7 @@
                 android:layout_gravity="center"/>
 
             <EditText
+                android:id="@+id/pw"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:textColor="#264713"
@@ -75,6 +77,7 @@
                 android:layout_gravity="center"/>
 
             <EditText
+                android:id="@+id/name"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:textColor="#264713"
@@ -92,8 +95,10 @@
                 android:layout_gravity="center"/>
 
             <EditText
+                android:id="@+id/number"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
+                android:hint="010-0000-0000"
                 android:textColor="#264713"
                 android:inputType="" />
         </TableRow>
@@ -109,8 +114,10 @@
                 android:layout_gravity="center"/>
 
             <EditText
+                android:id="@+id/email"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
+                android:hint="example@gmail.com"
                 android:textColor="#264713"
                 android:inputType="" />
         </TableRow>
@@ -126,6 +133,7 @@
                 android:layout_gravity="center"/>
 
             <EditText
+                android:id="@+id/address"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:textColor="#264713"
@@ -134,10 +142,11 @@
 
     </TableLayout>
     <android.widget.Button
+        android:id="@+id/btn_join"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:text="JOIN"
         android:textSize="20dp"
