@@ -45,7 +45,15 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                     commit()
                 }
             }
-            R.id.drawer_Help -> Toast.makeText(applicationContext, "도움!", Toast.LENGTH_SHORT).show()
+            R.id.drawer_Help -> {
+                with(supportFragmentManager.beginTransaction()) {
+                    Toast.makeText(applicationContext, "도움말", Toast.LENGTH_SHORT).show()
+
+                    var intent = Intent(applicationContext, HelpActivity::class.java)
+                    startActivityForResult(intent, 0)
+                    commit()
+                }
+            }
             R.id.drawer_Logout -> Toast.makeText(applicationContext, "로그아웃", Toast.LENGTH_SHORT).show()
         }
         main_this.closeDrawers() // 네비게이션 뷰 닫기

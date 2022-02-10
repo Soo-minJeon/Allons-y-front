@@ -30,6 +30,7 @@
             android:exported="true" />
         <activity android:name=".togetherActivity"/>
         <activity android:name=".enterActivity"/>
+        <activity android:name=".HelpActivity"/>
     </application>
 
 </manifest>
