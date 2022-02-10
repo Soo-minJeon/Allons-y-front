@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFEF3">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:fontFamily="@font/dohyun"
+        android:padding="15dp"
+        android:textColor="#FFFFFF"
+        android:background="#264713"
+        android:shadowRadius="2.0"
+        android:shadowDx="2.0"
+        android:shadowDy="2.0"
+        android:shadowColor="#A2A19D"/>
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="100dp"
+        android:paddingHorizontal="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+        <TableRow
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="ID"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="#264713"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/id"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:textColor="#264713"
+                android:inputType="" />
+        </TableRow>
+        <TableRow
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="PW"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="#264713"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/pw"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:textColor="#264713"
+                android:inputType="" />
+        </TableRow>
+        <TableRow
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="#264713"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:textColor="#264713"
+                android:inputType="" />
+        </TableRow>
+        <TableRow
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Number"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="#264713"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/number"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="010-0000-0000"
+                android:textColor="#264713"
+                android:inputType="" />
+        </TableRow>
+        <TableRow
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="E-mail"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="#264713"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="example@gmail.com"
+                android:textColor="#264713"
+                android:inputType="" />
+        </TableRow>
+        <TableRow
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="#264713"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:textColor="#264713"
+                android:inputType="" />
+        </TableRow>
+
+    </TableLayout>
+    <android.widget.Button
+        android:id="@+id/btn_join"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:text="JOIN"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#264713"
+        android:background="@drawable/b2_rectangle"
+        />
+
+</LinearLayout>

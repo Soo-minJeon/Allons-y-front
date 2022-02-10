@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Allons-y-front.harumub_front.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Allons-y-front.harumub_front.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/harumub_front.iml" filepath="$PROJECT_DIR$/.idea/modules/harumub_front.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/harumub_front.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/harumub_front.app.iml" />
     </modules>
