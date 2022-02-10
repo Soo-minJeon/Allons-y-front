@@ -10,7 +10,8 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         android:background="#264713">
-        <ImageView
+        <ImageButton
+            android:id="@+id/drawer"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
@@ -25,14 +26,15 @@
             android:textAlignment="center"
             android:textSize="25dp"
             android:fontFamily="@font/dohyun"
-            android:padding="15dp"
+            android:padding="18dp"
             android:layout_marginHorizontal="100dp"
             android:textColor="#FFFFFF"
             android:shadowRadius="1.0"
             android:shadowDy="10.0"
             android:shadowColor="#4DA2A19D" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/myrecord"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
@@ -55,6 +57,7 @@
             android:gravity="center_horizontal"
             android:layout_marginBottom="20dp"/>
         <android.widget.Button
+            android:id="@+id/btnRecord"
             android:layout_width="200dp"
             android:layout_height="80dp"
             android:layout_margin="5dp"
