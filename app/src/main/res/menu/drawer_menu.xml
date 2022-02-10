@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/drawer_WatchTogether"
-        android:title="감상기록 남기기-혼자보기"
+        android:title="감상기록 남기기-같이보기"
         app:showAsAction="never" />
 
     <item

@@ -28,6 +28,8 @@
         <activity
             android:name=".MainActivity1"
             android:exported="true" />
+        <activity android:name=".togetherActivity"/>
+        <activity android:name=".enterActivity"/>
     </application>
 
 </manifest>

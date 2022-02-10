@@ -1,5 +1,6 @@
 package com.example.harumub_front
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
@@ -35,7 +36,15 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
         when(item.itemId){ // 드로어 메뉴 눌렸을 시 수행. 수정 필요
             R.id.drawer_UserRecord -> Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
             R.id.drawer_WatchAlone -> Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
-            R.id.drawer_WatchTogether -> Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
+            R.id.drawer_WatchTogether -> {
+                with(supportFragmentManager.beginTransaction()) {
+                    Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
+
+                    var intent = Intent(applicationContext, enterActivity::class.java)
+                    startActivityForResult(intent, 0)
+                    commit()
+                }
+            }
             R.id.drawer_Help -> Toast.makeText(applicationContext, "도움!", Toast.LENGTH_SHORT).show()
             R.id.drawer_Logout -> Toast.makeText(applicationContext, "로그아웃", Toast.LENGTH_SHORT).show()
         }
