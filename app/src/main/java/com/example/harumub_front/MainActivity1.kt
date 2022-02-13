@@ -9,12 +9,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main1.*
 
 class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var main_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton
     lateinit var drawer_view : NavigationView
+    lateinit var btnRecord : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,13 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
         }
         drawer_view.setNavigationItemSelectedListener(this) // 네비게이션 메뉴 아이템에 클릭 속성 부여
 
+        btnRecord = findViewById(R.id.btnRecord) // 감상하기 버튼
+        val intent = Intent(this, MainActivity2::class.java) // 메인2
+        // val intent = Intent(this, SearchActivity::class.java) // 영화 검색 페이지
+
+        btnRecord.setOnClickListener { // 감상하기 버튼 클릭 시 메인2로 이동
+            startActivity(intent)
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean { // 네비게이션 메뉴 아이템 클릭 시 수행
