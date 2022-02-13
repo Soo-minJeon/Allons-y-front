@@ -51,10 +51,11 @@ class SignupActivity : AppCompatActivity() {
                 // 유저가 입력한 정보를 MongoDB에 저장해야 함
                 // 관련 코드는 다시...
 
-                // 로그인 화면으로 이동
+
+                // 로그인 화면으로 다시 이동
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-                //finish()
+                finish()
             }
         }
     }

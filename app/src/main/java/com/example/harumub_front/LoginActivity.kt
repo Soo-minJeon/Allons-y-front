@@ -7,6 +7,8 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity : AppCompatActivity() {
+    var isExistBlank = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -38,11 +40,11 @@ class LoginActivity : AppCompatActivity() {
                 var intent1 = Intent(applicationContext, MainActivity1::class.java)
 
                 startActivity(intent1)
-                finish() // }
+                //finish() // }
         }
 
         // 양방향 액티비티 (회원가입 <-> 로그인)
-        // 회원가입 버튼 클릭 - 액티비티 종료 및 회원가입 페이지 호출
+        // 회원가입 버튼 클릭 - 회원가입 페이지로 이동
         btnSignup.setOnClickListener {
             var intent2 = Intent(applicationContext, SignupActivity::class.java)
             startActivity(intent2)

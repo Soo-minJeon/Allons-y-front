@@ -15,6 +15,7 @@ class MyMovieListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_movie_list)
 
+        // 나의 감상기록 RecyclerView와 RecommendAdapter1 연결
         layoutManager = GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         adapter = RecommendAdapter1()
