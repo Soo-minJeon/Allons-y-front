@@ -41,7 +41,7 @@ class resultpageFragment : Fragment() {
         view.findViewById<RecyclerView>(R.id.resultpage_recycler).adapter = adapter
 
 
-        // 수정할 부분
+        // 수정할 부분 - DB 연결 필요
         adapter.items.add(LogData("00:01:23", "happy"))
         adapter.items.add(LogData("00:04:56", "scary"))
         adapter.items.add(LogData("00:07:00", "angry"))

@@ -35,14 +35,12 @@ class MainActivity2 : AppCompatActivity() {
         adapter2 = RecommendAdapter2()
         recyclerView2.adapter = adapter2
 
-
-        val intent = Intent(this, MyMovieListActivity::class.java) // 메인2
-
         recent.setOnClickListener { // recent 이미지 버튼 클릭 시 나의 감상기록 페이지로 이동
+            val intent = Intent(this, MyMovieListActivity::class.java) // 메인2
             startActivity(intent)
         }
 
-
+        // 원래는 이미지에서 넘어가야 함
         text.setOnClickListener { // textView3 클릭 시 다른 사용자 감상기록 페이지로 이동
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main2, UserMovieListFragment())
