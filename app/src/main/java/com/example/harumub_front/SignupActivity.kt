@@ -6,13 +6,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.HashMap
 
 class SignupActivity : AppCompatActivity() {
     var isExistBlank = false
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface : RetrofitInteface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+
+        retrofitBuilder = RetrofitBuilder
+        retrofitInterface = retrofitBuilder.api
 
         var j_id = findViewById<EditText>(R.id.id)
         var j_pw = findViewById<EditText>(R.id.pw)
@@ -45,17 +54,32 @@ class SignupActivity : AppCompatActivity() {
             // 유저가 모든 항목을 다 채웠을 경우
             //if(!isExistBlank){
             else {
-                // 회원가입 성공 토스트 메세지
-                Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                val map = HashMap<String, String>()
+                map.put("id", id)
+                map.put("password", pw)
+                map.put("name", name)
+                //map.put("number", number)
+                //map.put("birth", addr)
 
-                // 유저가 입력한 정보를 MongoDB에 저장해야 함
-                // 관련 코드는 다시...
+                val call = retrofitInterface.executeSignup(map)
 
-
-                // 로그인 화면으로 다시 이동
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
+                call!!.enqueue(object : Callback<Void?> {
+                    override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                        if (response.code() == 200) {
+                            Toast.makeText(this@SignupActivity,
+                                "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
+                            val intent = Intent(applicationContext, LoginActivity::class.java)
+                            startActivity(intent)
+                        } else if (response.code() == 400) {
+                            Toast.makeText(this@SignupActivity, "이미 가입된 정보입니다.",
+                                Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<Void?>, t: Throwable) {
+                        Toast.makeText(this@SignupActivity, t.message,
+                            Toast.LENGTH_LONG).show()
+                    }
+                })
             }
         }
     }

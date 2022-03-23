@@ -2,41 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.harumub_front">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Harumub_front">
-        <activity
-            android:name=".MyMovieListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".WatchAloneActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true">
+
+        <activity android:name=".MyMovieListActivity"/>
+        <activity android:name=".WatchAloneActivity"/>
+        <activity android:name=".MainActivity2"/>
+        <activity android:name=".SplashActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".SignupActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity1"
-            android:exported="true" />
+        <activity android:name=".LoginActivity" android:exported="true" />
+        <activity android:name=".SignupActivity" android:exported="true" />
+        <activity android:name=".MainActivity1" android:exported="true" />
         <activity android:name=".togetherActivity" />
         <activity android:name=".enterActivity" />
         <activity android:name=".HelpActivity" />
