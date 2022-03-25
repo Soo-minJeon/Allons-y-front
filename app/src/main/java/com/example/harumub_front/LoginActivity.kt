@@ -4,14 +4,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.HashMap
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface : RetrofitInteface
     var isExistBlank = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        retrofitBuilder = RetrofitBuilder
+        retrofitInterface = retrofitBuilder.api
 
         var l_id = findViewById<EditText>(R.id.myid)
         var l_pw = findViewById<EditText>(R.id.mypw)
@@ -25,22 +35,37 @@ class LoginActivity : AppCompatActivity() {
             val id = l_id.text.toString()
             val pw = l_pw.text.toString()
 
-            /**  id, pw 정보와  MongoDB에 저장된 정보 비교 및 확인
-            // 이와 관련한 코드도 다시...
-            val savedId = .getString("id", "")
-            val savedPw = .getString("pw", "")
+            val map = HashMap<String, String>()
+            map.put("id", id)
+            map.put("password", pw)
 
-            if (id == savedID && pw == savedPw) { // DB에 저장된 회원정보와 일치시
-                Toast.makeText(this, "반갑습니다", Toast.LENGTH_SHORT).show()
+            val call = retrofitInterface.executeLogin(map)
+            call!!.enqueue(object : Callback<LoginResult?> {
+                override fun onResponse(call: Call<LoginResult?>, response: Response<LoginResult?>) {
+                    if (response.code() == 200) {
+                        val result = response.body()
+                        val builder1 = AlertDialog.Builder(this@LoginActivity)
+                        builder1.setTitle("로그인 성공")
+                        builder1.setMessage(result!!.name + "님 환영합니다!")
+                        builder1.show()
 
-                // DB에 감상 기록이 있는 경우
-                var intent1 = Intent(applicationContext, MainActivity2::class.java)
-            **/
-                // DB에 감상 기록이 없는 경우
-                var intent1 = Intent(applicationContext, MainActivity1::class.java)
+                        var intent = Intent(applicationContext, MainActivity1::class.java) // 두번째 인자에 이동할 액티비티
+                        intent.putExtra("user_id", result!!.email)
+                        //intent.putExtra("user_num", "result.number")
+                        //intent.putExtra("user_birth", "result.birth")
+                        intent.putExtra("user_name", result.name)
+                        startActivityForResult(intent, 0)
+                    }
+                    else if (response.code() == 404) {
+                        Toast.makeText(this@LoginActivity, "404 오류", Toast.LENGTH_LONG).show()
+                    }
+                }
 
-                startActivity(intent1)
-                //finish() // }
+                override fun onFailure(call: Call<LoginResult?>, t: Throwable) {
+                    Toast.makeText(this@LoginActivity, t.message,
+                        Toast.LENGTH_LONG).show()
+                }
+            })
         }
 
         // 양방향 액티비티 (회원가입 <-> 로그인)
