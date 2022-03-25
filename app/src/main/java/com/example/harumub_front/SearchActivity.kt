@@ -16,6 +16,7 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
     var items = ArrayList<String>()
     var poster = arrayOf(R.drawable.about, R.drawable.gucci, R.drawable.spider)
     var title = arrayOf("About Times", "Gucci", "Spider Man3")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -24,10 +25,12 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
         editText = findViewById<View>(R.id.search_edt) as EditText
         editText!!.addTextChangedListener(this)
 
+        // items 배열에 영화 제목 넣기
         for(i: Int in 0..poster.size-1) {
             items.add(title[i])
         }
 
+        //
         adapter = SearchAdapter(applicationContext, items)
         recyclerView!!.layoutManager =
             LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
@@ -36,6 +39,7 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
 
     override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
     override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+        //
         adapter?.getFilter()?.filter(charSequence)
     }
 

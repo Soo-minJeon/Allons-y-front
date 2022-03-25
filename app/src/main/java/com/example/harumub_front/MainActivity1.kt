@@ -76,7 +76,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 with(supportFragmentManager.beginTransaction()) {
                     Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
 
-                    var intent = Intent(applicationContext, enterActivity::class.java)
+                    var intent = Intent(applicationContext, EnterActivity::class.java)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
