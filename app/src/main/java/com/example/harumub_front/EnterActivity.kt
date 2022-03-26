@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 
@@ -12,6 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_enter.*
+import kotlinx.android.synthetic.main.dialog_entercode.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.HashMap
 
 
 class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -20,9 +26,15 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var recent_button: ImageButton
     lateinit var drawer_view : NavigationView
 
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface : RetrofitInteface
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter)
+
+        retrofitBuilder = RetrofitBuilder
+        retrofitInterface = retrofitBuilder.api
 
         enter_this = findViewById(R.id.enter_drawer)
         drawer_button = findViewById(R.id.drawer_button) // 드로어 열기(메뉴버튼)
@@ -39,7 +51,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // 최근 감상 기록 (시계) 버튼 클릭 -> 페이지 이동
         recent_button.setOnClickListener{
-            val intent = Intent(this, MyMovieListActivity::class.java)
+            val intent = Intent(this, WatchListActivity::class.java)
             startActivity(intent)
         }
 
@@ -57,8 +69,35 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val dialogView = View.inflate(this, R.layout.dialog_entercode, null)
             dig.setView(dialogView)
             dig.setPositiveButton("확인") { dialog, which ->
-                val intent = Intent(applicationContext, TogetherActivity::class.java)
-                startActivityForResult(intent, 0)
+                Toast.makeText(this@EnterActivity,
+                    "확인 누름", Toast.LENGTH_LONG).show()
+                val map = HashMap<String, String>()
+
+                var codeEdit = dialogView.findViewById<EditText>(R.id.code_edittext)
+
+                var getroomCode = codeEdit.text.toString()
+                map.put("roomCode", getroomCode)
+
+                val call = retrofitInterface.executeEnterRoom(map)
+
+                call!!.enqueue(object : Callback<Void?> {
+                    override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                        if (response.code() == 200) {
+                            Toast.makeText(this@EnterActivity,
+                                "방 코드 : " + getroomCode + " 에 입장합니다.", Toast.LENGTH_LONG).show()
+                            val intent = Intent(applicationContext, TogetherActivity::class.java)
+                            startActivityForResult(intent, 0)
+
+                        } else if (response.code() == 400) {
+                            Toast.makeText(this@EnterActivity, "잘못된 방 코드 입니다.",
+                                Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<Void?>, t: Throwable) {
+                        Toast.makeText(this@EnterActivity, t.message,
+                            Toast.LENGTH_LONG).show()
+                    }
+                })
             }
             dig.setNegativeButton("취소") { dialog, which ->
                 Toast.makeText(this, "취소되었습니다.", Toast.LENGTH_LONG).show()
@@ -74,7 +113,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 with(supportFragmentManager.beginTransaction()) {
                     Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
 
-                    val intent = Intent(applicationContext, MyMovieListActivity::class.java)
+                    val intent = Intent(applicationContext, WatchListActivity::class.java)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }

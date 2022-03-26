@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Harumub_front">
 
-        <activity android:name=".MyMovieListActivity"/>
+        <activity android:name=".WatchListActivity"/>
         <activity android:name=".WatchAloneActivity"/>
         <activity android:name=".MainActivity2"/>
         <activity android:name=".SplashActivity" android:exported="true">
@@ -27,8 +27,8 @@
         <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".SignupActivity" android:exported="true" />
         <activity android:name=".MainActivity1" android:exported="true" />
-        <activity android:name=".togetherActivity" />
-        <activity android:name=".enterActivity" />
+        <activity android:name=".TogetherActivity" />
+        <activity android:name=".EnterActivity" />
         <activity android:name=".HelpActivity" />
     </application>
 

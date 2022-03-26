@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                         builder1.show()
 
                         var intent = Intent(applicationContext, MainActivity1::class.java) // 두번째 인자에 이동할 액티비티
-                        intent.putExtra("user_id", result!!.email)
+                        intent.putExtra("user_id", result!!.id)
                         //intent.putExtra("user_num", "result.number")
                         //intent.putExtra("user_birth", "result.birth")
                         intent.putExtra("user_name", result.name)
