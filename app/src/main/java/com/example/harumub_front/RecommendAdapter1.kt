@@ -17,11 +17,11 @@ class RecommendAdapter1: RecyclerView.Adapter<RecommendAdapter1.ViewHolder>() {
         parent: ViewGroup,
         viewType: Int
     ): RecommendAdapter1.ViewHolder {
-        // 리사이클러뷰에 들어갈 아이템 레이아웃 설정
+        // RecyclerView에 들어갈 아이템의 레이아웃 설정
         val v = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout, parent, false)
         return ViewHolder(v)
     }
-    
+
     // 순서에 따라 배열에 데이터 삽입
     override fun onBindViewHolder(holder: RecommendAdapter1.ViewHolder, position: Int) {
         holder.movieImage.setImageResource(movie_images[position])
@@ -29,7 +29,7 @@ class RecommendAdapter1: RecyclerView.Adapter<RecommendAdapter1.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return movie_images.size    // 영화의 개수
+        return movie_images.size // 영화 개수
     }
 
     inner class ViewHolder(movieView: View): RecyclerView.ViewHolder(movieView) {
@@ -37,8 +37,8 @@ class RecommendAdapter1: RecyclerView.Adapter<RecommendAdapter1.ViewHolder>() {
         var movieTitle: TextView
 
         init {
-            movieImage = movieView.findViewById(R.id.movie_image)
-            movieTitle = movieView.findViewById(R.id.movie_title)
+            movieImage = movieView.findViewById(R.id.movie_image) // 영화 이미지 버튼
+            movieTitle = movieView.findViewById(R.id.movie_title) // 영화 제목
         }
     }
 }

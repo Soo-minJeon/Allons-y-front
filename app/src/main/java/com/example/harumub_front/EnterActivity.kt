@@ -56,14 +56,14 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         // 방 생성 버튼
-        createNewroom.setOnClickListener{
+        createNewroom.setOnClickListener{ // 새로운 방 생성 버튼 클릭 시 같이보기 페이지로 이동
             val intent = Intent(applicationContext, TogetherActivity::class.java)
             startActivityForResult(intent, 0) // deprecated in Java
         }
 
 
         // 초대 코드 입력 버튼
-        writeCode.setOnClickListener() {
+        writeCode.setOnClickListener() { // 초대코드 입장 버튼 클릭 시 다이얼로그 띄워 줌
             val dig = AlertDialog.Builder(this)
 
             val dialogView = View.inflate(this, R.layout.dialog_entercode, null)
@@ -98,10 +98,14 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             Toast.LENGTH_LONG).show()
                     }
                 })
-            }
+/*
+                val intent = Intent(applicationContext, TogetherActivity::class.java)
+                startActivityForResult(intent, 0)
+*/
+            } // 확인 버튼 클릭 시 같이보기 페이지로 이동
             dig.setNegativeButton("취소") { dialog, which ->
                 Toast.makeText(this, "취소되었습니다.", Toast.LENGTH_LONG).show()
-            }
+            } // 취소 버튼 클릭 시 취소되었다는 토스트 메세지를 보여 줌
             dig.show()
         }
     }

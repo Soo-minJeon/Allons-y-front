@@ -52,14 +52,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"/>
+
     <Button
-        android:layout_weight="0.3"
+        android:id="@+id/watch_alone_enter_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginHorizontal="10dp"
-        android:fontFamily="@font/jua"
         android:layout_margin="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="0.3"
+        android:fontFamily="@font/jua"
         android:text="혼자보기 입장" />
 
 </LinearLayout>
