@@ -8,14 +8,22 @@ import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.HashMap
 
 class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface : RetrofitInteface
+
     lateinit var main2_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton
     lateinit var recent_button: ImageButton
@@ -31,11 +39,51 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
+        retrofitBuilder = RetrofitBuilder
+        retrofitInterface = retrofitBuilder.api
+
         main2_this = findViewById(R.id.main2_drawer)
         drawer_button = findViewById(R.id.drawer_button) // 드로어 열기(메뉴버튼)
         drawer_view = findViewById(R.id.drawer_view) // 드로어
         val drawerHeader = drawer_view.getHeaderView(0) // 드로어 헤더
         recent_button = findViewById(R.id.recent) // 최근 감상기록 버튼
+
+        // 현재 로그인하고 있는 사용자 아이디 (수정 필요) --수민 작성
+        var userid = ""
+        var result : List<Recommend2Result>
+        var userIds : Array<String> = emptyArray()
+        var titles : Array<String> = emptyArray()
+        var posters : Array<String> = emptyArray()
+
+        val map = HashMap<String, String>()
+        map.put("id", userid)
+
+        val call = retrofitInterface.executeRecommend2(map)
+        call!!.enqueue(object : Callback<List<Recommend2Result?>> {
+            override fun onResponse(call: Call<List<Recommend2Result?>>, response: Response<List<Recommend2Result?>>) {
+                if (response.code() == 200) {
+                    val result = response.body()
+
+                    for(i in 0..result?.size!!-1){
+                        // (userid) title 과 Poster url 은 배열에 저장. -> 리사이클러뷰에 넣어야 함 -- 수민 작성
+                        userIds[i] = result.get(i)!!.userId
+                        titles[i] = result.get(i)!!.title
+                        posters[i] = result.get(i)!!.poster
+
+                        Toast.makeText(this@MainActivity2, "성공", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                else if (response.code() == 404) {
+                    Toast.makeText(this@MainActivity2, "404 오류", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Recommend2Result?>>, t: Throwable) {
+                Toast.makeText(this@MainActivity2, t.message,
+                    Toast.LENGTH_LONG).show()
+            }
+        })
 
         // 드로어 버튼 클릭 -> 드로어 메뉴 열기
         drawer_button.setOnClickListener{
@@ -46,7 +94,7 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         // 최근 감상 기록 (시계) 버튼 클릭 -> 페이지 이동
         recent_button.setOnClickListener{
-            val intent = Intent(this, MyMovieListActivity::class.java)
+            val intent = Intent(this, WatchListActivity::class.java)
             startActivity(intent)
         }
 
@@ -84,7 +132,7 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 with(supportFragmentManager.beginTransaction()) {
                     Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
 
-                    var intent = Intent(applicationContext, MyMovieListActivity::class.java)
+                    var intent = Intent(applicationContext, WatchListActivity::class.java)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }

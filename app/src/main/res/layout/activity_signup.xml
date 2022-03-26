@@ -134,10 +134,53 @@
                 android:text="인증"
                 android:textColor="#264713"
                 android:textSize="16dp"
+                android:textAlignment="gravity"
+                android:enabled="false"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            >
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:text="Code"
+                android:fontFamily="@font/jua"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="#264713"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/code"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:hint="이메일 인증 코드"
+                android:inputType=""
+                android:textColor="#264713" />
+
+            <android.widget.Button
+                android:id="@+id/btn_auth"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:background="@drawable/b2_rectangle"
+                android:fontFamily="@font/jua"
+                android:text="확인"
+                android:textColor="#264713"
+                android:textSize="16dp"
+                android:enabled="false"
                 android:textAlignment="gravity" />
 
         </LinearLayout>
     </LinearLayout>
+
+
 
 
     <android.widget.Button
@@ -152,6 +195,7 @@
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="#FFFEE0"
+        android:enabled="false"
         android:background="@drawable/b_rectangle"
         />
 

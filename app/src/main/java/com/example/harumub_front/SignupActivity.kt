@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -31,9 +32,15 @@ class SignupActivity : AppCompatActivity() {
         var j_pw = findViewById<EditText>(R.id.pw)
         var j_name = findViewById<EditText>(R.id.name)
         var j_email = findViewById<EditText>(R.id.email)
+        var j_code = findViewById<EditText>(R.id.code)
 
         var btnReq = findViewById<Button>(R.id.btn_request)
         var btnJoin = findViewById<Button>(R.id.btn_join)
+        var btnAuth = findViewById<Button>(R.id.btn_auth)
+
+        // 이메일 인증을 위한 변수 선언
+        var result : EmailResult?
+        var getcode : String? = null
 
         // 이메일 검사 정규식
         val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
@@ -45,6 +52,7 @@ class SignupActivity : AppCompatActivity() {
             if (pattern) {
                 //이메일 형태가 정상일 경우
                 j_email.setTextColor(R.color.black.toInt())
+                btnReq.setEnabled(true)
                 return true
             } else { // 이메일 형태가 정상이 아닐 경우 - 빨간 텍스트로 표시
                 j_email.setTextColor(-65536) // R.color.red.toInt()
@@ -69,8 +77,55 @@ class SignupActivity : AppCompatActivity() {
             }
         })
 
-        // 하단 Request Email Code 버튼 클릭 - 이메일 확인 코드
-        btnReq.setOnClickListener {}
+
+
+        // 이메일 전송 버튼 누르면 -> 노드에 map 전송
+        btnReq.setOnClickListener(object : View.OnClickListener{
+
+            var result : EmailResult? = null
+            var getcode : String? = null
+
+            override fun onClick(v: View?) {
+                var map = HashMap<String, String>()
+                map.put("email", j_email.text.toString())
+
+                var call = retrofitInterface.executeEmail(map)
+
+                call!!.enqueue(object : Callback<EmailResult?>{
+                    override fun onResponse( call: Call<EmailResult?>, response: Response<EmailResult?>) {
+                        if(response.code() == 200){
+                            result = response.body()
+                            getcode = result?.code
+                            Toast.makeText(this@SignupActivity, "getCode : " + getcode, Toast.LENGTH_SHORT).show()
+                            btnAuth.setEnabled(true)
+
+                            Toast.makeText(this@SignupActivity, "email send successfully", Toast.LENGTH_SHORT).show()
+                        }
+                        else if (response.code() == 410){
+                            Toast.makeText(this@SignupActivity, "email send error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<EmailResult?>, t: Throwable) {
+                        Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        })
+
+        // 사용자가 받은 이메일에서 '인증코드'입력 후 -> 인증코드 확인 버튼 누르면
+        btnAuth.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+
+                if(j_code.getText().toString() == getcode){
+                    Toast.makeText(this@SignupActivity, "emailcode good", Toast.LENGTH_SHORT).show()
+                    btnJoin.setEnabled(true)
+                }
+                else {
+                    Toast.makeText(this@SignupActivity, getcode + "emailcode wrong", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
 
         // 하단 JOIN 버튼 클릭 - 회원 가입 정보 연동 및 액티비티 종료 ->로그인 페이지 호출
         btnJoin.setOnClickListener {

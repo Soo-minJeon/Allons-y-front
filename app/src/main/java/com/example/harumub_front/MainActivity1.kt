@@ -39,7 +39,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
 
         // 최근 감상 기록 (시계) 버튼 클릭 -> 드로어 메뉴 열기
         recent_button.setOnClickListener{
-            val intent = Intent(this, MyMovieListActivity::class.java)
+            val intent = Intent(this, WatchListActivity::class.java)
             startActivity(intent)
         }
         
@@ -58,7 +58,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 with(supportFragmentManager.beginTransaction()) {
                     Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
 
-                    var intent = Intent(applicationContext, MyMovieListActivity::class.java)
+                    var intent = Intent(applicationContext, WatchListActivity::class.java)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
