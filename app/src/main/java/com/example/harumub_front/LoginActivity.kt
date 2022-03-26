@@ -31,6 +31,11 @@ class LoginActivity : AppCompatActivity() {
         // 단방향 페이지 이동
         // 로그인 버튼 클릭 - 액티비티 종료 및 메인페이지 호출
         btnLogin.setOnClickListener {
+            // 에뮬레이터 실행용
+//            var intent = Intent(applicationContext, MainActivity2::class.java)
+//            startActivity(intent)
+
+
             // 사용자가 입력한 값들을 String으로 받아오기
             val id = l_id.text.toString()
             val pw = l_pw.text.toString()
@@ -51,8 +56,6 @@ class LoginActivity : AppCompatActivity() {
 
                         var intent = Intent(applicationContext, MainActivity1::class.java) // 두번째 인자에 이동할 액티비티
                         intent.putExtra("user_id", result!!.id)
-                        //intent.putExtra("user_num", "result.number")
-                        //intent.putExtra("user_birth", "result.birth")
                         intent.putExtra("user_name", result.name)
                         startActivityForResult(intent, 0)
                     }

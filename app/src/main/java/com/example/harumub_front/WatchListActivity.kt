@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main2.*
+import kotlinx.android.synthetic.main.activity_main2.recyclerView
+import kotlinx.android.synthetic.main.activity_my_movie_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -98,6 +100,12 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         recyclerView.layoutManager = layoutManager
         adapter = RecommendAdapter1()
         recyclerView.adapter = adapter
+
+        // 메인으로 돌아가는 버튼
+        list2main.setOnClickListener{
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행

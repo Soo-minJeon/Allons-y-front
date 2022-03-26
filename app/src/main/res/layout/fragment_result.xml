@@ -262,7 +262,35 @@
             android:layout_marginTop="10dp"
             android:src="@drawable/highlight"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="50dp"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="10dp">
+            <Button
+                android:id="@+id/back2main"
+                android:layout_weight="0.3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/jua"
+                android:text="메인으로 돌아가기"
+                android:textSize="15sp"/>
+            <Button
+                android:id="@+id/back2list"
+                android:layout_weight="0.3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/jua"
+                android:text="목록으로 돌아가기"
+                android:textSize="15sp"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

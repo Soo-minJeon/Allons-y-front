@@ -98,8 +98,6 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(intent)
         }
 
-        var text = findViewById<TextView>(R.id.textView3) // '다른 사용자가 좋아하는' 텍스트
-
         // '내가 좋아하는' 영화 목록 RecyclerView와 RecommendAdapter1 연결
         layoutManager = GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
@@ -111,14 +109,9 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         recyclerView2.layoutManager = layoutManager2
         adapter2 = RecommendAdapter2()
         recyclerView2.adapter = adapter2
-/*
-        var recent = findViewById<ImageButton>(R.id.recent) // 나의 감상기록 이미지 버튼
-        recent.setOnClickListener { // recent(나의 감상기록) 이미지 버튼 클릭 시 나의 감상기록 페이지로 이동
-            val intent = Intent(this, WatchListActivity::class.java) // 나의 감상기록 페이지
-            startActivity(intent)
-        }
-*/
-        // 원래는 이미지에서 넘어가야 함
+
+        var text = findViewById<TextView>(R.id.textView3) // '다른 사용자가 좋아하는' 텍스트
+        // 원래는 이미지버튼에서 넘어가야 함
         text.setOnClickListener { // '다른 사용자가 좋아하는' 텍스트 클릭 시 다른 사용자 감상기록 페이지로 이동. 수정 필요
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main2, UserMovieListFragment())

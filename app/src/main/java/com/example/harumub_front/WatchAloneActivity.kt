@@ -122,6 +122,12 @@ class WatchAloneActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                     if(response.code() == 200){
                         Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                        // 감상 리뷰 작성 페이지로 이동 (액티비티 -> 프래그먼트)
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.watch_alone, AddreviewFragment())
+                            .commit()
+                        Log.d("text : ", "선택")
                     }
                     else if (response.code() == 400){
                         Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
