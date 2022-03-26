@@ -42,11 +42,12 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
             val intent = Intent(this, WatchListActivity::class.java)
             startActivity(intent)
         }
-        
+
         // 감상하기 버튼
         btnRecord = findViewById(R.id.btnRecord)
-        btnRecord.setOnClickListener { // 감상하기 버튼 클릭 시 메인2 페이지로 이동
-            val intent = Intent(this, SearchActivity::class.java)
+        btnRecord.setOnClickListener { // 감상하기 버튼 클릭 시 영화 검색 페이지로 이동
+            //val intent = Intent(this, SearchActivity::class.java) // 영화 검색 페이지
+            val intent = Intent(this, MainActivity2::class.java) // 메인 2 페이지
             startActivity(intent)
         }
     }

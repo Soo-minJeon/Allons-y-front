@@ -42,6 +42,7 @@ class UserMovieListFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_user_movie_list, container, false)
         var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
+        // 다른 사용자의 감상기록 RecyclerView와 RecommendAdapter1 연결
         layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         adapter = RecommendAdapter1()
