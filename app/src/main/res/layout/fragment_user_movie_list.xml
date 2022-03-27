@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFEF3"
-    tools:context=".MyMovieListActivity">
+    tools:context=".UserMovieListFragment">
 
     <androidx.drawerlayout.widget.DrawerLayout
 

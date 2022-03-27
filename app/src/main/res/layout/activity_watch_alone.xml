@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFEF3"
-    tools:context=".WatchAloneActivity">
+    tools:context=".WatchAloneActivity"
+    android:id="@+id/watch_alone">
 
     <TextView
         android:id="@+id/textView"
