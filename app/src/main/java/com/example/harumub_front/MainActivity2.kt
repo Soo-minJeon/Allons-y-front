@@ -55,6 +55,29 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         var titles : Array<String> = emptyArray()
         var posters : Array<String> = emptyArray()
 
+        // 추천 1, 들어가면 토스트 메시지로 추천 영화 10개 전달되는 것 확인되게 코드 작성해둠
+        val map1 = HashMap<String, String>()
+
+        val call1 = retrofitInterface.executeRecommend1(map1)
+        call1!!.enqueue(object : Callback<List<String>?> {
+            override fun onResponse(call: Call<List<String>?>, response: Response<List<String>?>) {
+                if (response.code() == 200) {
+                    val result = response.body()
+                    Toast.makeText(this@MainActivity2, "추천 영화 목록 : "+result, Toast.LENGTH_LONG).show()
+                }
+                else if (response.code() == 404) {
+                    Toast.makeText(this@MainActivity2, "404 오류", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<String>?>, t: Throwable) {
+                Toast.makeText(this@MainActivity2, t.message,
+                    Toast.LENGTH_LONG).show()
+            }
+        })
+        //
+
+        // 추천 2
         val map = HashMap<String, String>()
         map.put("id", userid)
 
@@ -161,18 +184,33 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "로그아웃", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
+                    val map = HashMap<String, String>()
 
-                    // 로그아웃 기능 구현
+                    val call = retrofitInterface.executeLogout(map)
+                    call!!.enqueue(object : Callback<Void?> {
+                        override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                            if (response.code() == 200) {
+                                val result = response.body()
 
+                                var intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
 
-                    var intent = Intent(applicationContext, LoginActivity::class.java)
-                    startActivityForResult(intent, 0)
-                    commit()
+                                Toast.makeText(this@MainActivity2, "로그아웃합니다..",
+                                    Toast.LENGTH_LONG).show()
+                                startActivity(intent)
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void?>, t: Throwable) {
+                            Toast.makeText(this@MainActivity2, t.message,
+                                Toast.LENGTH_LONG).show()
+                        }
+                    })
                 }
             }
         }
         main2_this.closeDrawers() // 네비게이션 뷰 닫기
         return false
     }
+
 }

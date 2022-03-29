@@ -19,7 +19,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.HashMap
 
-
 class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var enter_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton
@@ -57,10 +56,34 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // 방 생성 버튼
         createNewroom.setOnClickListener{ // 새로운 방 생성 버튼 클릭 시 같이보기 페이지로 이동
-            val intent = Intent(applicationContext, TogetherActivity::class.java)
-            startActivityForResult(intent, 0) // deprecated in Java
-        }
+            val map = HashMap<String, String>()
+            val call = retrofitInterface.executeMakeRoom(map)
+            call!!.enqueue(object : Callback<MakeRoomResult?> {
+                override fun onResponse(call: Call<MakeRoomResult?>, response: Response<MakeRoomResult?>) {
+                    if (response.code() == 200) {
+                        val result = response.body()
+                        val builder1 = androidx.appcompat.app.AlertDialog.Builder(this@EnterActivity)
+                        builder1.setTitle("방 생성 성공, 초대코드 : " + result!!.roomCode)
+                        builder1.show()
 
+                        var intent = Intent(applicationContext, TogetherActivity::class.java) // 두번째 인자에 이동할 액티비티
+                        intent.putExtra("roomCode", result.roomCode)
+                        startActivityForResult(intent, 0)
+                    }
+                    else if (response.code() == 404) {
+                        Toast.makeText(this@EnterActivity, "404 오류", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MakeRoomResult?>, t: Throwable) {
+                    Toast.makeText(this@EnterActivity, t.message,
+                        Toast.LENGTH_LONG).show()
+                }
+            })
+
+            var intent = Intent(applicationContext, TogetherActivity::class.java)
+            startActivityForResult(intent, 0)
+        }
 
         // 초대 코드 입력 버튼
         writeCode.setOnClickListener() { // 초대코드 입장 버튼 클릭 시 다이얼로그 띄워 줌
