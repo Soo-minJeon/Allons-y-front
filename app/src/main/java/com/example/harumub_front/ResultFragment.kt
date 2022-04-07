@@ -60,10 +60,10 @@ class ResultFragment : Fragment() {
         var title:String ? = null
         var poster : String ? = null
         var genres: String ? = null
-        var concentration: String ? = null
+        var concentration: Number ? = null
         var emotion : String ? = null
         var highlight: String ? = null
-        var rating : Int = 0
+        var rating : Float = 0F
         var comment : String ? = null
 
         var map = HashMap<String, String>()
@@ -77,12 +77,12 @@ class ResultFragment : Fragment() {
                 if(response.code() == 200){
                     result = response.body()
 
-                    title = result?.title
+//                    title = result?.title
                     poster = result?.poster
                     genres = result?.genres
                     concentration = result?.concentration
-                    emotion = result?.emotion
-                    highlight = result?.highlight
+//                    emotion = result?.emotion
+//                    highlight = result?.highlight
                     rating = result?.rating!!
                     comment = result?.comment
 

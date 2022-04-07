@@ -45,4 +45,6 @@ interface RetrofitInteface {
     @POST("/logout")
     fun executeLogout(@Body map: HashMap<String, String>): Call<Void?>?
 
+    @POST("/watchImageCaptureEyetrack")
+    fun executeWatchImageCaptureEyetrack(@Body map: HashMap<String, String>): Call<Void?>?
 }
