@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#264713">
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="감정 분석 종료"
+        android:fontFamily="@font/jua"
+        android:textSize="28dp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edittext_round"
+        android:padding="20dp"
+        android:text="시스템에서 사용자가 잠을 자고 있는 것으로 판단하여 감정 분석을 종료합니다."
+        android:fontFamily="@font/jua"
+        android:textColor="#264713" />
+
+</LinearLayout>

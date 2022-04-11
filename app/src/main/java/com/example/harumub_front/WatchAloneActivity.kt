@@ -1,6 +1,8 @@
 package com.example.harumub_front
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -37,8 +39,10 @@ import retrofit2.Response
 import java.util.HashMap
 
 class WatchAloneActivity : AppCompatActivity() {
-    private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+//    private lateinit var retrofitBuilder: RetrofitBuilder
+//    private lateinit var retrofitInterface : RetrofitInteface
+    private var retrofitBuilder = RetrofitBuilder
+    private var retrofitInterface = retrofitBuilder.api
 
     private var cameraThread: CameraThread? = null
     lateinit var cameraHandler: CameraHandler
@@ -51,16 +55,26 @@ class WatchAloneActivity : AppCompatActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
+    // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
+    private val id = intent.getStringExtra("user_id")
+    private val movie_title = intent.getStringExtra("movie_title")
+
+    var map_Capture = HashMap<String, String>()
+    var call_Capture  = retrofitInterface.executeWatchImageCaptureEyetrack(map_Capture)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_watch_alone)
 
-        retrofitBuilder = RetrofitBuilder
-        retrofitInterface = retrofitBuilder.api
+//        retrofitBuilder = RetrofitBuilder
+//        retrofitInterface = retrofitBuilder.api
 
-        // 현재 로그인하고 있는 사용자 아이디 / 영화 아이디 (수정 필요) --수민 작성
-        var userid = ""
-        var movieid = ""
+        // 검색 페이지에서 전달받은 인텐트 데이터 확인
+        if (intent.hasExtra("user_id")&&intent.hasExtra("movie_title")) {
+            Log.d("WatchAloneActivity", "검색에서 받아온 id : $id , movie title : $movie_title")
+        } else {
+            Log.e("WatchAloneActivity", "가져온 데이터 없음")
+        }
 
         // Request camera permissions
         if (allPermissionsGranted()) {
@@ -76,8 +90,9 @@ class WatchAloneActivity : AppCompatActivity() {
         // 감상시작 버튼 누르면 -> 노드에 map 전송
         watch_start.setOnClickListener {
             var map = HashMap<String, String>()
-            map.put("id", userid)
-            map.put("movieId", movieid)
+            map.put("id", id!!)
+            map.put("movieTitle", movie_title!!)
+            map.put("signal", "start")
 
             var call = retrofitInterface.executeWatchAloneStart(map)
 
@@ -85,6 +100,15 @@ class WatchAloneActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                     if(response.code() == 200){
                         Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                        Log.d("감상 시작 : ", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()))
+                        sleep(9000)
+
+                        if (cameraThread != null) {
+                            cameraThread!!.endThread()
+                        }
+                        cameraThread = CameraThread()
+                        cameraThread!!.start()
                     }
                     else if (response.code() == 400){
                         Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 실패", Toast.LENGTH_SHORT).show()
@@ -95,16 +119,17 @@ class WatchAloneActivity : AppCompatActivity() {
                     Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
-
+/*
+            // 에뮬레이터 실행용
             Log.d("감상 시작 : ", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()))
-//            takePhoto() // 감상 시작하자마자 캡처
-            sleep(10000)
+            sleep(9000)
 
             if (cameraThread != null) {
                 cameraThread!!.endThread()
             }
             cameraThread = CameraThread()
             cameraThread!!.start()
+*/
         }
 
         outputDirectory = getOutputDirectory()
@@ -113,6 +138,9 @@ class WatchAloneActivity : AppCompatActivity() {
 
         // 감상종료 버튼 클릭
         watch_end.setOnClickListener {
+            val intent = Intent(applicationContext, AddreviewActivity::class.java)
+            startActivity(intent)
+
             var map = HashMap<String, String>()
             map.put("signal", "end")
 
@@ -123,10 +151,18 @@ class WatchAloneActivity : AppCompatActivity() {
                     if(response.code() == 200){
                         Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
+                        cameraHandler.sendEmptyMessage(WATCH_END)
+                        Log.d("감상 : ", "종료되었습니다.")
+
                         // 감상 리뷰 작성 페이지로 이동 (액티비티 -> 프래그먼트)
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.watch_alone, AddreviewFragment())
-                            .commit()
+//                        supportFragmentManager.beginTransaction()
+//                            .replace(R.id.watch_alone, AddreviewFragment())
+//                            .commit()
+                        val intent = Intent(applicationContext, AddreviewActivity::class.java)
+                        intent.putExtra("user_id", id)
+                        intent.putExtra("movie_id", movie_title)
+                        startActivity(intent)
+
                         Log.d("text : ", "선택")
                     }
                     else if (response.code() == 400){
@@ -138,9 +174,18 @@ class WatchAloneActivity : AppCompatActivity() {
                     Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
-
+/*
+            // 에뮬레이터 실행용
             cameraHandler.sendEmptyMessage(WATCH_END)
             Log.d("감상 : ", "종료되었습니다.")
+
+            // 감상 리뷰 작성 페이지로 이동
+            val intent = Intent(applicationContext, AddreviewActivity::class.java)
+            intent.putExtra("user_id", id)
+            intent.putExtra("movie_id", movie_title)
+            startActivity(intent)
+            Log.d("text : ", "감상 리뷰 작성 페이지로 이동")
+*/
         }
     }
 
@@ -159,19 +204,13 @@ class WatchAloneActivity : AppCompatActivity() {
                 var message: Message = Message.obtain()
                 message.what = WATCH_START
 
-                takePhoto("Emotion")
-                sleep(10000)
-                takePhoto("Emotion")
-                sleep(10000)
-                takePhoto("Emotion")
-
-                takePhoto("Eye")
+                takePhoto("img", (9 + i).toString())
                 sleep(1000)
-                takePhoto("Eye")
+                takePhoto("img", (10 + i).toString())
                 sleep(1000)
-                takePhoto("Eye")
+                takePhoto("img", (11 + i).toString())
                 cameraHandler.sendMessage(message)
-
+                i += 10
                 sleep(8000)
             }
         }
@@ -211,15 +250,12 @@ class WatchAloneActivity : AppCompatActivity() {
         }
     }
 
-    private fun takePhoto(s3Bucket_FolderName: String?) {
+    private fun takePhoto(s3Bucket_FolderName: String?, fileName: String?) {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
         // Create time-stamped output file to hold the image
-        val photoFile = File(
-            outputDirectory,
-            SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA
-            ).format(System.currentTimeMillis()) + ".jpg") // 이미지를 저장할 파일을 만든다.
+        val photoFile = File(outputDirectory, fileName + ".jpg") // 이미지를 저장할 파일을 만든다.
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
@@ -312,10 +348,15 @@ class WatchAloneActivity : AppCompatActivity() {
         val uploadObserver =
             transferUtility.upload("bucket_Name/" + s3Bucket_FolderName, fileName, file) // (bucket name, file 이름, file 객체)
         uploadObserver.setTransferListener(object : TransferListener {
-            override fun onStateChanged(id: Int, state: TransferState) {
+            override fun onStateChanged(s3_id: Int, state: TransferState) {
                 if (state === TransferState.COMPLETED) {
                     // Handle a completed upload
                     Log.d("S3 Bucket ", "Upload Completed!")
+
+                    // 사용자 아이디, 영화 제목, 캡처 시간 전달
+                    map_Capture.put("user_id", id!!)
+                    map_Capture.put("movie_title", movie_title!!)
+                    map_Capture.put("time", fileName!!)
 
                     // S3 Bucket에 file 업로드 후 Emulator에서 삭제
                     if (file != null) {
@@ -325,6 +366,24 @@ class WatchAloneActivity : AppCompatActivity() {
                     else {
                         Log.d("Emulator : ", "삭제할 파일이 없습니다.")
                     }
+
+                    call_Capture!!.clone().enqueue(object : Callback<Void?> {
+                        override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                            if(response.code() == 410) {
+                                cameraHandler.sendEmptyMessage(WATCH_END)
+
+                                // 자고 있으면 경고창 띄우기
+                                SleepDialog()
+                            }
+                            else if(response.code() == 400) {
+                                Toast.makeText(this@WatchAloneActivity, "캡처 신호 실패", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Void?>, t: Throwable) {
+                            Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }
             }
 
@@ -337,5 +396,18 @@ class WatchAloneActivity : AppCompatActivity() {
                 Log.d("MYTAG", "UPLOAD ERROR - - ID: \$id - - EX:$ex")
             }
         })
+    }
+
+    fun SleepDialog() {
+        val dig = AlertDialog.Builder(this)
+        val dialogView = View.inflate(this, R.layout.dialog_sleep, null)
+
+        dig.setView(dialogView)
+        dig.setPositiveButton("확인") { dialog, which ->
+            cameraHandler.sendEmptyMessage(WATCH_END)
+            finish()
+        }
+
+        dig.show()
     }
 }
