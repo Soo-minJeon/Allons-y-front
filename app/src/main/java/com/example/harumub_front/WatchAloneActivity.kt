@@ -2,6 +2,7 @@ package com.example.harumub_front
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -54,8 +55,9 @@ class WatchAloneActivity : AppCompatActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
-    lateinit var userid: String
-    lateinit var movietitle: String
+    // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
+    private val id = intent.getStringExtra("user_id")
+    private val movie_title = intent.getStringExtra("movie_title")
 
     var map_Capture = HashMap<String, String>()
     var call_Capture  = retrofitInterface.executeWatchImageCaptureEyetrack(map_Capture)
@@ -67,9 +69,12 @@ class WatchAloneActivity : AppCompatActivity() {
 //        retrofitBuilder = RetrofitBuilder
 //        retrofitInterface = retrofitBuilder.api
 
-        // 현재 로그인하고 있는 사용자 아이디 // 영화 제목
-        userid = getIntent().getStringExtra("user_id").toString()
-        movietitle = getIntent().getStringExtra("movie_title").toString()
+        // 검색 페이지에서 전달받은 인텐트 데이터 확인
+        if (intent.hasExtra("user_id")&&intent.hasExtra("movie_title")) {
+            Log.d("WatchAloneActivity", "검색에서 받아온 id : $id , movie title : $movie_title")
+        } else {
+            Log.e("WatchAloneActivity", "가져온 데이터 없음")
+        }
 
         // Request camera permissions
         if (allPermissionsGranted()) {
@@ -85,8 +90,9 @@ class WatchAloneActivity : AppCompatActivity() {
         // 감상시작 버튼 누르면 -> 노드에 map 전송
         watch_start.setOnClickListener {
             var map = HashMap<String, String>()
-            map.put("id", userid!!)
-            map.put("movieTitle", movietitle)
+            map.put("id", id!!)
+            map.put("movieTitle", movie_title!!)
+            map.put("signal", "start")
 
             var call = retrofitInterface.executeWatchAloneStart(map)
 
@@ -132,6 +138,9 @@ class WatchAloneActivity : AppCompatActivity() {
 
         // 감상종료 버튼 클릭
         watch_end.setOnClickListener {
+            val intent = Intent(applicationContext, AddreviewActivity::class.java)
+            startActivity(intent)
+
             var map = HashMap<String, String>()
             map.put("signal", "end")
 
@@ -146,9 +155,14 @@ class WatchAloneActivity : AppCompatActivity() {
                         Log.d("감상 : ", "종료되었습니다.")
 
                         // 감상 리뷰 작성 페이지로 이동 (액티비티 -> 프래그먼트)
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.watch_alone, AddreviewFragment())
-                            .commit()
+//                        supportFragmentManager.beginTransaction()
+//                            .replace(R.id.watch_alone, AddreviewFragment())
+//                            .commit()
+                        val intent = Intent(applicationContext, AddreviewActivity::class.java)
+                        intent.putExtra("user_id", id)
+                        intent.putExtra("movie_id", movie_title)
+                        startActivity(intent)
+
                         Log.d("text : ", "선택")
                     }
                     else if (response.code() == 400){
@@ -165,10 +179,11 @@ class WatchAloneActivity : AppCompatActivity() {
             cameraHandler.sendEmptyMessage(WATCH_END)
             Log.d("감상 : ", "종료되었습니다.")
 
-            // 감상 리뷰 작성 페이지로 이동 (액티비티 -> 프래그먼트)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.watch_alone, AddreviewFragment())
-                .commit()
+            // 감상 리뷰 작성 페이지로 이동
+            val intent = Intent(applicationContext, AddreviewActivity::class.java)
+            intent.putExtra("user_id", id)
+            intent.putExtra("movie_id", movie_title)
+            startActivity(intent)
             Log.d("text : ", "감상 리뷰 작성 페이지로 이동")
 */
         }
@@ -333,14 +348,14 @@ class WatchAloneActivity : AppCompatActivity() {
         val uploadObserver =
             transferUtility.upload("bucket_Name/" + s3Bucket_FolderName, fileName, file) // (bucket name, file 이름, file 객체)
         uploadObserver.setTransferListener(object : TransferListener {
-            override fun onStateChanged(id: Int, state: TransferState) {
+            override fun onStateChanged(s3_id: Int, state: TransferState) {
                 if (state === TransferState.COMPLETED) {
                     // Handle a completed upload
                     Log.d("S3 Bucket ", "Upload Completed!")
 
                     // 사용자 아이디, 영화 제목, 캡처 시간 전달
-                    map_Capture.put("id", userid)
-                    map_Capture.put("title", movietitle)
+                    map_Capture.put("user_id", id!!)
+                    map_Capture.put("movie_title", movie_title!!)
                     map_Capture.put("time", fileName!!)
 
                     // S3 Bucket에 file 업로드 후 Emulator에서 삭제
