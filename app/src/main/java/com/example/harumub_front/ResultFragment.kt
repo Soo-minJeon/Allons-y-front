@@ -80,7 +80,7 @@ class ResultFragment : Fragment() {
 //                    title = result?.title
                     poster = result?.poster
                     genres = result?.genres
-                    concentration = result?.concentration
+//                    concentration = result?.concentration
 //                    emotion = result?.emotion
 //                    highlight = result?.highlight
                     rating = result?.rating!!
