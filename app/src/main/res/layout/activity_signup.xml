@@ -184,8 +184,7 @@
                 android:text="인증"
                 android:textColor="#264713"
                 android:textSize="16dp"
-                android:textAlignment="gravity"
-                android:enabled="false"/>
+                android:textAlignment="gravity"/>
 
         </LinearLayout>
 
@@ -232,7 +231,6 @@
                 android:text="확인"
                 android:textColor="#264713"
                 android:textSize="16dp"
-                android:enabled="false"
                 android:textAlignment="gravity" />
 
         </LinearLayout>
@@ -251,7 +249,6 @@
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="#FFFEE0"
-        android:enabled="false"
         android:background="@drawable/b_rectangle"
         />
 

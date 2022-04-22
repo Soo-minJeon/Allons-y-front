@@ -20,11 +20,14 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
     var poster = arrayOf(R.drawable.about, R.drawable.gucci, R.drawable.spider)
     var title = arrayOf("About Times", "Gucci", "Spider Man3")
     // 현재 로그인하고 있는 사용자 아이디
-    private val id = intent.getStringExtra("user_id")
+//    private val id = intent.getStringExtra("user_id")
+    lateinit var id : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        id = intent.getStringExtra("user_id").toString()
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {

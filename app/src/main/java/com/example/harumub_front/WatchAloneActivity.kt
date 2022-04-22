@@ -56,8 +56,10 @@ class WatchAloneActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
-    private val id = intent.getStringExtra("user_id")
-    private val movie_title = intent.getStringExtra("movie_title")
+//    private val id = intent.getStringExtra("user_id")
+//    private val movie_title = intent.getStringExtra("movie_title")
+    lateinit var id : String
+    lateinit var movie_title : String
 
     var map_Capture = HashMap<String, String>()
     var call_Capture  = retrofitInterface.executeWatchImageCaptureEyetrack(map_Capture)
@@ -68,6 +70,9 @@ class WatchAloneActivity : AppCompatActivity() {
 
 //        retrofitBuilder = RetrofitBuilder
 //        retrofitInterface = retrofitBuilder.api
+
+        id = intent.getStringExtra("user_id").toString()
+        movie_title = intent.getStringExtra("movie_title").toString()
 
         // 검색 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")&&intent.hasExtra("movie_title")) {

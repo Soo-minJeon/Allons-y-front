@@ -130,8 +130,8 @@ class SignupActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) { // text가 변경된 후 호출. s = 변경 후의 문자열
                 if(s != null) {
                     if (s.isEmpty() || !emailRegex(s.toString()) ) { // 정규식 = false
-                        emailLayout.error = "올바르게 입력해주세요!"
-                        btnReq.setEnabled(true)
+                        emailLayout.error = "올바르게 입력해 주세요!"
+//                        btnReq.setEnabled(true)
                     } else {
                         emailLayout.error = null
                     }
@@ -140,6 +140,8 @@ class SignupActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {} // text가 변경되기 전 호출. s = 변경 전 문자열
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {} // text가 바뀔 때마다 호출
         })
+
+        var emailCode : Boolean? = false
 
         // 이메일 (인증코드) 요청 버튼 누르면 -> 노드에 map 전송
         btnReq.setOnClickListener(object : View.OnClickListener{
@@ -159,12 +161,14 @@ class SignupActivity : AppCompatActivity() {
                             result = response.body()
                             getCode = result?.code
                             Toast.makeText(this@SignupActivity, "getCode : " + getCode, Toast.LENGTH_SHORT).show()
-                            btnAuth.setEnabled(true)
+//                            btnAuth.setEnabled(true)
+                            emailCode = true
 
                             Toast.makeText(this@SignupActivity, "email send successfully", Toast.LENGTH_SHORT).show()
                         }
                         else if (response.code() == 400){
                             Toast.makeText(this@SignupActivity, "email send error", Toast.LENGTH_SHORT).show()
+                            emailCode = false
                         }
                     }
 
@@ -175,15 +179,19 @@ class SignupActivity : AppCompatActivity() {
             }
         })
 
+        var codeAuth : Boolean? = false
+
         // 사용자가 받은 이메일에서 '인증 코드' 입력 후 -> 인증코드 확인 버튼 누르면
         btnAuth.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if(j_code.getText().toString() == getCode){
                     Toast.makeText(this@SignupActivity, "email code good", Toast.LENGTH_SHORT).show()
-                    btnJoin.setEnabled(true)
+//                    btnJoin.setEnabled(true)
+                    codeAuth = true
                 }
                 else {
                     Toast.makeText(this@SignupActivity, getCode + "email code wrong", Toast.LENGTH_SHORT).show()
+                    codeAuth = false
                 }
             }
         })
@@ -201,6 +209,18 @@ class SignupActivity : AppCompatActivity() {
                 Toast.makeText(this, "입력란을 모두 작성바랍니다.", Toast.LENGTH_SHORT).show()
             }
             else { // 유저가 모든 항목을 다 채웠을 경우
+                when {
+                    emailLayout.error != null -> {
+                        Toast.makeText(this@SignupActivity, "이메일을 올바르게 입력해 주세요!", Toast.LENGTH_SHORT).show()
+                    }
+                    emailCode == false -> {
+                        Toast.makeText(this@SignupActivity, "이메일 인증 코드를 다시 확인해 주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                    codeAuth == false -> {
+                        Toast.makeText(this@SignupActivity, "이메일 인증 코드를 다시 확인해 주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
                 // 회원정보 retrofit 연동
                 val map = HashMap<String, String>()
                 map.put("id", id)
