@@ -204,11 +204,11 @@ class WatchAloneActivity : AppCompatActivity() {
                 var message: Message = Message.obtain()
                 message.what = WATCH_START
 
-                takePhoto("img", (9 + i).toString())
+                takePhoto("capture", id.toString() + "_" + movie_title + "_" + (9 + i).toString(), (9 + i).toString())
                 sleep(1000)
-                takePhoto("img", (10 + i).toString())
+                takePhoto("capture", id.toString() + "_" + movie_title + "_" + (10 + i).toString(), (10 + i).toString())
                 sleep(1000)
-                takePhoto("img", (11 + i).toString())
+                takePhoto("capture", id.toString() + "_" + movie_title + "_" + (11 + i).toString(), (11 + i).toString())
                 cameraHandler.sendMessage(message)
                 i += 10
                 sleep(8000)
@@ -250,7 +250,7 @@ class WatchAloneActivity : AppCompatActivity() {
         }
     }
 
-    private fun takePhoto(s3Bucket_FolderName: String?, fileName: String?) {
+    private fun takePhoto(s3Bucket_FolderName: String?, fileName: String?, time: String?) {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
@@ -272,7 +272,7 @@ class WatchAloneActivity : AppCompatActivity() {
                     val msg = "Photo capture succeeded: $savedUri"
 //                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
-                    uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile)
+                    uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile, time)
                 }
             }
         )
@@ -338,7 +338,7 @@ class WatchAloneActivity : AppCompatActivity() {
     }
 
     // S3 Bucket Upload
-    fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?) {
+    fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?, time: String?) {
         val awsCredentials: AWSCredentials =
             BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
         val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.US_EAST_1))
@@ -353,10 +353,11 @@ class WatchAloneActivity : AppCompatActivity() {
                     // Handle a completed upload
                     Log.d("S3 Bucket ", "Upload Completed!")
 
-                    // 사용자 아이디, 영화 제목, 캡처 시간 전달
-                    map_Capture.put("user_id", id!!)
-                    map_Capture.put("movie_title", movie_title!!)
-                    map_Capture.put("time", fileName!!)
+                    // 사용자 아이디, 영화 제목, 캡처 시간, 캡처 사진 이름 전달
+                    map_Capture.put("id", id!!)
+                    map_Capture.put("movieTitle", movie_title!!)
+                    map_Capture.put("time", time!!)
+                    map_Capture.put("imgPath", fileName!!)
 
                     // S3 Bucket에 file 업로드 후 Emulator에서 삭제
                     if (file != null) {
