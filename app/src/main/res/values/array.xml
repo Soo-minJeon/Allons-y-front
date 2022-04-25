@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="genre_array">
+        <item>선호 장르 선택</item>
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Animation</item>
+        <item>Comedy</item>
+        <item>Drama</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>Horror</item>
+        <item>Romance</item>
+        <item>Science Fiction</item>
+    </string-array>
+</resources>
