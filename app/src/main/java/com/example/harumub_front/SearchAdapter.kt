@@ -1,6 +1,8 @@
 package com.example.harumub_front
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_search.view.*
 import kotlinx.android.synthetic.main.activity_search.view.imageView
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
+import java.net.URL
 
 /**
  * Created by 규열 on 2018-02-13.
  */
-class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>) :
+class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>) :
     RecyclerView.Adapter<SearchAdapter.MyViewHolder>(), Filterable {
 
     var filteredList: ArrayList<String>
+    var poster_url: URL? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.recyclerview_row, parent, false) // RecyclerView에 들어갈 아이템의 레이아웃 설정
@@ -41,6 +45,7 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>)
             textView = itemView.findViewById<View>(R.id.textview) as TextView
         }
         fun setItem(item: String) {
+/*
             if(item.equals("About Times")){
                 itemView.imageView.setImageResource(R.drawable.about)
                 itemView.textview.text = "About Times"
@@ -53,10 +58,27 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>)
                 itemView.imageView.setImageResource(R.drawable.spider)
                 itemView.textview.text ="Spider Man3"
             }
+*/
+            for (i: Int in 0..filteredList!!.size - 1) {
+                if (item.equals(filteredList[i])) {
+                    var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
+                        poster_url = URL("https://image.tmdb.org/t/p/w500" + posterList[i])
+                    }
+
+                    var bitmap: Bitmap = image_task.execute().get()
+                    itemView.imageView.setImageBitmap(bitmap)
+
+                    itemView.textview.text = filteredList[i]
+                }
+            }
 
             itemView.setOnClickListener { // 영화 클릭 시 토스트 메세지
-                Toast.makeText(itemView.context,itemView.textview.text,Toast.LENGTH_LONG).show()
-                // movie id 전달!!
+                Toast.makeText(itemView.context, itemView.textview.text, Toast.LENGTH_LONG).show()
+
+                // movie title 전달
+                var movie_title = itemView.textview.text
+                var intent = Intent(itemView.getContext(), WatchAloneActivity::class.java)
+                intent.putExtra("movie_title", movie_title)
             }
         }
     }

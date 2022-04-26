@@ -50,4 +50,7 @@ interface RetrofitInteface {
 
     @POST("/watchImageCaptureEyetrack")
     fun executeWatchImageCaptureEyetrack(@Body map: HashMap<String, String>): Call<Void?>?
+
+    @POST("/getAllMovieList")
+    fun executeGetAllMovieList(@Body map: HashMap<String, String>): Call<SearchData?>?
 }
