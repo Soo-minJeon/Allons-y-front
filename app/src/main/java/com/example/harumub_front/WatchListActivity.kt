@@ -33,12 +33,15 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private lateinit var retrofitInterface : RetrofitInteface
 
     // 현재 로그인하고 있는 사용자 아이디
-    private val id = intent.getStringExtra("user_id")
+//    private val id = intent.getStringExtra("user_id")
+    lateinit var id : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_movie_list)
         Toast.makeText(this@WatchListActivity, "여기까진 됨", Toast.LENGTH_SHORT).show()
+
+        id = intent.getStringExtra("user_id").toString()
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {

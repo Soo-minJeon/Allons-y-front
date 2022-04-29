@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
                         builder1.setMessage(result!!.name + "님 환영합니다!")
                         builder1.show()
 
+/*
                         // 서버에서 전달받은 감상결과 record=false => 메인1로 이동
                         if(result.record == false) {
                             var intent = Intent(applicationContext, MainActivity1::class.java)
@@ -67,6 +68,56 @@ class LoginActivity : AppCompatActivity() {
                              intent.putExtra("user_name", result.name)
                              startActivityForResult(intent, 0)
                          }
+*/
+
+                        val reco2_1 = result.reco2_1 // 유사 사용자 1
+                        val reco2_2 = result.reco2_2 // 유사 사용자 2
+                        val reco2_3 = result.reco2_3 // 유사 사용자 3
+                        val reco2_4 = result.reco2_4 // 유사 사용자 4
+                        val reco2_5 = result.reco2_5 // 유사 사용자 5
+
+                        val reco2_1_userId = reco2_1.userId // 유사 사용자 1의 userId
+                        val reco2_2_userId = reco2_2.userId // 유사 사용자 2의 userId
+                        val reco2_3_userId = reco2_3.userId // 유사 사용자 3의 userId
+                        val reco2_4_userId = reco2_4.userId // 유사 사용자 4의 userId
+                        val reco2_5_userId = reco2_5.userId // 유사 사용자 5의 userId
+
+                        val reco2_1_title = reco2_1.title // 유사 사용자 1의 추천 영화 제목 리스트
+                        val reco2_2_title = reco2_2.title // 유사 사용자 2의 추천 영화 제목 리스트
+                        val reco2_3_title = reco2_3.title // 유사 사용자 3의 추천 영화 제목 리스트
+                        val reco2_4_title = reco2_4.title // 유사 사용자 4의 추천 영화 제목 리스트
+                        val reco2_5_title = reco2_5.title // 유사 사용자 5의 추천 영화 제목 리스트
+
+                        val reco2_1_poster = reco2_1.poster // 유사 사용자 1의 추천 영화 포스터 링크 리스트
+                        val reco2_2_poster = reco2_2.poster // 유사 사용자 2의 추천 영화 포스터 링크 리스트
+                        val reco2_3_poster = reco2_3.poster // 유사 사용자 3의 추천 영화 포스터 링크 리스트
+                        val reco2_4_poster = reco2_4.poster // 유사 사용자 4의 추천 영화 포스터 링크 리스트
+                        val reco2_5_poster = reco2_5.poster // 유사 사용자 5의 추천 영화 포스터 링크 리스트
+
+                        // 메인2로 이동
+                        var intent = Intent(applicationContext, MainActivity2::class.java)
+                        intent.putExtra("user_id", result.id)
+                        intent.putExtra("user_name", result.name)
+
+                        intent.putExtra("reco2_1_userId", reco2_1_userId)
+                        intent.putExtra("reco2_2_userId", reco2_2_userId)
+                        intent.putExtra("reco2_3_userId", reco2_3_userId)
+                        intent.putExtra("reco2_4_userId", reco2_4_userId)
+                        intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                        intent.putExtra("reco2_1_title", reco2_1_title)
+                        intent.putExtra("reco2_2_title", reco2_2_title)
+                        intent.putExtra("reco2_3_title", reco2_3_title)
+                        intent.putExtra("reco2_4_title", reco2_4_title)
+                        intent.putExtra("reco2_5_title", reco2_5_title)
+
+                        intent.putExtra("reco2_1_poster", reco2_1_poster)
+                        intent.putExtra("reco2_2_poster", reco2_2_poster)
+                        intent.putExtra("reco2_3_poster", reco2_3_poster)
+                        intent.putExtra("reco2_4_poster", reco2_4_poster)
+                        intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                        startActivityForResult(intent, 0)
                     }
                     else if (response.code() == 400) {
                         Toast.makeText(this@LoginActivity, "정의되지 않은 사용자", Toast.LENGTH_LONG).show()

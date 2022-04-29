@@ -3,6 +3,7 @@ package com.example.harumub_front
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.Toast
@@ -21,12 +22,16 @@ import java.util.HashMap
 class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<RecommendAdapter1.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<UserMovieListAdapter.ViewHolder>? = null
 
     lateinit var main_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton
     lateinit var recent_button: ImageButton
     lateinit var drawer_view : NavigationView
+
+    lateinit var reco2_userId : String
+    lateinit var reco2_titleList : ArrayList<String>
+    lateinit var reco2_posterList : ArrayList<String>
 
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInteface
@@ -35,6 +40,19 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_user_movie_list)
         // Toast.makeText(this@UserMovieListActivity, "여기까진 됨", Toast.LENGTH_SHORT).show()
+
+        // 유사 사용자
+        reco2_userId = intent.getStringExtra("reco2_userId").toString() // 유사 사용자 아이디
+        reco2_titleList = intent.getSerializableExtra("reco2_titleList") as ArrayList<String> // 유사 사용자 추천 영화 제목 리스트
+        reco2_posterList = intent.getSerializableExtra("reco2_posterList") as ArrayList<String> // 유사 사용자 추천 영화 포스트 링크 리스트
+
+        // RecommendAdapter2에서 전달받은 인텐트 데이터 확인
+        if (intent.hasExtra("reco2_userId") && intent.hasExtra("reco2_titleList") && intent.hasExtra("reco2_posterList")) {
+            Log.d("UserMovieListActivity", "추천2에서 받아온 userId : " + reco2_userId
+                    + "titleList : " + reco2_titleList + "posterList" + reco2_posterList)
+        } else {
+            Log.e("UserMovieListActivity", "가져온 데이터 없음")
+        }
 
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
@@ -53,6 +71,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         // Toast.makeText(this@UserMovieListActivity, "여기까진 됨3", Toast.LENGTH_SHORT).show()
 
+/*
         call!!.enqueue(object : Callback<List<WatchListResult?>>{
             override fun onResponse( call: Call<List<WatchListResult?>>, response: Response<List<WatchListResult?>>) {
                 if(response.code() == 200){
@@ -75,7 +94,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 Toast.makeText(this@UserMovieListActivity, t.message, Toast.LENGTH_SHORT).show()
             }
         })
-
+*/
 
         main_this = findViewById(R.id.main_drawer)
         drawer_button = findViewById(R.id.drawer_button) // 드로어 열기(메뉴버튼)
@@ -96,10 +115,10 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             startActivity(intent)
         }
 
-        // 나의 감상기록 RecyclerView와 RecommendAdapter 연결
+        // 유사 사용자 감상기록 RecyclerView와 UserMovieListAdapter 연결
         layoutManager = GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        adapter = RecommendAdapter1()
+        adapter = UserMovieListAdapter(reco2_posterList, reco2_titleList)
         recyclerView.adapter = adapter
 
         // 메인으로 돌아가는 버튼
