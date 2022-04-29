@@ -3,6 +3,7 @@ package com.example.harumub_front
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -11,6 +12,7 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobileconnectors.s3.transfermanager.Transfer
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferNetworkLossHandler
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
@@ -42,6 +44,9 @@ class ResultActivity : AppCompatActivity() {
     private val movie_title = intent.getStringExtra("movie_title")
     private val ratings = intent.getStringExtra("user_rating")
     private val comments = intent.getStringExtra("user_comment")
+
+    lateinit var photoFile: File
+    lateinit var photoBitmap: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -198,8 +203,9 @@ class ResultActivity : AppCompatActivity() {
                     // 수정 필요
                     downloadWithTransferUtility("Emotion", highlightUrl) // bucket folder name(Emotion/Eye), file name
 
-                    // 다운로드 된 이미지 파일 불러오기기
-                    myHighlight.setImageResource(R.drawable.highlight)
+                    // 다운로드 된 이미지 파일 불러오기
+//                    myHighlight.setImageResource(R.drawable.highlight)
+                    myHighlight.setImageBitmap(photoBitmap)
 
 
                     // 메인으로 돌아가는 버튼
@@ -255,17 +261,19 @@ class ResultActivity : AppCompatActivity() {
             .build()
 
         // 다운로드 실행
-        val downloadObserver = transferUtility.download(fileName, File(filesDir.absolutePath + "/" + fileName))
+        photoFile = File(filesDir.absolutePath + "/" + fileName)
+        val downloadObserver = transferUtility.download(fileName, photoFile)
         // object: "SomeFile.mp4", 두 번째 파라미터: Local 경로 File 객체  ex) .download("SomeFile.mp4", File(filesDir.absolutePath + "/SomeFile.mp4"))
 
-        // import 관련 오류 나는 것 같음 - 혼자 보기에서 가져온 코드이니 참고해서 수정 필요
-        /*
-        downloadOberver.setTransferListener(object : TransferListener { // 다운로드 과정을 알 수 있도록 Listener 추가
-            override fun onStateChanged(id: Int, state: Transfer) {
-                if (state == Transfer.COMPLETED) {
+        downloadObserver.setTransferListener(object : TransferListener { // 다운로드 과정을 알 수 있도록 Listener 추가
+            override fun onStateChanged(id: Int, state: TransferState?) {
+                if (state == TransferState.COMPLETED) {
                     Log.d("S3", "DOWNLOAD Completed!")
+
+                    photoBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
                 }
             }
+
             override fun onProgressChanged(id: Int, current: Long, total: Long) {
                 try {
                     val done = (((current.toDouble() / total) * 100.0).toInt()) // as Int
@@ -279,6 +287,6 @@ class ResultActivity : AppCompatActivity() {
                 Log.d("S3", "DOWNLOAD ERROR - - ID: $id - - EX: ${ex.message.toString()}")
             }
         })
-        */
+
     }
 }

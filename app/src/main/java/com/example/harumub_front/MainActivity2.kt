@@ -36,12 +36,78 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private var adapter2: RecyclerView.Adapter<RecommendAdapter2.ViewHolder>? = null
 
     // 현재 로그인하고 있는 사용자 아이디, 이름
-    private val id = intent.getStringExtra("user_id")
-    private val name = intent.getStringExtra("user_name")
+//    private val id = intent.getStringExtra("user_id")
+//    private val name = intent.getStringExtra("user_name")
+    lateinit var id : String
+    lateinit var name : String
+
+    lateinit var reco2_userIdList : ArrayList<String>
+    lateinit var reco2_1_userId : String
+    lateinit var reco2_2_userId : String
+    lateinit var reco2_3_userId : String
+    lateinit var reco2_4_userId : String
+    lateinit var reco2_5_userId : String
+
+    lateinit var reco2_titleList : ArrayList<ArrayList<String>>
+    lateinit var reco2_1_title : ArrayList<String>
+    lateinit var reco2_2_title : ArrayList<String>
+    lateinit var reco2_3_title : ArrayList<String>
+    lateinit var reco2_4_title : ArrayList<String>
+    lateinit var reco2_5_title : ArrayList<String>
+
+    lateinit var reco2_posterList : ArrayList<ArrayList<String>>
+    lateinit var reco2_1_poster : ArrayList<String>
+    lateinit var reco2_2_poster : ArrayList<String>
+    lateinit var reco2_3_poster : ArrayList<String>
+    lateinit var reco2_4_poster : ArrayList<String>
+    lateinit var reco2_5_poster : ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+
+        id = intent.getStringExtra("user_id").toString()
+        name = intent.getStringExtra("user_name").toString()
+
+        reco2_userIdList = arrayListOf()
+        reco2_titleList = arrayListOf()
+        reco2_posterList = arrayListOf()
+
+        reco2_1_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_2_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_3_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_4_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_5_userId = intent.getStringExtra("reco2_1_userId").toString()
+
+        reco2_userIdList.add(reco2_1_userId)
+        reco2_userIdList.add(reco2_2_userId)
+        reco2_userIdList.add(reco2_3_userId)
+        reco2_userIdList.add(reco2_4_userId)
+        reco2_userIdList.add(reco2_5_userId)
+
+        reco2_1_title = intent.getSerializableExtra("reco2_1_title") as ArrayList<String>
+        reco2_2_title = intent.getSerializableExtra("reco2_2_title") as ArrayList<String>
+        reco2_3_title = intent.getSerializableExtra("reco2_3_title") as ArrayList<String>
+        reco2_4_title = intent.getSerializableExtra("reco2_4_title") as ArrayList<String>
+        reco2_5_title = intent.getSerializableExtra("reco2_5_title") as ArrayList<String>
+
+        reco2_titleList.add(reco2_1_title)
+        reco2_titleList.add(reco2_2_title)
+        reco2_titleList.add(reco2_3_title)
+        reco2_titleList.add(reco2_4_title)
+        reco2_titleList.add(reco2_5_title)
+
+        reco2_1_poster = intent.getSerializableExtra("reco2_1_poster") as ArrayList<String>
+        reco2_2_poster = intent.getSerializableExtra("reco2_2_poster") as ArrayList<String>
+        reco2_3_poster = intent.getSerializableExtra("reco2_3_poster") as ArrayList<String>
+        reco2_4_poster = intent.getSerializableExtra("reco2_4_poster") as ArrayList<String>
+        reco2_5_poster = intent.getSerializableExtra("reco2_5_poster") as ArrayList<String>
+
+        reco2_posterList.add(reco2_1_poster)
+        reco2_posterList.add(reco2_2_poster)
+        reco2_posterList.add(reco2_3_poster)
+        reco2_posterList.add(reco2_4_poster)
+        reco2_posterList.add(reco2_5_poster)
 
         // 로그인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("user_name")) {
@@ -88,6 +154,7 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
         })
 
+/*
         // 추천 2
         val map2 = HashMap<String, String>()
         map2.put("id", id!!)
@@ -119,6 +186,7 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     Toast.LENGTH_LONG).show()
             }
         })
+*/
 
         // 드로어 버튼 클릭 -> 드로어 메뉴 열기
         drawer_button.setOnClickListener{
@@ -143,7 +211,9 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         // '다른 사용자가 좋아하는' 영화 목록 RecyclerView와 RecommendAdapter2 연결
         layoutManager2 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView2.layoutManager = layoutManager2
-        adapter2 = RecommendAdapter2()
+//        adapter2 = RecommendAdapter2()
+//        adapter2 = RecommendAdapter2(reco2_1_userId, reco2_1_title, reco2_1_poster) // RecommendAdapter(String, ArrayList<String>, ArrayList<String>)
+        adapter2 = RecommendAdapter2(reco2_userIdList, reco2_titleList, reco2_posterList)
         recyclerView2.adapter = adapter2
 
 //        var text = findViewById<TextView>(R.id.textView3) // '다른 사용자가 좋아하는' 텍스트
