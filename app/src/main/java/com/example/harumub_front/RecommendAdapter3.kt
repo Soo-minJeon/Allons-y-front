@@ -9,20 +9,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.net.URL
 
-class RecommendAdapter1(var titles: ArrayList<String>, var posters: ArrayList<String>):
-    RecyclerView.Adapter<RecommendAdapter1.ViewHolder>() {
-
+class RecommendAdapter3(var titles: ArrayList<String>, var posters: ArrayList<String>):
+    RecyclerView.Adapter<RecommendAdapter3.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecommendAdapter1.ViewHolder {
+    ): RecommendAdapter3.ViewHolder {
         // RecyclerView에 들어갈 아이템의 레이아웃 설정
         val v = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout, parent, false)
         return ViewHolder(v)
     }
 
     // 순서에 따라 배열에 데이터 삽입
-    override fun onBindViewHolder(holder: RecommendAdapter1.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecommendAdapter3.ViewHolder, position: Int) {
         var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
 //            url = URL("https://image.tmdb.org/t/p/w500" + posters[position])
             url = URL("https://image.tmdb.org/t/p/w500" + "/xoqr4dMbRJnzuhsWDF3XNHQwJ9x.jpg")

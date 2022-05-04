@@ -7,18 +7,28 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.HashMap
+import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var okHttpClient: OkHttpClient
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInteface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+//        okHttpClient = OkHttpClient.Builder()
+//            .connectTimeout(40, TimeUnit.SECONDS)
+//            .readTimeout(40, TimeUnit.SECONDS)
+//            .writeTimeout(40, TimeUnit.SECONDS)
+//            .build()
+
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
 
@@ -70,6 +80,10 @@ class LoginActivity : AppCompatActivity() {
                          }
 */
 
+                        val reco1 = result.reco1 // 추천 1
+                        val reco1_titleArray = reco1.titleArray // 추천 1의 추천 영화 제목 리스트
+                        val reco1_posterArray = reco1.posterArray // 추천 1의 추천 영화 포스터 링크 리스트
+
                         val reco2_1 = result.reco2_1 // 유사 사용자 1
                         val reco2_2 = result.reco2_2 // 유사 사용자 2
                         val reco2_3 = result.reco2_3 // 유사 사용자 3
@@ -98,6 +112,9 @@ class LoginActivity : AppCompatActivity() {
                         var intent = Intent(applicationContext, MainActivity2::class.java)
                         intent.putExtra("user_id", result.id)
                         intent.putExtra("user_name", result.name)
+
+                        intent.putExtra("reco1_titleArray", reco1_titleArray)
+                        intent.putExtra("reco1_posterArray", reco1_posterArray)
 
                         intent.putExtra("reco2_1_userId", reco2_1_userId)
                         intent.putExtra("reco2_2_userId", reco2_2_userId)

@@ -23,7 +23,6 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>,
     RecyclerView.Adapter<SearchAdapter.MyViewHolder>(), Filterable {
 
     var filteredList: ArrayList<String>
-    var poster_url: URL? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.recyclerview_row, parent, false) // RecyclerView에 들어갈 아이템의 레이아웃 설정
@@ -62,7 +61,7 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>,
             for (i: Int in 0..filteredList!!.size - 1) {
                 if (item.equals(filteredList[i])) {
                     var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
-                        poster_url = URL("https://image.tmdb.org/t/p/w500" + posterList[i])
+                        url = URL("https://image.tmdb.org/t/p/w500" + posterList[i])
                     }
 
                     var bitmap: Bitmap = image_task.execute().get()
@@ -77,7 +76,8 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>,
 
                 // movie title 전달
                 var movie_title = itemView.textview.text
-                var intent = Intent(itemView.getContext(), WatchAloneActivity::class.java)
+//                var intent = Intent(itemView.getContext(), WatchAloneActivity::class.java) // WatchAloneActivity로 전달
+                var intent = Intent(itemView.getContext(), SearchActivity::class.java) // SearchActivity로 전달
                 intent.putExtra("movie_title", movie_title)
             }
         }
