@@ -108,6 +108,10 @@ class LoginActivity : AppCompatActivity() {
                         val reco2_4_poster = reco2_4.poster // 유사 사용자 4의 추천 영화 포스터 링크 리스트
                         val reco2_5_poster = reco2_5.poster // 유사 사용자 5의 추천 영화 포스터 링크 리스트
 
+//                        val reco3 = result.reco3 // 선호 배우 영화 추천
+//                        val reco3_titleArray = reco3.titleArray // 추천 3의 추천 영화 제목 리스트
+//                        val reco3_posterArray = reco3.posterArray // 추천 3의 추천 영화 포스터 링크 리스트
+
                         // 메인2로 이동
                         var intent = Intent(applicationContext, MainActivity2::class.java)
                         intent.putExtra("user_id", result.id)
@@ -133,6 +137,9 @@ class LoginActivity : AppCompatActivity() {
                         intent.putExtra("reco2_3_poster", reco2_3_poster)
                         intent.putExtra("reco2_4_poster", reco2_4_poster)
                         intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+//                        intent.putExtra("reco3_titleArray", reco3_titleArray)
+//                        intent.putExtra("reco3_posterArray", reco3_posterArray)
 
                         startActivityForResult(intent, 0)
                     }

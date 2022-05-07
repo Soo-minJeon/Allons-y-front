@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import java.net.URL
 
 class UserMovieListAdapter(var titles: ArrayList<String>, var posters: ArrayList<String>):
@@ -14,6 +15,7 @@ class UserMovieListAdapter(var titles: ArrayList<String>, var posters: ArrayList
     // 데이터  - 영화 제목, 포스터 url => 모두 String
     private var movie_images = intArrayOf(R.drawable.spider, R.drawable.gucci, R.drawable.about, R.drawable.ic_launcher_foreground, R.drawable.spider, R.drawable.gucci, R.drawable.about)
     private var movie_titles = arrayOf("제목 1", "제목 2", "제목 3", "제목 4", "제목 5", "제목 6", "제목 7")
+    var defaultImage = R.drawable.spider
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,6 +31,7 @@ class UserMovieListAdapter(var titles: ArrayList<String>, var posters: ArrayList
 //        holder.movieImage.setImageResource(movie_images[position])
 //        holder.movieTitle.text = movie_titles[position]
 
+/*
         var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
 //            url = URL("https://image.tmdb.org/t/p/w500" + posters[position])
             url = URL("https://image.tmdb.org/t/p/w500" + "/xoqr4dMbRJnzuhsWDF3XNHQwJ9x.jpg")
@@ -36,6 +39,13 @@ class UserMovieListAdapter(var titles: ArrayList<String>, var posters: ArrayList
 
         var bitmap: Bitmap = image_task.execute().get()
         holder.movieImage.setImageBitmap(bitmap)
+*/
+        Glide.with(holder.itemView.context)
+            .load("https://image.tmdb.org/t/p/w500" + posters[position]) // 불러올 이미지 url
+            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+            .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+            .into(holder.movieImage) // 이미지를 넣을 뷰
 
         holder.movieTitle.text = titles[position]
     }

@@ -1,15 +1,21 @@
 package com.example.harumub_front
 
 
-//data class LoginResult(var id: String, var name: String, var record: Boolean)
 data class LoginResult(var id: String, var name: String, var record: Boolean, var reco1: Recommend1,
                        var reco2_1: Recommend2, var reco2_2: Recommend2,
                        var reco2_3: Recommend2, var reco2_4: Recommend2,
                        var reco2_5: Recommend2)
-
+/*
+data class LoginResult(var id: String, var name: String, var record: Boolean, var reco1: Recommend1,
+                       var reco2_1: Recommend2, var reco2_2: Recommend2,
+                       var reco2_3: Recommend2, var reco2_4: Recommend2,
+                       var reco2_5: Recommend2, var reco3: Recommend3)
+*/
 data class Recommend1(var titleArray: ArrayList<String>, var posterArray: ArrayList<String>)
 
 data class Recommend2(var userId: String, var title: ArrayList<String>, var poster: ArrayList<String>)
+
+data class Recommend3(var titleArray: ArrayList<String>, var posterArray: ArrayList<String>)
 
 data class MakeRoomResult(var roomCode: String)
 

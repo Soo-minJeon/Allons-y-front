@@ -68,6 +68,9 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     lateinit var reco2_4_poster : ArrayList<String>
     lateinit var reco2_5_poster : ArrayList<String>
 
+//    lateinit var reco3_titleArray : ArrayList<String>
+//    lateinit var reco3_posterArray : ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -117,6 +120,9 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         reco2_posterList.add(reco2_3_poster)
         reco2_posterList.add(reco2_4_poster)
         reco2_posterList.add(reco2_5_poster)
+
+//        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
+//        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
 
         // 로그인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("user_name")) {
@@ -191,20 +197,11 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         adapter2 = RecommendAdapter2(reco2_userIdList, reco2_titleList, reco2_posterList)
         recyclerView2.adapter = adapter2
 
-//        var text = findViewById<TextView>(R.id.textView3) // '다른 사용자가 좋아하는' 텍스트
-//        // 원래는 이미지버튼에서 넘어가야 함
-//        text.setOnClickListener { // '다른 사용자가 좋아하는' 텍스트 클릭 시 다른 사용자 감상기록 페이지로 이동. 수정 필요
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.main2, UserMovieListFragment())
-//                .commit()
-//            Log.d("text : ", "선택")
-//        }
-
         // '당신이 선호하는' 영화 목록 RecyclerView와 RecommendAdapter3 연결
 //        layoutManager3 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 //        recyclerView3.layoutManager = layoutManager3
-//        adapter3 = RecommendAdapter3(titleArray, posterArray)
-//        recyclerView2.adapter = adapter3
+//        adapter3 = RecommendAdapter3(reco3_titleArray, reco3_posterArray)
+//        recyclerView3.adapter = adapter3
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행

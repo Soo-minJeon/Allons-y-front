@@ -328,8 +328,8 @@ class SignupActivity : AppCompatActivity() {
                 map.put("id", id)
                 map.put("password", pw)
                 map.put("name", name)
-//                map.put("like_movie", like_movie1 + ", " + like_movie2 + ", " + like_movie3) // 수정 필요
-//                map.put("genre", genre!!)
+                map.put("favorite", like_movie1 + "," + like_movie2 + "," + like_movie3)
+                map.put("genre", genre!!)
 
                 val call = retrofitInterface.executeSignup(map)
 
@@ -347,8 +347,11 @@ class SignupActivity : AppCompatActivity() {
                         }
                     }
                     override fun onFailure(call: Call<Void?>, t: Throwable) {
-                        Toast.makeText(this@SignupActivity, t.message,
+                        Toast.makeText(this@SignupActivity, "회원가입에 실패했습니다.",
                             Toast.LENGTH_LONG).show()
+
+                        //Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_LONG).show()
+                        Log.d("회원가입 실패 : ", t.message.toString())
                     }
                 })
             }
