@@ -24,8 +24,12 @@ interface RetrofitInteface {
     @POST("/email")
     fun executeEmail(@Body map: HashMap<String, String>): Call<EmailResult?>?
 
+/*
     @POST("/watchList")
     fun executeWatchList(@Body map: HashMap<String, String>): Call<List<WatchListResult?>>?
+*/
+    @POST("/watchList")
+    fun executeWatchList(@Body map: HashMap<String, String>): Call<WatchListResult?>?
 
     @POST("/watchresult")
     fun executeWatchResult(@Body map: HashMap<String, String>): Call<WatchResult?>?

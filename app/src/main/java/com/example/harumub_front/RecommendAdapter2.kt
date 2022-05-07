@@ -10,16 +10,17 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_search.view.*
 import java.net.URL
 
 class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: ArrayList<ArrayList<String>>, var postersList: ArrayList<ArrayList<String>>):
     RecyclerView.Adapter<RecommendAdapter2.ViewHolder>() {
 
-//    var poster_url: URL? = null
     lateinit var reco2_userId : String
     lateinit var reco2_titleList : ArrayList<String>
     lateinit var reco2_posterList : ArrayList<String>
+    var defaultImage = R.drawable.spider
 
     // 데이터
     private var movie_images = intArrayOf(R.drawable.spider, R.drawable.gucci, R.drawable.about, R.drawable.ic_launcher_foreground, R.drawable.spider, R.drawable.gucci, R.drawable.about)
@@ -34,18 +35,24 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
 
     override fun onBindViewHolder(holder: RecommendAdapter2.ViewHolder, position: Int) { // 데이터 설정
 //        holder.movieImage.setImageResource(movie_images[position])
-
+/*
         var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
-//            poster_url = URL("https://image.tmdb.org/t/p/w500" + postersList[position][0]) // 첫 번째 poster를 대표 이미지로 설정
 //            url = URL("https://image.tmdb.org/t/p/w500" + postersList[position][0]) // 첫 번째 poster를 대표 이미지로 설정
             url = URL("https://image.tmdb.org/t/p/w500" + "/xoqr4dMbRJnzuhsWDF3XNHQwJ9x.jpg")
         }
 
         var bitmap: Bitmap = image_task.execute().get()
         holder.movieImage.setImageBitmap(bitmap)
+*/
+        // 첫 번째 poster를 대표 이미지로 설정
+        Glide.with(holder.itemView.context)
+            .load("https://image.tmdb.org/t/p/w500" + postersList[position][0]) // 불러올 이미지 url
+            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+            .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+            .into(holder.movieImage) // 이미지를 넣을 뷰
 
         // 해당 아이템 클릭시 유사 사용자 추천 리스트로 이동
-        // 해당 아이템 클릭 시 onClick() 호출
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, UserMovieListActivity::class.java)
 

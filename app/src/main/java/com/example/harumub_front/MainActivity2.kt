@@ -30,16 +30,22 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     lateinit var drawer_view : NavigationView
 
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<RecommendAdapter1.ViewHolder>? = null
+    private var adapter1: RecyclerView.Adapter<RecommendAdapter1.ViewHolder>? = null
 
     private var layoutManager2: RecyclerView.LayoutManager? = null
     private var adapter2: RecyclerView.Adapter<RecommendAdapter2.ViewHolder>? = null
+
+    private var layoutManager3: RecyclerView.LayoutManager? = null
+    private var adapter3: RecyclerView.Adapter<RecommendAdapter3.ViewHolder>? = null
 
     // 현재 로그인하고 있는 사용자 아이디, 이름
 //    private val id = intent.getStringExtra("user_id")
 //    private val name = intent.getStringExtra("user_name")
     lateinit var id : String
     lateinit var name : String
+
+    lateinit var reco1_titleArray : ArrayList<String>
+    lateinit var reco1_posterArray : ArrayList<String>
 
     lateinit var reco2_userIdList : ArrayList<String>
     lateinit var reco2_1_userId : String
@@ -62,12 +68,18 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     lateinit var reco2_4_poster : ArrayList<String>
     lateinit var reco2_5_poster : ArrayList<String>
 
+//    lateinit var reco3_titleArray : ArrayList<String>
+//    lateinit var reco3_posterArray : ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
         id = intent.getStringExtra("user_id").toString()
         name = intent.getStringExtra("user_name").toString()
+
+        reco1_titleArray = intent.getSerializableExtra("reco1_titleArray") as ArrayList<String>
+        reco1_posterArray = intent.getSerializableExtra("reco1_posterArray") as ArrayList<String>
 
         reco2_userIdList = arrayListOf()
         reco2_titleList = arrayListOf()
@@ -109,6 +121,9 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         reco2_posterList.add(reco2_4_poster)
         reco2_posterList.add(reco2_5_poster)
 
+//        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
+//        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
+
         // 로그인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("user_name")) {
             Log.d("MainActivity2", "로그인에서 받아온 id : $id, name : $name")
@@ -132,6 +147,7 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         var titles : Array<String> = emptyArray()
         var posters : Array<String> = emptyArray()
 
+/*
         // 추천 1, 들어가면 토스트 메시지로 추천 영화 10개 전달되는 것 확인되게 코드 작성해둠
         val map1 = HashMap<String, String>()
         map1.put("id", id!!)
@@ -149,39 +165,6 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 }
             }
             override fun onFailure(call: Call<List<String>?>, t: Throwable) {
-                Toast.makeText(this@MainActivity2, t.message,
-                    Toast.LENGTH_LONG).show()
-            }
-        })
-
-/*
-        // 추천 2
-        val map2 = HashMap<String, String>()
-        map2.put("id", id!!)
-
-        val call = retrofitInterface.executeRecommend2(map2)
-        call!!.enqueue(object : Callback<List<Recommend2Result?>> {
-            override fun onResponse(call: Call<List<Recommend2Result?>>, response: Response<List<Recommend2Result?>>) {
-                if (response.code() == 200) {
-                    val result = response.body()
-
-                    for(i in 0..result?.size!!-1){
-                        // (userid) title 과 Poster url 은 배열에 저장. -> 리사이클러뷰에 넣어야 함 -- 수민 작성
-                        userIds[i] = result.get(i)!!.userId
-                        titles[i] = result.get(i)!!.title
-                        posters[i] = result.get(i)!!.poster
-
-                        Toast.makeText(this@MainActivity2, "유사 사용자 추천 성공", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                else if (response.code() == 400) {
-                    Toast.makeText(this@MainActivity2, "정의되지 않음", Toast.LENGTH_LONG).show()
-                }
-//                else if (response.code() == 404) {
-//                    Toast.makeText(this@MainActivity2, "404 오류", Toast.LENGTH_LONG).show()
-//                }
-            }
-            override fun onFailure(call: Call<List<Recommend2Result?>>, t: Throwable) {
                 Toast.makeText(this@MainActivity2, t.message,
                     Toast.LENGTH_LONG).show()
             }
@@ -205,25 +188,20 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         // '내가 좋아하는' 영화 목록 RecyclerView와 RecommendAdapter1 연결
         layoutManager = GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
-        adapter = RecommendAdapter1()
-        recyclerView.adapter = adapter
+        adapter1 = RecommendAdapter1(reco1_titleArray, reco1_posterArray)
+        recyclerView.adapter = adapter1
 
         // '다른 사용자가 좋아하는' 영화 목록 RecyclerView와 RecommendAdapter2 연결
         layoutManager2 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView2.layoutManager = layoutManager2
-//        adapter2 = RecommendAdapter2()
-//        adapter2 = RecommendAdapter2(reco2_1_userId, reco2_1_title, reco2_1_poster) // RecommendAdapter(String, ArrayList<String>, ArrayList<String>)
         adapter2 = RecommendAdapter2(reco2_userIdList, reco2_titleList, reco2_posterList)
         recyclerView2.adapter = adapter2
 
-//        var text = findViewById<TextView>(R.id.textView3) // '다른 사용자가 좋아하는' 텍스트
-//        // 원래는 이미지버튼에서 넘어가야 함
-//        text.setOnClickListener { // '다른 사용자가 좋아하는' 텍스트 클릭 시 다른 사용자 감상기록 페이지로 이동. 수정 필요
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.main2, UserMovieListFragment())
-//                .commit()
-//            Log.d("text : ", "선택")
-//        }
+        // '당신이 선호하는' 영화 목록 RecyclerView와 RecommendAdapter3 연결
+//        layoutManager3 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        recyclerView3.layoutManager = layoutManager3
+//        adapter3 = RecommendAdapter3(reco3_titleArray, reco3_posterArray)
+//        recyclerView3.adapter = adapter3
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행

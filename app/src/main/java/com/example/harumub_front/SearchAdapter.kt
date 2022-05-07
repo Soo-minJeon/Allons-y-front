@@ -11,6 +11,7 @@ import android.widget.Filterable
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_search.view.*
 import kotlinx.android.synthetic.main.activity_search.view.imageView
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
@@ -23,7 +24,7 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>,
     RecyclerView.Adapter<SearchAdapter.MyViewHolder>(), Filterable {
 
     var filteredList: ArrayList<String>
-    var poster_url: URL? = null
+    var defaultImage = R.drawable.spider
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.recyclerview_row, parent, false) // RecyclerView에 들어갈 아이템의 레이아웃 설정
@@ -61,12 +62,20 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>,
 */
             for (i: Int in 0..filteredList!!.size - 1) {
                 if (item.equals(filteredList[i])) {
+/*
                     var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
-                        poster_url = URL("https://image.tmdb.org/t/p/w500" + posterList[i])
+                        url = URL("https://image.tmdb.org/t/p/w500" + posterList[i])
                     }
 
                     var bitmap: Bitmap = image_task.execute().get()
                     itemView.imageView.setImageBitmap(bitmap)
+*/
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500" + posterList[i]) // 불러올 이미지 url
+                        .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                        .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                        .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+                        .into(itemView.imageView) // 이미지를 넣을 뷰
 
                     itemView.textview.text = filteredList[i]
                 }
@@ -77,7 +86,8 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>,
 
                 // movie title 전달
                 var movie_title = itemView.textview.text
-                var intent = Intent(itemView.getContext(), WatchAloneActivity::class.java)
+//                var intent = Intent(itemView.getContext(), WatchAloneActivity::class.java) // WatchAloneActivity로 전달
+                var intent = Intent(itemView.context, SearchActivity::class.java) // SearchActivity로 전달
                 intent.putExtra("movie_title", movie_title)
             }
         }

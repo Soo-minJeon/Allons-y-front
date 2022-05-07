@@ -1,32 +1,33 @@
 package com.example.harumub_front
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_search.view.*
 import java.net.URL
 
-class RecommendAdapter1(var titles: ArrayList<String>, var posters: ArrayList<String>):
-    RecyclerView.Adapter<RecommendAdapter1.ViewHolder>() {
+class WatchListAdapter(var titles: ArrayList<String>, var posters: ArrayList<String>):
+    RecyclerView.Adapter<WatchListAdapter.ViewHolder>() {
 
     var defaultImage = R.drawable.spider
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecommendAdapter1.ViewHolder {
+    ): WatchListAdapter.ViewHolder {
         // RecyclerView에 들어갈 아이템의 레이아웃 설정
         val v = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout, parent, false)
         return ViewHolder(v)
     }
 
     // 순서에 따라 배열에 데이터 삽입
-    override fun onBindViewHolder(holder: RecommendAdapter1.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WatchListAdapter.ViewHolder, position: Int) {
 /*
         var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
 //            url = URL("https://image.tmdb.org/t/p/w500" + posters[position])
@@ -44,6 +45,12 @@ class RecommendAdapter1(var titles: ArrayList<String>, var posters: ArrayList<St
             .into(holder.movieImage) // 이미지를 넣을 뷰
 
         holder.movieTitle.text = titles[position]
+
+        // 해당 아이템 클릭시 결과 페이지로 이동
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, ResultActivity::class.java)
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
+        }
     }
 
     override fun getItemCount(): Int {

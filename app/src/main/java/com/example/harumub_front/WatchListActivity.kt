@@ -22,7 +22,7 @@ import java.util.HashMap
 class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<RecommendAdapter1.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<WatchListAdapter.ViewHolder>? = null
 
     lateinit var main_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton
@@ -55,9 +55,12 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         // 현재 로그인하고 있는 사용자 아이디 (수정 필요) --수민 작성
         // var userid = ""
-        var result : List<WatchListResult>
-        var titles : Array<String> = emptyArray()
-        var posters : Array<String> = emptyArray()
+//        var result : List<WatchListResult>
+//        var titles : Array<String> = emptyArray()
+//        var posters : Array<String> = emptyArray()
+        var result : WatchListResult
+        var titleArray : ArrayList<String>
+        var posterArray : ArrayList<String>
 
         var map = HashMap<String, String>()
         map.put("id", id!!)
@@ -66,6 +69,7 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         var call = retrofitInterface.executeWatchList(map)
 
         Toast.makeText(this@WatchListActivity, "여기까진 됨3", Toast.LENGTH_SHORT).show()
+/*
         call!!.enqueue(object : Callback<List<WatchListResult?>>{
             override fun onResponse( call: Call<List<WatchListResult?>>, response: Response<List<WatchListResult?>>) {
                 if(response.code() == 200){
@@ -84,6 +88,31 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 }
             }
             override fun onFailure(call: Call<List<WatchListResult?>>, t: Throwable) {
+                Toast.makeText(this@WatchListActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+*/
+        call!!.enqueue(object : Callback<WatchListResult?>{
+            override fun onResponse( call: Call<WatchListResult?>, response: Response<WatchListResult?>) {
+                if(response.code() == 200){
+                    result = response.body()!!
+
+                    titleArray = result.title
+                    posterArray = result.poster
+
+                    // 나의 감상기록 RecyclerView와 WatchListAdapter 연결
+                    layoutManager = GridLayoutManager(this@WatchListActivity, 3, GridLayoutManager.VERTICAL, false)
+                    recyclerView.layoutManager = layoutManager
+                    adapter = WatchListAdapter(titleArray, posterArray)
+                    recyclerView.adapter = adapter
+
+                    Toast.makeText(this@WatchListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()
+                }
+                else if (response.code() == 400){
+                    Toast.makeText(this@WatchListActivity, "get movie list error", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<WatchListResult?>, t: Throwable) {
                 Toast.makeText(this@WatchListActivity, t.message, Toast.LENGTH_SHORT).show()
             }
         })
@@ -109,11 +138,13 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             startActivity(intent)
         }
 
+/*
         // 나의 감상기록 RecyclerView와 RecommendAdapter1 연결
         layoutManager = GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         adapter = RecommendAdapter1()
         recyclerView.adapter = adapter
+*/
 
         // 메인으로 돌아가는 버튼
         list2main.setOnClickListener{
