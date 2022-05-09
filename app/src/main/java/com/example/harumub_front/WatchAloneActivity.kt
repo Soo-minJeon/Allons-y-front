@@ -349,7 +349,7 @@ class WatchAloneActivity : AppCompatActivity() {
     fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?, user_id: String?, movie_title: String?, time: String?) {
         val awsCredentials: AWSCredentials =
             BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
-        val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.US_EAST_1))
+        val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
         val transferUtility =
             TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
         TransferNetworkLossHandler.getInstance(this.applicationContext)
