@@ -2,6 +2,7 @@ package com.example.harumub_front
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +21,7 @@ import java.net.URL
 /**
  * Created by 규열 on 2018-02-13.
  */
-class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>) :
+class SearchAdapter(var context: Context, var id: String, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>) :
     RecyclerView.Adapter<SearchAdapter.MyViewHolder>(), Filterable {
 
     var filteredList: ArrayList<String>
@@ -86,9 +87,11 @@ class SearchAdapter(var context: Context, var unFilteredlist: ArrayList<String>,
 
                 // movie title 전달
                 var movie_title = itemView.textview.text
-//                var intent = Intent(itemView.getContext(), WatchAloneActivity::class.java) // WatchAloneActivity로 전달
-                var intent = Intent(itemView.context, SearchActivity::class.java) // SearchActivity로 전달
+                var intent = Intent(itemView.context, WatchAloneActivity::class.java) // WatchAloneActivity로 전달
+  //              var intent = Intent(itemView.context, SearchActivity::class.java) // SearchActivity로 전달
+                intent.putExtra("user_id", id)
                 intent.putExtra("movie_title", movie_title)
+                itemView.context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
             }
         }
     }
