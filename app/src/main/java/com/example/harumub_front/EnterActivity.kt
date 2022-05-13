@@ -1,6 +1,9 @@
 package com.example.harumub_front
 
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -65,14 +68,21 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
 
-        // 방 생성 버튼
-        createNewroom.setOnClickListener{ // 새로운 방 생성 버튼 클릭 시 같이보기 페이지로 이동
+        // 방 생성 버튼 - 호스트(Publisher)가 방 생성 후 입장
+        createNewroom.setOnClickListener{
             val map = HashMap<String, String>()
+
             val call = retrofitInterface.executeMakeRoom(map)
             call!!.enqueue(object : Callback<MakeRoomResult?> {
                 override fun onResponse(call: Call<MakeRoomResult?>, response: Response<MakeRoomResult?>) {
                     if (response.code() == 200) {
                         val result = response.body()
+
+                        // enter code - 클립보드에 자동 복사
+                        var clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager // 클립보드 매니저 호출
+                        val clip : ClipData = ClipData.newPlainText("roomCode", result!!.roomCode) // roomCode 이름표로 값 복사하여 저장
+                        clipboardManager.setPrimaryClip(clip)
+
                         val builder1 = androidx.appcompat.app.AlertDialog.Builder(this@EnterActivity)
                         builder1.setTitle("방 생성 성공, 초대코드 : " + result!!.roomCode)
                         builder1.show()
@@ -80,7 +90,9 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         var intent = Intent(applicationContext, TogetherActivity::class.java) // 두번째 인자에 이동할 액티비티
                         intent.putExtra("roomCode", result.roomCode)
                         intent.putExtra("user_id", id)
-                        startActivityForResult(intent, 0)
+                        intent.putExtra("user_role", "Publisher") // 참가자 역할
+                        // startActivityForResult(intent, 0)
+                        startActivity(intent)
                     }
                     else if (response.code() == 400) {
                         Toast.makeText(this@EnterActivity, "정의되지 않음", Toast.LENGTH_LONG).show()
@@ -92,18 +104,16 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Toast.LENGTH_LONG).show()
                 }
             })
-
-//            var intent = Intent(applicationContext, TogetherActivity::class.java)
-//            startActivityForResult(intent, 0)
         }
 
-        // 초대 코드 입력 버튼
+        // 초대 코드 입력 버튼 - 참가자(Subscriber)가 다이얼로그에 코드 입력
         writeCode.setOnClickListener() { // 초대코드 입장 버튼 클릭 시 다이얼로그 띄워 줌
             val dig = AlertDialog.Builder(this)
-
             val dialogView = View.inflate(this, R.layout.dialog_entercode, null)
             dig.setView(dialogView)
-            dig.setPositiveButton("확인") { dialog, which ->
+
+            // 확인 버튼 클릭 - 같이 보기 페이지로 이동동
+           dig.setPositiveButton("확인") { dialog, which ->
                 Toast.makeText(this@EnterActivity,
                     "확인 누름", Toast.LENGTH_LONG).show()
                 val map = HashMap<String, String>()
@@ -120,10 +130,12 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         if (response.code() == 200) {
                             Toast.makeText(this@EnterActivity,
                                 "방 코드 : " + getroomCode + " 에 입장합니다.", Toast.LENGTH_LONG).show()
+
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
-                            startActivityForResult(intent, 0)
-
+                            intent.putExtra("user_role", "Publisher") // 참가자 역할
+                            // startActivityForResult(intent, 0)
+                            startActivity(intent)
                         } else if (response.code() == 400) {
                             Toast.makeText(this@EnterActivity, "잘못된 방 코드 입니다.",
                                 Toast.LENGTH_LONG).show()
@@ -134,14 +146,10 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             Toast.LENGTH_LONG).show()
                     }
                 })
-/*
-                val intent = Intent(applicationContext, TogetherActivity::class.java)
-                startActivityForResult(intent, 0)
-*/
-            } // 확인 버튼 클릭 시 같이보기 페이지로 이동
+            } // 취소 버튼 클릭 시 취소되었다는 토스트 메세지를 보여 줌
             dig.setNegativeButton("취소") { dialog, which ->
                 Toast.makeText(this, "취소되었습니다.", Toast.LENGTH_LONG).show()
-            } // 취소 버튼 클릭 시 취소되었다는 토스트 메세지를 보여 줌
+            }
             dig.show()
         }
     }

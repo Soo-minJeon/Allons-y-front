@@ -2,15 +2,15 @@
   <library name="Gradle: androidx.viewpager2:viewpager2:1.0.0@aar">
     <ANNOTATIONS>
       <root url="jar://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/bdb9219fa1b5555590faf22bb2014a8a/transformed/viewpager2-1.0.0/annotations.zip!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8dcf5a10ce9a2aa5c31ac8e99d42e42f/transformed/viewpager2-1.0.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/856666e14ec6efdffd99419d50d8597e/transformed/jetified-viewpager2-1.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/bdb9219fa1b5555590faf22bb2014a8a/transformed/viewpager2-1.0.0/res" />
       <root url="jar://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/bdb9219fa1b5555590faf22bb2014a8a/transformed/viewpager2-1.0.0/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/bdb9219fa1b5555590faf22bb2014a8a/transformed/viewpager2-1.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8dcf5a10ce9a2aa5c31ac8e99d42e42f/transformed/viewpager2-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8dcf5a10ce9a2aa5c31ac8e99d42e42f/transformed/viewpager2-1.0.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8dcf5a10ce9a2aa5c31ac8e99d42e42f/transformed/viewpager2-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/856666e14ec6efdffd99419d50d8597e/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/856666e14ec6efdffd99419d50d8597e/transformed/jetified-viewpager2-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/856666e14ec6efdffd99419d50d8597e/transformed/jetified-viewpager2-1.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

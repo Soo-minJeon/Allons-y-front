@@ -58,9 +58,9 @@ class AddreviewActivity : AppCompatActivity() {
 
         // 검색 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")&&intent.hasExtra("movie_title")) {
-            Log.d("WatchAloneActivity", "검색에서 받아온 id : $id , movie title : $movie_title")
+            Log.d("AddReviewActivity", "검색에서 받아온 id : $id , movie title : $movie_title")
         } else {
-            Log.e("WatchAloneActivity", "가져온 데이터 없음")
+            Log.e("AddReviewActivity", "가져온 데이터 없음")
         }
 
         // 감상했던 영화 정보 출력 및 불러오기
