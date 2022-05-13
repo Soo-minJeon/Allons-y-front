@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.CubeGrid
 import kotlinx.android.synthetic.main.fragment_addreview.*
@@ -37,6 +38,8 @@ class AddreviewActivity : AppCompatActivity() {
 
     private lateinit var myTitle: TextView
     private lateinit var myPoster: ImageView
+
+    var defaultImage = R.drawable.spider
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
 //    private val id = intent.getStringExtra("user_id")
@@ -65,14 +68,22 @@ class AddreviewActivity : AppCompatActivity() {
         myPoster = findViewById<ImageView>(R.id.poster)
 
         myTitle.setText(movie_title)
-
+/*
         var myUrl = "" // 서버에서 poster url 받아와야 함!! -- 수정 필요
         var result = "https://image.tmdb.org/t/p/w500"
         var image_task : URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL(result+myUrl)
+            url = URL(result + myUrl)
         }
         var bitmap : Bitmap = image_task.execute().get()
         myPoster.setImageBitmap(bitmap)
+*/
+        var myUrl = "" // 서버에서 poster url 받아와야 함!! -- 수정 필요
+        Glide.with(this)
+            .load("https://image.tmdb.org/t/p/w500" + myUrl) // 불러올 이미지 url
+            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+            .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+            .into(myPoster) // 이미지를 넣을 뷰
 
 
         // 별점 - 람다식을 사용하여 처리

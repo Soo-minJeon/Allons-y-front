@@ -32,7 +32,7 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
     // 현재 로그인하고 있는 사용자 아이디
 //    private val id = intent.getStringExtra("user_id")
     lateinit var id : String
-    lateinit var movie_title : String
+//    lateinit var movie_title : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,15 +83,16 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
                         items_poster.add(poster_url!![i])
                     }
 
-                    adapter = SearchAdapter(applicationContext, items_title, items_poster)
+                    adapter = SearchAdapter(applicationContext, id, items_title, items_poster)
                     recyclerView!!.layoutManager =
                         LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
                     recyclerView!!.adapter = adapter
 
-                    movie_title = intent.getStringExtra("movie_title").toString()
+//                    movie_title = intent.getStringExtra("movie_title").toString()
 
                     Toast.makeText(this@SearchActivity, "영화 정보 출력 성공", Toast.LENGTH_SHORT).show()
 
+/*  // SearchAdapter 수정 - 영화 클릭 시 혼자 보기 페이지로 이동
                     // 혼자보기 입장 버튼 클릭 시 혼자보기 페이지로 이동
                     watch_alone_enter_button.setOnClickListener {
                         var intent = Intent(applicationContext, WatchAloneActivity::class.java)
@@ -99,6 +100,7 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
                         intent.putExtra("movie_title", movie_title) // movie_title은 SearchAdapter에서 전달
                         startActivity(intent)
                     }
+*/
                 }
 
                 else {
