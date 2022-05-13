@@ -85,8 +85,9 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="32dp"
                         android:text="당신이 좋아할"
-                        android:textSize="24dp"
-                        android:textStyle="bold" />
+                        android:textSize="27dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/jua"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
@@ -103,8 +104,9 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginBottom="8dp"
                         android:text="다른 사용자가 좋아한"
-                        android:textSize="24dp"
-                        android:textStyle="bold" />
+                        android:textSize="27dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/jua"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView2"
@@ -119,9 +121,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:layout_marginBottom="8dp"
-                        android:text="당신이 선호하는"
-                        android:textSize="24dp"
-                        android:textStyle="bold" />
+                        android:text="당신이 선호하는 배우의 작품"
+                        android:textSize="27dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/jua" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView3"

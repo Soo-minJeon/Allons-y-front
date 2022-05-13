@@ -45,9 +45,9 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {
-            Log.e("WatchActivity", "메인에서 받아온 id : $id")
+            Log.e("WatchListActivity", "메인에서 받아온 id : $id")
         } else {
-            Log.e("WatchActivity", "가져온 데이터 없음")
+            Log.e("WatchListActivity", "가져온 데이터 없음")
         }
 
         retrofitBuilder = RetrofitBuilder
