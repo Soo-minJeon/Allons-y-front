@@ -58,6 +58,8 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 //        var result : List<WatchListResult>
 //        var titles : Array<String> = emptyArray()
 //        var posters : Array<String> = emptyArray()
+//        var titles : ArrayList<String> = arrayListOf()
+//        var posters : ArrayList<String> = arrayListOf()
         var result : WatchListResult
         var titleArray : ArrayList<String>
         var posterArray : ArrayList<String>
@@ -93,7 +95,7 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         })
 */
         call!!.enqueue(object : Callback<WatchListResult?>{
-            override fun onResponse( call: Call<WatchListResult?>, response: Response<WatchListResult?>) {
+            override fun onResponse(call: Call<WatchListResult?>, response: Response<WatchListResult?>) {
                 if(response.code() == 200){
                     result = response.body()!!
 
