@@ -18,6 +18,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
+import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -41,15 +42,15 @@ class ResultActivity : AppCompatActivity() {
     private lateinit var retrofitInterface: RetrofitInteface
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디, 별점 평가, 한줄평
-    private val id = intent.getStringExtra("user_id")
-    private val movie_title = intent.getStringExtra("movie_title")
-    private val ratings = intent.getStringExtra("user_rating")
-    private val comments = intent.getStringExtra("user_comment")
+    lateinit var id : String
+    lateinit var movie_title : String
 
-    private var myHighlight = findViewById<ImageView>(R.id.img_highlight)
+    private lateinit var myHighlight: ImageView
 
     lateinit var photoFile: File
     lateinit var photoBitmap: Bitmap
+
+    var defaultImage = R.drawable.spider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,11 @@ class ResultActivity : AppCompatActivity() {
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
 
+        id = intent.getStringExtra("user_id").toString()
+        movie_title = intent.getStringExtra("movie_title").toString()
+
         // 리뷰 페이지에서 전달받은 인텐트 데이터 확인
+/*
         if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")
             && intent.hasExtra("user_rating") && intent.hasExtra("user_comment")
         ) {
@@ -67,6 +72,14 @@ class ResultActivity : AppCompatActivity() {
                 "리뷰에서 받아온 id : $id , movie title : $movie_title \n rating : $ratings , comment : $comments "
             )
         } else {
+            Log.e("ResultActivity", "가져온 데이터 없음")
+        }
+*/
+        if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")) {
+            Log.d("ResultActivity",
+                "리뷰에서 받아온 id : " + id + " movie_title : " + movie_title)
+        }
+        else {
             Log.e("ResultActivity", "가져온 데이터 없음")
         }
 
@@ -85,7 +98,7 @@ class ResultActivity : AppCompatActivity() {
         var emotion3 = findViewById<ImageView>(R.id.emotion3)
 
         var myChart = findViewById<LineChart>(R.id.chart)
-        // var myHighlight = findViewById<ImageView>(R.id.img_highlight)
+        myHighlight = findViewById<ImageView>(R.id.img_highlight)
 
         var btnMain = findViewById<Button>(R.id.back2main)
         var btnList = findViewById<Button>(R.id.back2list)
@@ -93,7 +106,7 @@ class ResultActivity : AppCompatActivity() {
 
         var map = HashMap<String, String>()
         map.put("id", id!!)
-        map.put("movie_title", movie_title!!)
+        map.put("movieTitle", movie_title!!)
 
         val call = retrofitInterface.executeWatchResult(map)
         call!!.enqueue(object : Callback<WatchResult?> {
@@ -102,25 +115,37 @@ class ResultActivity : AppCompatActivity() {
                     Toast.makeText(this@ResultActivity, "결과 출력 성공", Toast.LENGTH_SHORT).show()
 
                     val result = response.body()
+                    Log.d("감상 영화 정보 : ", "제목 : " + result!!.title
+                        + " 장르 : " + result!!.genres + " 집중 : " + result!!.concentration
+                        + " 하이라이트 시간 : " + result!!.highlight_time
+                        + " 별점 : " + result!!.rating + " 한줄평 : " + result.comment)
 
                     // 감상했던 영화 정보 불러오기
-                    myTitle.setText(result?.title)
-                    myGenres.setText(result?.genres)
-                    myConPer.setText(result?.concentration)
-                    myHlTime.setText(result?.highlight_time)
+                    myTitle.text = result?.title
+                    myGenres.text = result?.genres
+                    myConPer.text = result?.concentration
+                    myHlTime.text = result?.highlight_time
 
                     // 영화 포스터 출력 - 웹에서 url로 가져오기
                     var posterUrl = result?.poster
+/*
                     var result_url = "https://image.tmdb.org/t/p/w500"
                     var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
                         url = URL(result_url + posterUrl)
                     }
                     var bitmap: Bitmap = image_task.execute().get()
                     myPoster.setImageBitmap(bitmap)
+*/
+                    Glide.with(applicationContext)
+                        .load("https://image.tmdb.org/t/p/w500" + posterUrl) // 불러올 이미지 url
+                        .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                        .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                        .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+                        .into(myPoster) // 이미지를 넣을 뷰
 
                     // 입력했던 별점, 한줄평 값으로 초기화
                     myRating.rating = result?.rating!!
-                    myComment.setText(result.comment)
+                    myComment.text = result.comment
 
 
                     // 감정 이모티콘 출력 - 서버에서 받아온 감정 배열
@@ -185,8 +210,8 @@ class ResultActivity : AppCompatActivity() {
                     var h_time = Array<Float>(size, {0F})
                     var h_diff = Array<Float>(size, {0F})
 
-                    // for문으로 값 배열에 넣기
-                    for (i in 0..size) {
+                    // for 문으로 값 배열에 넣기
+                    for (i in 0..(size - 1)) {
                         h_time[i] = result.highlight_array[i].time.toFloat()            // 해당 시간 (0~러닝타임)
                         h_diff[i] = result.highlight_array[0].emotion_diff.toFloat()    // 해당 감정폭 값 (0~1)
 
@@ -209,7 +234,7 @@ class ResultActivity : AppCompatActivity() {
 
                     // set image를 downloadwithtransferutility()에서 실행할 거 같은데 로직 보고 수정 부탁
                     // 다운로드 된 이미지 파일 불러오기
-                    myHighlight.setImageBitmap(photoBitmap)
+    //                myHighlight.setImageBitmap(photoBitmap)
 
 
                     // 메인으로 돌아가는 버튼
@@ -292,7 +317,7 @@ class ResultActivity : AppCompatActivity() {
                     }
 
                     // (2) Bitmap 으로 이미지 출력?
-                    // (1), (2)번 중 선택해서서 수정 부탁
+                    // (1), (2)번 중 선택해서 수정 부탁
                    photoBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
                 }
             }

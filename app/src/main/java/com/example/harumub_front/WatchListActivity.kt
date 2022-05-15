@@ -105,7 +105,7 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     // 나의 감상기록 RecyclerView와 WatchListAdapter 연결
                     layoutManager = GridLayoutManager(this@WatchListActivity, 3, GridLayoutManager.VERTICAL, false)
                     recyclerView.layoutManager = layoutManager
-                    adapter = WatchListAdapter(titleArray, posterArray)
+                    adapter = WatchListAdapter(id, titleArray, posterArray)
                     recyclerView.adapter = adapter
 
                     Toast.makeText(this@WatchListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()

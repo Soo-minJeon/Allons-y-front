@@ -43,8 +43,12 @@ interface RetrofitInteface {
     @POST("/watchAloneStart")
     fun executeWatchAloneStart(@Body map: HashMap<String, String>): Call<Void?>?
 
+/*
     @POST("/watchAloneEnd")
     fun executeWatchAloneEnd(@Body map: HashMap<String, String>): Call<Void?>?
+*/
+    @POST("/watchAloneEnd")
+    fun executeWatchAloneEnd(@Body map: HashMap<String, String>): Call<WatchAloneMovie?>?
 
     @POST("addReview") // 추가: 리뷰 작성 후 버튼 클릭시 데이터 전달
     fun executeAddReview(@Body map: HashMap<String, String>): Call<Void?>?
