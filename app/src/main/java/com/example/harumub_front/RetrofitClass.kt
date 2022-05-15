@@ -39,3 +39,5 @@ data class Recommend2Result(var userId: String, var title: String, var poster: S
 data class EyeTrackResult(var userid: String, var movieTitle: String, var time: String, var concentration: Number)
 
 data class MovieCollection(var title: String, var runningTime: Number, var genres: String, var poster: String)
+
+data class WatchAloneMovie(var genres: String, var poster: String)

@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import java.net.URL
 
-class WatchListAdapter(var titles: ArrayList<String>, var posters: ArrayList<String>):
+class WatchListAdapter(var id: String, var titles: ArrayList<String>, var posters: ArrayList<String>):
     RecyclerView.Adapter<WatchListAdapter.ViewHolder>() {
 
     var defaultImage = R.drawable.spider
@@ -48,8 +49,13 @@ class WatchListAdapter(var titles: ArrayList<String>, var posters: ArrayList<Str
 
         // 해당 아이템 클릭시 결과 페이지로 이동
         holder.itemView.setOnClickListener {
+            Toast.makeText(holder.itemView.context, holder.movieTitle.text, Toast.LENGTH_LONG).show() // 영화 클릭 시 토스트 메시지
+
+            var movie_title = holder.movieTitle.text
             val intent = Intent(holder.itemView.context, ResultActivity::class.java)
-            ContextCompat.startActivity(holder.itemView.context, intent, null)
+            intent.putExtra("user_id", id)
+            intent.putExtra("movie_title", movie_title)
+            holder.itemView.context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
     }
 
@@ -57,13 +63,13 @@ class WatchListAdapter(var titles: ArrayList<String>, var posters: ArrayList<Str
         return titles.size // 영화 개수
     }
 
-    inner class ViewHolder(movieView: View): RecyclerView.ViewHolder(movieView) {
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var movieImage: ImageButton
         var movieTitle: TextView
 
         init {
-            movieImage = movieView.findViewById(R.id.movie_image) // 영화 이미지 버튼
-            movieTitle = movieView.findViewById(R.id.movie_title) // 영화 제목
+            movieImage = itemView.findViewById(R.id.movie_image) // 영화 이미지 버튼
+            movieTitle = itemView.findViewById(R.id.movie_title) // 영화 제목
         }
     }
 }

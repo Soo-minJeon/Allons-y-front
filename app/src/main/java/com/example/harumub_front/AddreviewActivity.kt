@@ -37,15 +37,16 @@ class AddreviewActivity : AppCompatActivity() {
     private lateinit var retrofitInterface : RetrofitInteface
 
     private lateinit var myTitle: TextView
+    private lateinit var myGenres: TextView
     private lateinit var myPoster: ImageView
 
     var defaultImage = R.drawable.spider
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
-//    private val id = intent.getStringExtra("user_id")
-//    private val movie_title = intent.getStringExtra("movie_title")
     lateinit var id : String
     lateinit var movie_title : String
+    lateinit var genres : String
+    lateinit var poster : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,31 +56,34 @@ class AddreviewActivity : AppCompatActivity() {
 
         id = intent.getStringExtra("user_id").toString()
         movie_title = intent.getStringExtra("movie_title").toString()
+        genres = intent.getStringExtra("genres").toString()
+        poster = intent.getStringExtra("poster").toString()
 
-        // 검색 페이지에서 전달받은 인텐트 데이터 확인
-        if (intent.hasExtra("user_id")&&intent.hasExtra("movie_title")) {
-            Log.d("AddReviewActivity", "검색에서 받아온 id : $id , movie title : $movie_title")
+        // 혼자보기 페이지에서 전달받은 인텐트 데이터 확인
+        if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")) {
+            Log.d("AddReviewActivity", "받아온 id : $id , movie title : $movie_title")
+            Log.d("AddReviewActivity", "받아온 genres : $genres , poster : $poster")
         } else {
             Log.e("AddReviewActivity", "가져온 데이터 없음")
         }
 
         // 감상했던 영화 정보 출력 및 불러오기
         myTitle = findViewById<TextView>(R.id.title)
+        myGenres = findViewById<TextView>(R.id.genres)
         myPoster = findViewById<ImageView>(R.id.poster)
 
         myTitle.setText(movie_title)
+        myGenres.setText(genres)
 /*
-        var myUrl = "" // 서버에서 poster url 받아와야 함!! -- 수정 필요
         var result = "https://image.tmdb.org/t/p/w500"
         var image_task : URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL(result + myUrl)
+            url = URL(result + poster)
         }
         var bitmap : Bitmap = image_task.execute().get()
         myPoster.setImageBitmap(bitmap)
 */
-        var myUrl = "" // 서버에서 poster url 받아와야 함!! -- 수정 필요
         Glide.with(this)
-            .load("https://image.tmdb.org/t/p/w500" + myUrl) // 불러올 이미지 url
+            .load("https://image.tmdb.org/t/p/w500" + poster) // 불러올 이미지 url
             .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
             .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
             .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
@@ -104,11 +108,11 @@ class AddreviewActivity : AppCompatActivity() {
 
             var user_comment = comment.text.toString() // EditText 입력값을 텍스트로
 
-            // 현재 로그인하고 있는 사용자 아이디 (수정 필요) --수민 작성
-            //var userid = ""
-
             var map = HashMap<String, String>()
             map.put("id", id!!)
+            map.put("movieTitle", movie_title)
+//            map.put("rating", ratingBar.rating.toString())
+            map.put("comment", user_comment)
 
             // val call = retrofitInterface.executeSceneAnalyze(map)
             val call = retrofitInterface.executeAddReview(map)
@@ -125,8 +129,8 @@ class AddreviewActivity : AppCompatActivity() {
                             var intent = Intent(applicationContext, ResultActivity::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("movie_title", movie_title)
-                            intent.putExtra("user_rating", ratingBar.rating)
-                            intent.putExtra("user_comment", user_comment)
+//                            intent.putExtra("user_rating", ratingBar.rating)
+//                            intent.putExtra("user_comment", user_comment)
                             startActivityForResult(intent, 0)
                         }
                     }

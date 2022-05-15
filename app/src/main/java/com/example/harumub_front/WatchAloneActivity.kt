@@ -147,17 +147,23 @@ class WatchAloneActivity : AppCompatActivity() {
             startActivity(intent)
 
             var map = HashMap<String, String>()
+            map.put("id", id!!)
+            map.put("movieTitle", movie_title!!)
             map.put("signal", "end")
 
             var call = retrofitInterface.executeWatchAloneEnd(map)
 
-            call!!.enqueue(object : Callback<Void?> {
-                override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+//            call!!.enqueue(object : Callback<Void?> {
+//                override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+            call!!.enqueue(object : Callback<WatchAloneMovie?> {
+                override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
                     if(response.code() == 200){
                         Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
                         cameraHandler.sendEmptyMessage(WATCH_END)
                         Log.d("감상 : ", "종료되었습니다.")
+
+                        val result = response.body()
 
                         // 감상 리뷰 작성 페이지로 이동 (액티비티 -> 프래그먼트)
 //                        supportFragmentManager.beginTransaction()
@@ -166,6 +172,8 @@ class WatchAloneActivity : AppCompatActivity() {
                         val intent = Intent(applicationContext, AddreviewActivity::class.java)
                         intent.putExtra("user_id", id)
                         intent.putExtra("movie_title", movie_title)
+                        intent.putExtra("genres", result!!.genres)
+                        intent.putExtra("poster", result!!.poster)
                         startActivity(intent)
 
                         Log.d("text : ", "선택")
@@ -175,7 +183,8 @@ class WatchAloneActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<Void?>, t: Throwable) {
+//                override fun onFailure(call: Call<Void?>, t: Throwable) {
+                override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
                     Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
