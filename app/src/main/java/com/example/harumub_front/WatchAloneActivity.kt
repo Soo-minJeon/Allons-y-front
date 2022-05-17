@@ -107,7 +107,14 @@ class WatchAloneActivity : AppCompatActivity() {
                         Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
                         Log.d("감상 시작 : ", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()))
-                        sleep(9000)
+//                        sleep(9000)
+
+                        takePhoto("capture", id + "_" + movie_title + "_" + "0", id, movie_title, "0")
+                        sleep(1000)
+                        takePhoto("capture", id + "_" + movie_title + "_" + "1", id, movie_title, "1")
+                        sleep(1000)
+                        takePhoto("capture", id + "_" + movie_title + "_" + "2", id, movie_title, "2")
+                        sleep(7000)
 
                         if (cameraThread != null) {
                             cameraThread!!.endThread()
@@ -289,7 +296,14 @@ class WatchAloneActivity : AppCompatActivity() {
                     val msg = "Photo capture succeeded: $savedUri"
 //                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
-                    uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile, user_id, movie_title, time)
+//                    uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile, user_id, movie_title, time)
+
+                    if (time!!.toInt() % 10 == 0) { // Eyetracking
+                        uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile, user_id, movie_title, time)
+                    }
+                    else {
+                        uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile)
+                    }
                 }
             }
         )
@@ -355,6 +369,44 @@ class WatchAloneActivity : AppCompatActivity() {
     }
 
     // S3 Bucket Upload
+    fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?) {
+        val awsCredentials: AWSCredentials =
+            BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
+        val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
+        val transferUtility =
+            TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
+        TransferNetworkLossHandler.getInstance(this.applicationContext)
+        val uploadObserver =
+            transferUtility.upload("bucket_Name/" + s3Bucket_FolderName, fileName, file) // (bucket name, file 이름, file 객체)
+        uploadObserver.setTransferListener(object : TransferListener {
+            override fun onStateChanged(s3_id: Int, state: TransferState) {
+                if (state === TransferState.COMPLETED) {
+                    // Handle a completed upload
+                    Log.d("S3 Bucket ", "Upload Completed!")
+
+                    // S3 Bucket에 file 업로드 후 Emulator에서 삭제
+                    if (file != null) {
+                        file.delete()
+                        Log.d("Emulator : ", "파일 삭제")
+                    }
+                    else {
+                        Log.d("Emulator : ", "삭제할 파일이 없습니다.")
+                    }
+                }
+            }
+
+            override fun onProgressChanged(id: Int, current: Long, total: Long) {
+                val done = (current.toDouble() / total * 100.0).toInt()
+                Log.d("MYTAG", "UPLOAD - - ID: \$id, percent done = \$done")
+            }
+
+            override fun onError(id: Int, ex: java.lang.Exception) {
+                Log.d("MYTAG", "UPLOAD ERROR - - ID: \$id - - EX:$ex")
+            }
+        })
+    }
+
+    // S3 Bucket Upload - Eyetracking
     fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?, user_id: String?, movie_title: String?, time: String?) {
         val awsCredentials: AWSCredentials =
             BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
