@@ -154,10 +154,11 @@
 
         <RatingBar
             android:id="@+id/user_rating"
+            style="@style/Widget.AppCompat.RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            style="@style/Widget.AppCompat.RatingBar"
+            android:isIndicator="true"
             android:numStars="5"
             android:rating="0"
             android:stepSize="0.5" />

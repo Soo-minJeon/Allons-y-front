@@ -24,19 +24,25 @@ import retrofit2.Response
 import java.util.HashMap
 
 class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface : RetrofitInteface
+
     lateinit var enter_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton
     lateinit var recent_button: ImageButton
     lateinit var drawer_view : NavigationView
 
-    private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
     // 현재 로그인하고 있는 사용자 아이디, 이름
-    private val id = intent.getStringExtra("user_id")
+    lateinit var id : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter)
+
+        retrofitBuilder = RetrofitBuilder
+        retrofitInterface = retrofitBuilder.api
+
+        id = intent.getStringExtra("user_id").toString()
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {
@@ -44,9 +50,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             Log.e("EnterActivity", "가져온 데이터 없음")
         }
-
-        retrofitBuilder = RetrofitBuilder
-        retrofitInterface = retrofitBuilder.api
 
         enter_this = findViewById(R.id.enter_drawer)
         drawer_button = findViewById(R.id.drawer_button) // 드로어 열기(메뉴버튼)

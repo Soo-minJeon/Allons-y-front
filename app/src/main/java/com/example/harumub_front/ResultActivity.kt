@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.amazonaws.auth.AWSCredentials
+import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobileconnectors.s3.transfermanager.Transfer
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -229,12 +231,13 @@ class ResultActivity : AppCompatActivity() {
 
 
                     // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
-                    var highlightUrl = id +"_"+ movie_title +"_"+ result.highlight_time +".jpg" // 하이라이트 이미지 (버킷 내)
-                    downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
+                    var highlightUrl = id + "_" + movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
+    //                downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
 
-                    // set image를 downloadwithtransferutility()에서 실행할 거 같은데 로직 보고 수정 부탁
-                    // 다운로드 된 이미지 파일 불러오기
-    //                myHighlight.setImageBitmap(photoBitmap)
+                    var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl)
+//                    var path = "/data/data/com.example.harumub_front/img" // path 설정
+//                    var downloadFile = File(path + "/" + highlightUrl) // 설정한 path로 다운로드 파일 생성
+                    downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
 
 
                     // 메인으로 돌아가는 버튼
@@ -246,6 +249,7 @@ class ResultActivity : AppCompatActivity() {
                         intent.putExtra("user_id", id)
                         startActivityForResult(intent, 0)
                     }
+
                     // 리스트 목록으로 이동하는 버튼
                     btnList.setOnClickListener {
                         var intent = Intent(
@@ -270,6 +274,7 @@ class ResultActivity : AppCompatActivity() {
         })
     }
 
+/*
     // s3 버킷에서 이미지 파일 다운로드 구현
     fun downloadWithTransferUtility(s3Bucket_FolderName: String?, fileName: String?) {
         // Cognito 샘플 코드. CredentialsProvider 객체 생성
@@ -335,6 +340,50 @@ class ResultActivity : AppCompatActivity() {
                 Log.d("S3", "DOWNLOAD ERROR - - ID: $id - - EX: ${ex.message.toString()}")
             }
         })
+    }
+*/
 
+    fun downloadWithTransferUtility(fileName: String?, file: File?) {
+        val awsCredentials: AWSCredentials = BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
+        val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
+
+        val transferUtility = TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
+        TransferNetworkLossHandler.getInstance(this.applicationContext)
+
+        val downloadObserver = transferUtility.download("bucket_Name/highlight", fileName, file) // (bucket name/folder name, file 이름, file 객체)
+
+        downloadObserver.setTransferListener(object : TransferListener {
+            override fun onStateChanged(id: Int, state: TransferState?) {
+                if (state === TransferState.COMPLETED) {
+                    // Handle a completed download
+                    Log.d("S3 Bucket ", "Download Completed!")
+
+                    if (file != null) {
+                        // 감상결과 페이지 하이라이트 이미지 설정
+                        photoBitmap = BitmapFactory.decodeFile(file!!.absolutePath)
+                        myHighlight.setImageBitmap(photoBitmap)
+                        Log.d("하이라이트 이미지 ", "설정 완료")
+
+                        Log.d("파일 경로 : ", file.absolutePath)
+
+                        // S3 Bucket에서 file 다운로드 후 Emulator에서 삭제
+                        file.delete()
+                        Log.d("Emulator : ", "파일 삭제")
+                    }
+                    else {
+                        Log.d("Emulator : ", "삭제할 파일이 없습니다.")
+                    }
+                }
+            }
+
+            override fun onProgressChanged(id: Int, current: Long, total: Long) {
+                val done = (current.toDouble() / total * 100.0).toInt()
+                Log.d("S3 Bucket", "DOWNLOAD - - ID: $id, percent done = $done")
+            }
+
+            override fun onError(id: Int, ex: java.lang.Exception?) {
+                Log.d("S3 Bucket", "DOWNLOAD ERROR - - ID: $id - - EX:$ex")
+            }
+        })
     }
 }
