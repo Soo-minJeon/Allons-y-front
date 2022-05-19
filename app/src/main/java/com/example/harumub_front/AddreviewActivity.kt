@@ -111,7 +111,7 @@ class AddreviewActivity : AppCompatActivity() {
             var map = HashMap<String, String>()
             map.put("id", id!!)
             map.put("movieTitle", movie_title)
-//            map.put("rating", ratingBar.rating.toString())
+            map.put("rating", ratingBar.rating.toString())
             map.put("comment", user_comment)
 
             // val call = retrofitInterface.executeSceneAnalyze(map)
