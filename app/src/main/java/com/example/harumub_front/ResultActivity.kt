@@ -231,7 +231,7 @@ class ResultActivity : AppCompatActivity() {
 
 
                     // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
-                    var highlightUrl = id +"_" + movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
+                    var highlightUrl = id + "_" + movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
     //                downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
 
                     var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl)
