@@ -17,15 +17,18 @@ import kotlinx.android.synthetic.main.activity_search.view.*
 import kotlinx.android.synthetic.main.activity_search.view.imageView
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
 import java.net.URL
+import kotlin.properties.Delegates
 
 /**
  * Created by 규열 on 2018-02-13.
  */
-class SearchAdapter(var context: Context, var id: String, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>) :
+class SearchAdapter(var context: Context, var id: String, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>, var runningTimeList: ArrayList<Int>) :
     RecyclerView.Adapter<SearchAdapter.MyViewHolder>(), Filterable {
 
     var filteredList: ArrayList<String>
     var defaultImage = R.drawable.spider
+
+    var running_time by Delegates.notNull<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.recyclerview_row, parent, false) // RecyclerView에 들어갈 아이템의 레이아웃 설정
@@ -79,6 +82,8 @@ class SearchAdapter(var context: Context, var id: String, var unFilteredlist: Ar
                         .into(itemView.imageView) // 이미지를 넣을 뷰
 
                     itemView.textview.text = filteredList[i]
+
+                    running_time = runningTimeList[i]
                 }
             }
 
@@ -91,6 +96,7 @@ class SearchAdapter(var context: Context, var id: String, var unFilteredlist: Ar
   //              var intent = Intent(itemView.context, SearchActivity::class.java) // SearchActivity로 전달
                 intent.putExtra("user_id", id)
                 intent.putExtra("movie_title", movie_title)
+                intent.putExtra("running_time", running_time)
                 itemView.context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
             }
         }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -46,17 +47,6 @@ class WatchListAdapter(var id: String, var titles: ArrayList<String>, var poster
             .into(holder.movieImage) // 이미지를 넣을 뷰
 
         holder.movieTitle.text = titles[position]
-
-        // 해당 아이템 클릭시 결과 페이지로 이동
-        holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, holder.movieTitle.text, Toast.LENGTH_LONG).show() // 영화 클릭 시 토스트 메시지
-
-            var movie_title = holder.movieTitle.text
-            val intent = Intent(holder.itemView.context, ResultActivity::class.java)
-            intent.putExtra("user_id", id)
-            intent.putExtra("movie_title", movie_title)
-            holder.itemView.context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        }
     }
 
     override fun getItemCount(): Int {
@@ -64,12 +54,25 @@ class WatchListAdapter(var id: String, var titles: ArrayList<String>, var poster
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var movieImage: ImageButton
+        var movieImage: ImageView
         var movieTitle: TextView
 
         init {
             movieImage = itemView.findViewById(R.id.movie_image) // 영화 이미지 버튼
             movieTitle = itemView.findViewById(R.id.movie_title) // 영화 제목
+
+            // 해당 아이템 클릭시 결과 페이지로 이동
+            itemView.setOnClickListener {
+                val position: Int = adapterPosition
+
+                Toast.makeText(itemView.context, titles[position], Toast.LENGTH_LONG).show() // 영화 클릭 시 토스트 메시지
+
+                var movie_title = titles[position]
+                val intent = Intent(itemView.context, ResultActivity::class.java)
+                intent.putExtra("user_id", id)
+                intent.putExtra("movie_title", movie_title)
+                itemView.context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            }
         }
     }
 }

@@ -12,4 +12,5 @@ data class SearchData(
 data class SearchData(
     var title : ArrayList<String>,
     var poster : ArrayList<String>,
+    var runningTime : ArrayList<Int>,
 )
