@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFEF3">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/movie_image"
             android:layout_width="99dp"
             android:layout_height="120dp"

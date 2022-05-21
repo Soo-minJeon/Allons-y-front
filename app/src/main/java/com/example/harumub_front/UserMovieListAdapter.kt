@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -56,7 +57,8 @@ class UserMovieListAdapter(var titles: ArrayList<String>, var posters: ArrayList
     }
 
     inner class ViewHolder(movieView: View): RecyclerView.ViewHolder(movieView) {
-        var movieImage: ImageButton
+//        var movieImage: ImageButton
+        var movieImage: ImageView
         var movieTitle: TextView
 
         init {
