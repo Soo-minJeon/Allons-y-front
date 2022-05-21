@@ -37,6 +37,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.HashMap
+import kotlin.properties.Delegates
 
 class WatchAloneActivity : AppCompatActivity() {
 //    private lateinit var retrofitBuilder: RetrofitBuilder
@@ -60,6 +61,7 @@ class WatchAloneActivity : AppCompatActivity() {
 //    private val movie_title = intent.getStringExtra("movie_title")
     lateinit var id : String
     lateinit var movie_title : String
+    var running_time by Delegates.notNull<Int>()
 
     var map_Capture = HashMap<String, String>()
     var call_Capture  = retrofitInterface.executeWatchImageCaptureEyetrack(map_Capture)
@@ -73,10 +75,12 @@ class WatchAloneActivity : AppCompatActivity() {
 
         id = intent.getStringExtra("user_id").toString()
         movie_title = intent.getStringExtra("movie_title").toString()
+        running_time = intent.getIntExtra("running_time", 0)
 
         // 검색 페이지에서 전달받은 인텐트 데이터 확인
-        if (intent.hasExtra("user_id")&&intent.hasExtra("movie_title")) {
-            Log.d("WatchAloneActivity", "검색에서 받아온 id : $id , movie title : $movie_title")
+        if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")) {
+            Log.d("WatchAloneActivity", "검색에서 받아온 id : $id , movie title : $movie_title, " +
+                    "running time : $running_time")
         } else {
             Log.e("WatchAloneActivity", "가져온 데이터 없음")
         }

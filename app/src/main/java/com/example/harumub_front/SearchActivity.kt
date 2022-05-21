@@ -28,9 +28,9 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
 //    var title = arrayOf("About Times", "Gucci", "Spider Man3")
     var items_title = ArrayList<String>()
     var items_poster = ArrayList<String>()
+    var items_runningTime = ArrayList<Int>()
 
     // 현재 로그인하고 있는 사용자 아이디
-//    private val id = intent.getStringExtra("user_id")
     lateinit var id : String
 //    lateinit var movie_title : String
 
@@ -76,14 +76,16 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
 
                     var title = result?.title
                     var poster_url = result?.poster
+                    var running_time = result?.runningTime
 
                     // items_title 배열에 영화 제목 넣기 // items_poster 배열에 영화 포스터 링크 넣기
                     for (i: Int in 0..title!!.size - 1) {
                         items_title.add(title[i])
                         items_poster.add(poster_url!![i])
+                        items_runningTime.add(running_time!![i])
                     }
 
-                    adapter = SearchAdapter(applicationContext, id, items_title, items_poster)
+                    adapter = SearchAdapter(applicationContext, id, items_title, items_poster, items_runningTime)
                     recyclerView!!.layoutManager =
                         LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
                     recyclerView!!.adapter = adapter
