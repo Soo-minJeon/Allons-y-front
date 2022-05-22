@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,7 @@ import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -65,18 +67,6 @@ class ResultActivity : AppCompatActivity() {
         movie_title = intent.getStringExtra("movie_title").toString()
 
         // 리뷰 페이지에서 전달받은 인텐트 데이터 확인
-/*
-        if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")
-            && intent.hasExtra("user_rating") && intent.hasExtra("user_comment")
-        ) {
-            Log.d(
-                "ResultActivity",
-                "리뷰에서 받아온 id : $id , movie title : $movie_title \n rating : $ratings , comment : $comments "
-            )
-        } else {
-            Log.e("ResultActivity", "가져온 데이터 없음")
-        }
-*/
         if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")) {
             Log.d("ResultActivity",
                 "리뷰에서 받아온 id : " + id + " movie_title : " + movie_title)
@@ -152,65 +142,89 @@ class ResultActivity : AppCompatActivity() {
 
                     // 감정 이모티콘 출력 - 서버에서 받아온 감정 배열
                     val emotions = result.emotion_count_array[0] // 리스트 중 첫번째 배열 - 감정 배열은 최종 횟수인 하나만 전달받음
-
                     val counts = intArrayOf( // 감정별 최종 횟수 (정수 value) 배열
                         emotions.HAPPY, emotions.SAD, emotions.ANGRY, emotions.CONFUSED,
                         emotions.DISGUSTED, emotions.SURPRISED, emotions.FEAR
                     )
-                    val emoji = intArrayOf( // 감정 이미지 (정수) 배열
+                    // 맵 생성
+                    val emotionMap = mapOf("HAPPY" to counts[0], "SAD" to counts[1], "ANGRY" to counts[2],
+                        "CONFUSED" to counts[3], "DISGUSTED" to counts[4], "SURPRISED" to counts[5],
+                        "FEAR" to counts[6])
+                    // 맵 -> 리스트 -> 정렬 -> 맵
+                    val mapSorted = emotionMap.toList().sortedByDescending { it.second }.toMap()
+
+                    // 감정 상위값 순서대로 키값 배열
+                    val top3 = Array(7, {" "})
+                    var m = 0
+                    mapSorted.forEach { (key, value) ->
+                        // println("key: "+ key)
+                        top3[m] = key
+                        m += 1
+                    }
+                    val emotionIndex = arrayOf( // 감정 종류 String 배열
+                        "HAPPY", "SAD", "ANGRY", "CONFUSED", "DISGUSTED", "SURPRISED", "FEAR")
+                    val emoji = intArrayOf( // 감정 이미지 Int 배열
                         R.drawable.happy, R.drawable.sad, R.drawable.angry,
                         R.drawable.confused, R.drawable.disgusted, R.drawable.surprised,
                         R.drawable.fear, R.drawable.calm
                     )
-                    val cntSorted = counts.sortedDescending() // 감정 횟수 정렬 배열 -> 내림차순 정렬
-                    var complete = 0 // 앞전의 이미지가 선택 되었는지
-                    for(i in 0..3){
-                        for (j in 0..6) { // j: 감정 배열 내 감정 갯수 7개
-                            if (i == 0) { // (1) 1번째로 가장 많은 감정 횟수
-                                if (cntSorted[i] == counts[j]) {
-                                    emotion1.setImageResource(emoji[j])
-                                    complete = j // 1번째 이미지 선택 완료
-                                    break // 다른 감정 비교 중지 => 2번째로 많은 감정 횟수 비교로 넘어감
-                                } // 안 같으면 calm 이미지
-                                else emotion1.setImageResource(emoji[7])
+                    for(i in 0..2) {
+                        for (j in 0..6) {
+                            if (i == 0) {
+                                if(top3[i] == emotionIndex[j]) emotion1.setImageResource(emoji[j])
                             }
-                            else if (i == 1) { // (2) 2번째로 가장 많은 감정 횟수
-                                if (cntSorted[i] == counts[j]) {
-                                    if (cntSorted[i-1] == cntSorted[i]) { // 1번째로 많은 감정 횟수와 같다면
-                                        if (counts[j] == counts[complete]) continue // 앞전에 이미 선택된 이미지라면 다음 감정(이미지) 순서로 넘기기
-                                        else { // 앞전에 선택되지 않았다면 해당 이미지 지정
-                                            emotion2.setImageResource(emoji[j])
-                                            complete = j // 새로 경신 - 2번째 이미지 선택 완료
-                                            break // 다른 감정 비교 중지 => 3번째로 많은 감정 횟수 비교로 넘어감
-                                        } // 1번째와 감정 횟수가 다르다면 원래 순서대로 해당 이미지 지정
-                                    } else emotion2.setImageResource(emoji[j])
-                                } // 안 같으면 calm 이미지
-                                else emotion2.setImageResource(emoji[7])
+                            else if (i == 1) {
+                                if(top3[i] == emotionIndex[j]) emotion2.setImageResource(emoji[j])
                             }
-                            else if (i == 2) { // (3) 3번째로 가장 많은 감정 횟수
-                                if (cntSorted[i] == counts[j]) {
-                                    if (cntSorted[i-1] == cntSorted[i]) { // 2번째로 많은 감정 횟수와 같다면
-                                        if (counts[j] == counts[complete]) continue // 앞전에 이미 선택된 이미지라면 다음 감정(이미지) 순서로 넘기기
-                                        else { // 앞전에 선택되지 않았다면 해당 이미지 지정
-                                            emotion3.setImageResource(emoji[j])
-                                            complete = j // 새로 경신 - 3번째 이미지 선택 완료
-                                            break // 다른 감정 비교 중지
-                                        } // 2번째와 감정 횟수가 다르다면 원래 순서대로 해당 이미지 지정
-                                    } else emotion3.setImageResource(emoji[j])
-                                } // 안 같으면 calm 이미지
-                                else emotion3.setImageResource(emoji[7])
+                            else if (i == 2) {
+                                if(top3[i] == emotionIndex[j]) emotion3.setImageResource(emoji[j])
                             }
                         }
                     }
-                    // 상위 감정 횟수 모두 0 => calm 이미지
 
                     // 감정 그래프 출력
                     val chart = ArrayList<Entry>() // 감정 차트 배열 > 새 데이터 좌표값 추가 가능
 
+
+                    // Legend는 차트의 범례 (사용방법 등 참고사항 설명)
+                    val legend = myChart.legend
+                    legend.setDrawInside(false)
+
+                    // X축 (아래) - 선 유무, 사이즈, 색상, 축 위치 설정
+                    val time = myChart.xAxis
+                    time.setDrawAxisLine(false)
+                    time.setDrawGridLines(false)
+                    time.position = XAxis.XAxisPosition.BOTTOM // x축 데이터(time) 표시 위치
+                    time.granularity = 1f   // 데이터 하나당 입자/원소값?
+                    time.textSize = 2f
+                    time.textColor = Color.rgb(118, 118, 118)
+                    time.spaceMin = 0.1f // Chart 맨 왼쪽 간격 띄우기
+                    time.spaceMax = 0.1f // Chart 맨 오른쪽 간격 띄우기
+
+                    // Y축 (왼쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
+                    val yLeft = myChart.axisLeft
+                    yLeft.textSize = 14f
+                    yLeft.textColor = Color.rgb(163, 163, 163)
+                    yLeft.setDrawAxisLine(false)
+                    yLeft.axisLineWidth = 2f
+                    yLeft.axisMinimum = 0f // 최솟값
+                    yLeft.axisMaximum = 1f // 최댓값
+                    yLeft.granularity = 0f // 데이터 하나당 입자/원소값?
+
+                    // Y축 (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
+                    val yRight = myChart.axisRight
+                    yRight.setDrawLabels(false) // label 삭제
+                    yRight.textColor = Color.rgb(163, 163, 163)
+                    yRight.setDrawAxisLine(false)
+                    yRight.axisLineWidth = 2f
+                    yRight.axisMinimum = 0f // 최솟값
+                    yRight.axisMaximum = 1f // 최댓값
+                    yRight.granularity = 0f // 데이터 하나당 입자/원소값?
+
                     // 서버에서 받아온 감정 배열 값 넣기 - calm 차이 해당하는 값 배열들이 전부 온 것
                     var size = result.highlight_array.size
-                    var h_time = Array<Float>(size, {0F})
-                    var h_diff = Array<Float>(size, {0F})
+                    var h_time = Array(size, {0F})
+                    var h_diff = Array(size, {0F})
 
                     // for 문으로 값 배열에 넣기
                     for (i in 0..(size - 1)) {
@@ -222,6 +236,9 @@ class ResultActivity : AppCompatActivity() {
 
                     // 좌표값들이 담긴 엔트리 차트 배열에 대한 데이터셋 생성
                     val lineDataSet = LineDataSet(chart, "감정폭")
+                    lineDataSet.setColor(Color.parseColor("#264713"))
+                    lineDataSet.lineWidth = 4f
+                    lineDataSet.setDrawCircles(false)
 
                     // 차트데이터 생성
                     val chartData = LineData()
