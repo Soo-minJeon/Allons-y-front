@@ -136,21 +136,29 @@ class ResultActivity : AppCompatActivity() {
                         .into(myPoster) // 이미지를 넣을 뷰
 
                     // 입력했던 별점, 한줄평 값으로 초기화
-                    myRating.rating = result?.rating!!
+                    myRating.rating = result.rating
                     myComment.text = result.comment
 
 
                     // 감정 이모티콘 출력 - 서버에서 받아온 감정 배열
-                    val emotions = result.emotion_count_array[0] // 리스트 중 첫번째 배열 - 감정 배열은 최종 횟수인 하나만 전달받음
-                    val counts = intArrayOf( // 감정별 최종 횟수 (정수 value) 배열
-                        emotions.HAPPY, emotions.SAD, emotions.ANGRY, emotions.CONFUSED,
-                        emotions.DISGUSTED, emotions.SURPRISED, emotions.FEAR
+                    val emotions = result.emotion_count_array // 리스트 중 첫번째 배열 - 감정 배열은 최종 횟수인 하나만 전달받음
+                    val counts = intArrayOf( // 감정별 최종 횟수(정수값) 배열
+                        emotions[0].HAPPY, emotions[1].SAD, emotions[2].ANGRY, emotions[3].CONFUSED,
+                        emotions[4].DISGUSTED, emotions[5].SURPRISED, emotions[6].FEAR
+                    )
+                    val emotionIndex = arrayOf( // 감정 종류 String 배열
+                        "HAPPY", "SAD", "ANGRY", "CONFUSED", "DISGUSTED", "SURPRISED", "FEAR"
+                    )
+                    val emoji = intArrayOf( // 감정 이미지 Int 배열
+                        R.drawable.happy, R.drawable.sad, R.drawable.angry,
+                        R.drawable.confused, R.drawable.disgusted, R.drawable.surprised,
+                        R.drawable.fear, R.drawable.calm
                     )
                     // 맵 생성
                     val emotionMap = mapOf("HAPPY" to counts[0], "SAD" to counts[1], "ANGRY" to counts[2],
                         "CONFUSED" to counts[3], "DISGUSTED" to counts[4], "SURPRISED" to counts[5],
                         "FEAR" to counts[6])
-                    // 맵 -> 리스트 -> 정렬 -> 맵
+                    // 맵 -> 리스트 -> 내림차순 정렬 -> 맵
                     val mapSorted = emotionMap.toList().sortedByDescending { it.second }.toMap()
 
                     // 감정 상위값 순서대로 키값 배열
@@ -161,13 +169,6 @@ class ResultActivity : AppCompatActivity() {
                         top3[m] = key
                         m += 1
                     }
-                    val emotionIndex = arrayOf( // 감정 종류 String 배열
-                        "HAPPY", "SAD", "ANGRY", "CONFUSED", "DISGUSTED", "SURPRISED", "FEAR")
-                    val emoji = intArrayOf( // 감정 이미지 Int 배열
-                        R.drawable.happy, R.drawable.sad, R.drawable.angry,
-                        R.drawable.confused, R.drawable.disgusted, R.drawable.surprised,
-                        R.drawable.fear, R.drawable.calm
-                    )
                     for(i in 0..2) {
                         for (j in 0..6) {
                             if (i == 0) {
@@ -185,8 +186,7 @@ class ResultActivity : AppCompatActivity() {
                     // 감정 그래프 출력
                     val chart = ArrayList<Entry>() // 감정 차트 배열 > 새 데이터 좌표값 추가 가능
 
-
-                    // Legend는 차트의 범례 (사용방법 등 참고사항 설명)
+                    // Legend는 차트의 범례 (사용방법 등의 참고사항 설명)
                     val legend = myChart.legend
                     legend.setDrawInside(false)
 
@@ -222,9 +222,9 @@ class ResultActivity : AppCompatActivity() {
                     yRight.granularity = 0f // 데이터 하나당 입자/원소값?
 
                     // 서버에서 받아온 감정 배열 값 넣기 - calm 차이 해당하는 값 배열들이 전부 온 것
-                    var size = result.highlight_array.size
-                    var h_time = Array(size, {0F})
-                    var h_diff = Array(size, {0F})
+                    val size = result.highlight_array.size
+                    val h_time = Array(size, {0F})
+                    val h_diff = Array(size, {0F})
 
                     // for 문으로 값 배열에 넣기
                     for (i in 0..(size - 1)) {
