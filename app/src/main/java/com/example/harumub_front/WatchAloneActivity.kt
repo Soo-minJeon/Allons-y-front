@@ -40,8 +40,6 @@ import java.util.HashMap
 import kotlin.properties.Delegates
 
 class WatchAloneActivity : AppCompatActivity() {
-//    private lateinit var retrofitBuilder: RetrofitBuilder
-//    private lateinit var retrofitInterface : RetrofitInteface
     private var retrofitBuilder = RetrofitBuilder
     private var retrofitInterface = retrofitBuilder.api
 
@@ -57,8 +55,6 @@ class WatchAloneActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
-//    private val id = intent.getStringExtra("user_id")
-//    private val movie_title = intent.getStringExtra("movie_title")
     lateinit var id : String
     lateinit var movie_title : String
     var running_time by Delegates.notNull<Int>()
@@ -69,9 +65,6 @@ class WatchAloneActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_watch_alone)
-
-//        retrofitBuilder = RetrofitBuilder
-//        retrofitInterface = retrofitBuilder.api
 
         id = intent.getStringExtra("user_id").toString()
         movie_title = intent.getStringExtra("movie_title").toString()
@@ -111,7 +104,6 @@ class WatchAloneActivity : AppCompatActivity() {
                         Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
                         Log.d("감상 시작 : ", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()))
-//                        sleep(9000)
 
                         takePhoto("capture", id + "_" + movie_title + "_" + "0", id, movie_title, "0")
                         sleep(1000)
@@ -138,7 +130,13 @@ class WatchAloneActivity : AppCompatActivity() {
 /*
             // 에뮬레이터 실행용
             Log.d("감상 시작 : ", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()))
-            sleep(9000)
+
+            takePhoto("capture", id + "_" + movie_title + "_" + "0", id, movie_title, "0")
+            sleep(1000)
+            takePhoto("capture", id + "_" + movie_title + "_" + "1", id, movie_title, "1")
+            sleep(1000)
+            takePhoto("capture", id + "_" + movie_title + "_" + "2", id, movie_title, "2")
+            sleep(7000)
 
             if (cameraThread != null) {
                 cameraThread!!.endThread()
@@ -154,8 +152,8 @@ class WatchAloneActivity : AppCompatActivity() {
 
         // 감상종료 버튼 클릭
         watch_end.setOnClickListener {
-            val intent = Intent(applicationContext, AddreviewActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(applicationContext, AddreviewActivity::class.java)
+//            startActivity(intent)
 
             var map = HashMap<String, String>()
             map.put("id", id!!)
@@ -216,10 +214,14 @@ class WatchAloneActivity : AppCompatActivity() {
 
     inner class CameraThread : Thread() {
         var i = 0
+        var count = 3
         var ended = false
 
         var id = intent.getStringExtra("user_id").toString()
         var movie_title = intent.getStringExtra("movie_title").toString()
+        var running_time = intent.getIntExtra("running_time", 0)
+//        var running_time = 2 // 테스트 할 running_time으로 수정
+        var running_time_sec = running_time * 60
 
         fun endThread() {
             ended = true
@@ -228,10 +230,14 @@ class WatchAloneActivity : AppCompatActivity() {
         override fun run() {
             super.run()
 
+            Log.d("WatchAlone Thread - ", "Running Time : " + running_time)
+
             while (!ended) {
                 var message: Message = Message.obtain()
                 message.what = WATCH_START
 
+/*
+                // Running Time과 상관없이 캡처
                 takePhoto("capture", id + "_" + movie_title + "_" + (9 + i).toString(), id, movie_title, (9 + i).toString())
                 sleep(1000)
                 takePhoto("capture", id + "_" + movie_title + "_" + (10 + i).toString(), id, movie_title, (10 + i).toString())
@@ -240,6 +246,122 @@ class WatchAloneActivity : AppCompatActivity() {
                 cameraHandler.sendMessage(message)
                 i += 10
                 sleep(8000)
+*/
+
+                // Running Time에 따라 종료
+                if (running_time > 0) {
+                    // 0 초 ~ 60 초 : 10 초마다 3n + 2 (n 단위 : 초)
+                    // 1 분 이상 : 1 분마다 18n + 2 (n 단위 : 분)
+                    if (count < (3 * (running_time_sec / 10)) + 2) {
+                        takePhoto("capture", id + "_" + movie_title + "_" + (9 + i).toString(), id, movie_title, (9 + i).toString())
+                        sleep(1000)
+                        takePhoto("capture", id + "_" + movie_title + "_" + (10 + i).toString(), id, movie_title, (10 + i).toString())
+                        sleep(1000)
+                        takePhoto("capture", id + "_" + movie_title + "_" + (11 + i).toString(), id, movie_title, (11 + i).toString())
+                        cameraHandler.sendMessage(message)
+                        i += 10
+                        sleep(8000)
+
+                        count += 3
+                        Log.d("Capture - ","Running Time Count : " + count)
+                    }
+                    else {
+                        ended = true
+                        Log.d("Running Time : ", "자동으로 종료되었습니다.")
+
+                        // 감상 리뷰 작성 페이지로 이동
+  //                      val intent = Intent(applicationContext, AddreviewActivity::class.java)
+//                        intent.putExtra("user_id", id)
+//                        intent.putExtra("movie_title", movie_title)
+  //                      startActivity(intent)
+
+                        var map = HashMap<String, String>()
+                        map.put("id", id!!)
+                        map.put("movieTitle", movie_title!!)
+                        map.put("signal", "end")
+
+                        var call = retrofitInterface.executeWatchAloneEnd(map)
+
+                        call!!.enqueue(object : Callback<WatchAloneMovie?> {
+                            override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
+                                if(response.code() == 200){
+                                    Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                                    cameraHandler.sendEmptyMessage(WATCH_END)
+                                    Log.d("감상 : ", "종료되었습니다.")
+
+                                    val result = response.body()
+
+                                    val intent = Intent(applicationContext, AddreviewActivity::class.java)
+                                    intent.putExtra("user_id", id)
+                                    intent.putExtra("movie_title", movie_title)
+                                    intent.putExtra("genres", result!!.genres)
+                                    intent.putExtra("poster", result!!.poster)
+                                    startActivity(intent)
+
+                                    Log.d("WatchAloneEnd : ", "감상 리뷰 작성 페이지로 이동")
+                                }
+                                else if (response.code() == 400){
+                                    Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
+                                Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                        Log.d("WatchAlone Thread : ", "감상 리뷰 작성 페이지로 이동")
+                    }
+                }
+                else { // running_time <= 0
+                    ended = true
+                    Log.d("Running Time : ", "자동으로 종료되었습니다.")
+
+                    // 감상 리뷰 작성 페이지로 이동
+  //                  val intent = Intent(applicationContext, AddreviewActivity::class.java)
+//                    intent.putExtra("user_id", id)
+//                    intent.putExtra("movie_title", movie_title)
+  //                  startActivity(intent)
+
+                    var map = HashMap<String, String>()
+                    map.put("id", id!!)
+                    map.put("movieTitle", movie_title!!)
+                    map.put("signal", "end")
+
+                    var call = retrofitInterface.executeWatchAloneEnd(map)
+
+                    call!!.enqueue(object : Callback<WatchAloneMovie?> {
+                        override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
+                            if(response.code() == 200){
+                                Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                                cameraHandler.sendEmptyMessage(WATCH_END)
+                                Log.d("감상 : ", "종료되었습니다.")
+
+                                val result = response.body()
+
+                                val intent = Intent(applicationContext, AddreviewActivity::class.java)
+                                intent.putExtra("user_id", id)
+                                intent.putExtra("movie_title", movie_title)
+                                intent.putExtra("genres", result!!.genres)
+                                intent.putExtra("poster", result!!.poster)
+                                startActivity(intent)
+
+                                Log.d("WatchAloneEnd : ", "감상 리뷰 작성 페이지로 이동")
+                            }
+                            else if (response.code() == 400){
+                                Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
+                            Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+
+                    Log.d("WatchAlone Thread : ", "감상 리뷰 작성 페이지로 이동")
+                }
             }
         }
     }
@@ -381,7 +503,7 @@ class WatchAloneActivity : AppCompatActivity() {
             TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
         TransferNetworkLossHandler.getInstance(this.applicationContext)
         val uploadObserver =
-            transferUtility.upload("bucket_Name/" + s3Bucket_FolderName, fileName, file) // (bucket name, file 이름, file 객체)
+            transferUtility.upload("allonsybucket1/" + s3Bucket_FolderName, fileName, file) // (bucket name, file 이름, file 객체)
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(s3_id: Int, state: TransferState) {
                 if (state === TransferState.COMPLETED) {
@@ -419,7 +541,7 @@ class WatchAloneActivity : AppCompatActivity() {
             TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
         TransferNetworkLossHandler.getInstance(this.applicationContext)
         val uploadObserver =
-            transferUtility.upload("bucket_Name/" + s3Bucket_FolderName, fileName, file) // (bucket name, file 이름, file 객체)
+            transferUtility.upload("allonsybucket1/" + s3Bucket_FolderName, fileName, file) // (bucket name, file 이름, file 객체)
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(s3_id: Int, state: TransferState) {
                 if (state === TransferState.COMPLETED) {
