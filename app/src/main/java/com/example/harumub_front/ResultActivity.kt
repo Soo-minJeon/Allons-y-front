@@ -350,7 +350,7 @@ class ResultActivity : AppCompatActivity() {
         val transferUtility = TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
         TransferNetworkLossHandler.getInstance(this.applicationContext)
 
-        val downloadObserver = transferUtility.download("bucket_Name/highlight", fileName, file) // (bucket name/folder name, file 이름, file 객체)
+        val downloadObserver = transferUtility.download("allonsybucket1/highlight", fileName, file) // (bucket name/folder name, file 이름, file 객체)
 
         downloadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState?) {
