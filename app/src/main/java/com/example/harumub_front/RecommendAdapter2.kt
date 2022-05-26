@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -52,6 +53,7 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
             .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
             .into(holder.movieImage) // 이미지를 넣을 뷰
 
+/*
         // 해당 아이템 클릭시 유사 사용자 추천 리스트로 이동
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, UserMovieListActivity::class.java)
@@ -70,6 +72,7 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
 //            intent.putExtra("reco2_posterList", postersList[position]) // 해당 아이템의 추천 영화 포스터 링크 리스트
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
+*/
     }
 
     override fun getItemCount(): Int {
@@ -77,18 +80,30 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
         return userIdList.size // 영화 개수
     }
 
-    inner class ViewHolder(movieCollectionView: View): RecyclerView.ViewHolder(movieCollectionView) {
-        var movieImage: ImageButton
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+//        var movieImage: ImageButton
+        var movieImage: ImageView
 
         init {
-            movieImage = movieCollectionView.findViewById(R.id.movie_collection_image) // 영화 이미지 버튼
-/*
-            movieCollectionView.setOnClickListener { // 영화 이미지 버튼 클릭 시
-//                val position: Int = adapterPosition
-//                Toast.makeText(movieCollectionView.context, "영화 선택", Toast.LENGTH_LONG).show()
-                Log.d("영화 : ", "선택")
+            movieImage = itemView.findViewById(R.id.movie_collection_image) // 영화 이미지 버튼
+
+            // 해당 아이템 클릭시 유사 사용자 추천 리스트로 이동
+            itemView.setOnClickListener { // 영화 포스터 이미지 클릭 시
+                val position: Int = adapterPosition
+
+                Toast.makeText(itemView.context, "영화 콜렉션 선택", Toast.LENGTH_LONG).show()
+
+                val intent = Intent(itemView.context, UserMovieListActivity::class.java)
+
+                reco2_userId = userIdList[position] // 해당 아이템의 유사 사용자 아이디
+                reco2_titleList = titlesList[position] // 해당 아이템의 추천 영화 제목 리스트
+                reco2_posterList = postersList[position] // 해당 아이템의 추천 영화 포스터 링크 리스트
+
+                intent.putExtra("reco2_userId", reco2_userId)
+                intent.putExtra("reco2_titleList", reco2_titleList)
+                intent.putExtra("reco2_posterList", reco2_posterList)
+                itemView.context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
-*/
         }
     }
 }
