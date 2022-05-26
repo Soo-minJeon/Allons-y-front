@@ -39,8 +39,6 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private var adapter3: RecyclerView.Adapter<RecommendAdapter3.ViewHolder>? = null
 
     // 현재 로그인하고 있는 사용자 아이디, 이름
-//    private val id = intent.getStringExtra("user_id")
-//    private val name = intent.getStringExtra("user_name")
     lateinit var id : String
     lateinit var name : String
 
@@ -68,8 +66,8 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     lateinit var reco2_4_poster : ArrayList<String>
     lateinit var reco2_5_poster : ArrayList<String>
 
-//    lateinit var reco3_titleArray : ArrayList<String>
-//    lateinit var reco3_posterArray : ArrayList<String>
+    lateinit var reco3_titleArray : ArrayList<String>
+    lateinit var reco3_posterArray : ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,8 +119,8 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         reco2_posterList.add(reco2_4_poster)
         reco2_posterList.add(reco2_5_poster)
 
-//        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
-//        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
+        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
+        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
 
         // 로그인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("user_name")) {
@@ -140,8 +138,6 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val drawerHeader = drawer_view.getHeaderView(0) // 드로어 헤더
         recent_button = findViewById(R.id.recent) // 최근 감상기록 버튼
 
-        // 현재 로그인하고 있는 사용자 아이디 (수정 필요) --수민 작성
-        // var userid = ""
         var result : List<Recommend2Result>
         var userIds : Array<String> = emptyArray()
         var titles : Array<String> = emptyArray()
@@ -198,10 +194,10 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         recyclerView2.adapter = adapter2
 
         // '당신이 선호하는' 영화 목록 RecyclerView와 RecommendAdapter3 연결
-//        layoutManager3 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        recyclerView3.layoutManager = layoutManager3
-//        adapter3 = RecommendAdapter3(reco3_titleArray, reco3_posterArray)
-//        recyclerView3.adapter = adapter3
+        layoutManager3 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView3.layoutManager = layoutManager3
+        adapter3 = RecommendAdapter3(reco3_titleArray, reco3_posterArray)
+        recyclerView3.adapter = adapter3
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행
