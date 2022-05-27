@@ -155,9 +155,11 @@ class ResultActivity : AppCompatActivity() {
                         R.drawable.fear, R.drawable.calm
                     )
                     // 맵 생성
-                    val emotionMap = mapOf("HAPPY" to counts[0], "SAD" to counts[1], "ANGRY" to counts[2],
-                        "CONFUSED" to counts[3], "DISGUSTED" to counts[4], "SURPRISED" to counts[5],
-                        "FEAR" to counts[6])
+                    val emotionMap = mapOf( // 맵 생성
+                        "HAPPY" to counts[0], "SAD" to counts[1], "ANGRY" to counts[2],
+                        "CONFUSED" to counts[3], "DISGUSTED" to counts[4],
+                        "SURPRISED" to counts[5], "FEAR" to counts[6]
+                    )
                     // 맵 -> 리스트 -> 내림차순 정렬 -> 맵
                     val mapSorted = emotionMap.toList().sortedByDescending { it.second }.toMap()
 
@@ -227,9 +229,9 @@ class ResultActivity : AppCompatActivity() {
                     val h_diff = Array(size, {0F})
 
                     // for 문으로 값 배열에 넣기
-                    for (i in 0..(size - 1)) {
-                        h_time[i] = result.highlight_array[i].time.toFloat()            // 해당 시간 (0~러닝타임)
-                        h_diff[i] = result.highlight_array[0].emotion_diff.toFloat()    // 해당 감정폭 값 (0~1)
+                    for (i in 0 until size) {
+                        h_time[i] = result.highlight_array[i].time.toFloat()    // 해당 시간 (0~러닝타임) - string > float
+                        h_diff[i] = result.highlight_array[i].emotion_diff      // 해당 감정폭 값 (0~1) - float
 
                         chart.add(Entry(h_time[i], h_diff[i]))  // (x, y) 값 Float형으로 입력! (x: 시간, y: 감정값)
                     }
