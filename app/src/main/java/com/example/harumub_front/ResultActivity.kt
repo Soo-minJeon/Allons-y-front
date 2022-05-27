@@ -210,7 +210,7 @@ class ResultActivity : AppCompatActivity() {
                     yLeft.setDrawAxisLine(false)
                     yLeft.axisLineWidth = 2f
                     yLeft.axisMinimum = 0f // 최솟값
-                    yLeft.axisMaximum = 1f // 최댓값
+                    yLeft.axisMaximum = 1.1f // 최댓값
                     yLeft.granularity = 0f // 데이터 하나당 입자/원소값?
 
                     // Y축 (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
@@ -220,7 +220,7 @@ class ResultActivity : AppCompatActivity() {
                     yRight.setDrawAxisLine(false)
                     yRight.axisLineWidth = 2f
                     yRight.axisMinimum = 0f // 최솟값
-                    yRight.axisMaximum = 1f // 최댓값
+                    yRight.axisMaximum = 1.1f // 최댓값
                     yRight.granularity = 0f // 데이터 하나당 입자/원소값?
 
                     // 서버에서 받아온 감정 배열 값 넣기 - calm 차이 해당하는 값 배열들이 전부 온 것
@@ -258,28 +258,8 @@ class ResultActivity : AppCompatActivity() {
 //                    var downloadFile = File(path + "/" + highlightUrl) // 설정한 path로 다운로드 파일 생성
                     downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
 
-
-                    // 메인으로 돌아가는 버튼
-                    btnMain.setOnClickListener {
-                        var intent = Intent(
-                            applicationContext,
-                            MainActivity2::class.java
-                        ) // 두번째 인자에 이동할 액티비티
-                        intent.putExtra("user_id", id)
-                        startActivityForResult(intent, 0)
-                    }
-
-                    // 리스트 목록으로 이동하는 버튼
-                    btnList.setOnClickListener {
-                        var intent = Intent(
-                            applicationContext,
-                            WatchListActivity::class.java
-                        ) // 두번째 인자에 이동할 액티비티
-                        intent.putExtra("user_id", id)
-                        startActivityForResult(intent, 0)
-                    }
-
-                } else if (response.code() == 400) {
+                }
+                else if (response.code() == 400) {
                     Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
                 }
             }
@@ -291,6 +271,25 @@ class ResultActivity : AppCompatActivity() {
                 ).show()
             }
         })
+        // 메인으로 돌아가는 버튼
+        btnMain.setOnClickListener {
+            var intent = Intent(
+                applicationContext,
+                MainActivity2::class.java
+            ) // 두번째 인자에 이동할 액티비티
+            intent.putExtra("user_id", id)
+            startActivityForResult(intent, 0)
+        }
+
+        // 리스트 목록으로 이동하는 버튼
+        btnList.setOnClickListener {
+            var intent = Intent(
+                applicationContext,
+                WatchListActivity::class.java
+            ) // 두번째 인자에 이동할 액티비티
+            intent.putExtra("user_id", id)
+            startActivityForResult(intent, 0)
+        }
     }
 
 /*
