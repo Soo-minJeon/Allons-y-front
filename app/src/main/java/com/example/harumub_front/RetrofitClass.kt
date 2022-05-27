@@ -33,7 +33,7 @@ data class WatchResult(var title: String, var poster : String, var genres: Strin
 data class Emotion(val HAPPY : Int, val SAD : Int, val ANGRY : Int, val CONFUSED : Int,
                    val DISGUSTED : Int, val SURPRISED : Int, val FEAR : Int)
 
-data class Highlight(val time: Int, val emotion_diff: Int)
+data class Highlight(val time: String, val emotion_diff: Float)
 
 data class Recommend2Result(var userId: String, var title: String, var poster: String)
 
