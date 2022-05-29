@@ -34,6 +34,8 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
     lateinit var id : String
 //    lateinit var movie_title : String
 
+    var movieList = ArrayList<MovieModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -85,7 +87,12 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
                         items_runningTime.add(running_time!![i])
                     }
 
-                    adapter = SearchAdapter(applicationContext, id, items_title, items_poster, items_runningTime)
+                    for (i in 0..(items_title.size - 1)) {
+                        movieList.add(MovieModel(items_title[i], items_poster[i], items_runningTime[i]))
+                        Log.d("movieList : ", movieList[i].movieTitle + " " + movieList[i].moviePoster + " " + movieList[i].movieRunningTime)
+                    }
+
+                    adapter = SearchAdapter(applicationContext, id, movieList, items_title, items_poster, items_runningTime)
                     recyclerView!!.layoutManager =
                         LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
                     recyclerView!!.adapter = adapter
