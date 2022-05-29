@@ -145,6 +145,9 @@ class AddreviewActivity : AppCompatActivity() {
 
         // 포스터
         myPoster = findViewById<ImageView>(R.id.poster)
+
+        myTitle.setText(movie_title)
+        myGenres.setText(genres)
 /*
         var result = "https://image.tmdb.org/t/p/w500"
         var image_task : URLtoBitmapTask = URLtoBitmapTask().apply {
@@ -191,6 +194,7 @@ class AddreviewActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                     if (response.code() == 200) {
                         Toast.makeText(this@AddreviewActivity, "리뷰 보내기 성공", Toast.LENGTH_SHORT).show()
+                        // val result = response.body()
 
                         if(response.code() == 200) {
                             // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료
