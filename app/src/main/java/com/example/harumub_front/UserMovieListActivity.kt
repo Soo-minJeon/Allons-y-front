@@ -39,7 +39,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_user_movie_list)
-        // Toast.makeText(this@UserMovieListActivity, "여기까진 됨", Toast.LENGTH_SHORT).show()
 
         // 유사 사용자
         reco2_userId = intent.getStringExtra("reco2_userId").toString() // 유사 사용자 아이디
@@ -66,11 +65,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         var map = HashMap<String, String>()
         map.put("id", userid)
 
-        // Toast.makeText(this@UserMovieListActivity, "여기까진 됨2", Toast.LENGTH_SHORT).show()
         var call = retrofitInterface.executeWatchList(map)
-
-        // Toast.makeText(this@UserMovieListActivity, "여기까진 됨3", Toast.LENGTH_SHORT).show()
-
 /*
         call!!.enqueue(object : Callback<List<WatchListResult?>>{
             override fun onResponse( call: Call<List<WatchListResult?>>, response: Response<List<WatchListResult?>>) {
@@ -133,7 +128,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             R.id.drawer_UserRecord -> {
                 // fragment manager 가져와서 fragment transaction 생성
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, WatchListActivity::class.java)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
@@ -142,7 +137,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             }
             R.id.drawer_WatchAlone -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, SearchActivity::class.java)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
@@ -151,7 +146,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             }
             R.id.drawer_WatchTogether -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, EnterActivity::class.java)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
@@ -160,7 +155,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             }
             R.id.drawer_Help -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "도움말", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "도움말", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, HelpActivity::class.java)
                     startActivityForResult(intent, 0)
@@ -169,7 +164,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)

@@ -14,7 +14,7 @@ import java.net.URL
 class RecommendAdapter3(var titles: ArrayList<String>, var posters: ArrayList<String>):
     RecyclerView.Adapter<RecommendAdapter3.ViewHolder>() {
 
-    var defaultImage = R.drawable.spider
+    var defaultImage = R.drawable.default_poster
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

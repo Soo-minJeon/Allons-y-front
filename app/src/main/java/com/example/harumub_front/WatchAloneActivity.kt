@@ -101,7 +101,7 @@ class WatchAloneActivity : AppCompatActivity() {
             call!!.enqueue(object : Callback<Void?> {
                 override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                     if(response.code() == 200){
-                        Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
                         Log.d("감상 시작 : ", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()))
 
@@ -167,7 +167,7 @@ class WatchAloneActivity : AppCompatActivity() {
             call!!.enqueue(object : Callback<WatchAloneMovie?> {
                 override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
                     if(response.code() == 200){
-                        Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
                         cameraHandler.sendEmptyMessage(WATCH_END)
                         Log.d("감상 : ", "종료되었습니다.")
@@ -285,7 +285,7 @@ class WatchAloneActivity : AppCompatActivity() {
                         call!!.enqueue(object : Callback<WatchAloneMovie?> {
                             override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
                                 if(response.code() == 200){
-                                    Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+                                    //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
                                     cameraHandler.sendEmptyMessage(WATCH_END)
                                     Log.d("감상 : ", "종료되었습니다.")
@@ -334,7 +334,7 @@ class WatchAloneActivity : AppCompatActivity() {
                     call!!.enqueue(object : Callback<WatchAloneMovie?> {
                         override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
                             if(response.code() == 200){
-                                Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+                                //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
                                 cameraHandler.sendEmptyMessage(WATCH_END)
                                 Log.d("감상 : ", "종료되었습니다.")
