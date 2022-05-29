@@ -191,6 +191,31 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         recent_button.setOnClickListener{
             val intent = Intent(this, WatchListActivity::class.java)
             intent.putExtra("user_id", id)
+
+            intent.putExtra("reco1_titleArray", reco1_titleArray)
+            intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+            intent.putExtra("reco2_1_userId", reco2_1_userId)
+            intent.putExtra("reco2_2_userId", reco2_2_userId)
+            intent.putExtra("reco2_3_userId", reco2_3_userId)
+            intent.putExtra("reco2_4_userId", reco2_4_userId)
+            intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+            intent.putExtra("reco2_1_title", reco2_1_title)
+            intent.putExtra("reco2_2_title", reco2_2_title)
+            intent.putExtra("reco2_3_title", reco2_3_title)
+            intent.putExtra("reco2_4_title", reco2_4_title)
+            intent.putExtra("reco2_5_title", reco2_5_title)
+
+            intent.putExtra("reco2_1_poster", reco2_1_poster)
+            intent.putExtra("reco2_2_poster", reco2_2_poster)
+            intent.putExtra("reco2_3_poster", reco2_3_poster)
+            intent.putExtra("reco2_4_poster", reco2_4_poster)
+            intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+            intent.putExtra("reco3_titleArray", reco3_titleArray)
+            intent.putExtra("reco3_posterArray", reco3_posterArray)
+
             startActivity(intent)
         }
 
@@ -244,6 +269,31 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
                     var intent = Intent(applicationContext, WatchListActivity::class.java)
                     intent.putExtra("user_id", id)
+
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -254,6 +304,31 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
                     var intent = Intent(applicationContext, SearchActivity::class.java)
                     intent.putExtra("user_id", id)
+
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
