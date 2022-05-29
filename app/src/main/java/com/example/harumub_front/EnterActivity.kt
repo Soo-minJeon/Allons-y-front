@@ -117,8 +117,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             // 확인 버튼 클릭 - 같이 보기 페이지로 이동동
            dig.setPositiveButton("확인") { dialog, which ->
-                Toast.makeText(this@EnterActivity,
-                    "확인 누름", Toast.LENGTH_LONG).show()
+                //Toast.makeText(this@EnterActivity, "확인 누름", Toast.LENGTH_LONG).show()
                 val map = HashMap<String, String>()
 
                 var codeEdit = dialogView.findViewById<EditText>(R.id.code_edittext)
@@ -151,7 +150,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 })
             } // 취소 버튼 클릭 시 취소되었다는 토스트 메세지를 보여 줌
             dig.setNegativeButton("취소") { dialog, which ->
-                Toast.makeText(this, "취소되었습니다.", Toast.LENGTH_LONG).show()
+                //Toast.makeText(this, "취소되었습니다.", Toast.LENGTH_LONG).show()
             }
             dig.show()
         }
@@ -162,7 +161,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.drawer_UserRecord -> {
                 // fragment manager 가져와서 fragment transaction 생성
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(applicationContext, WatchListActivity::class.java)
                     intent.putExtra("user_id", id)
@@ -172,7 +171,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.drawer_WatchAlone -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(applicationContext, SearchActivity::class.java)
                     intent.putExtra("user_id", id)
@@ -182,7 +181,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.drawer_WatchTogether -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(applicationContext, EnterActivity::class.java)
                     intent.putExtra("user_id", id)
@@ -192,7 +191,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.drawer_Help -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "도움말", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "도움말", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(applicationContext, HelpActivity::class.java)
                     startActivityForResult(intent, 0)
@@ -201,7 +200,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)

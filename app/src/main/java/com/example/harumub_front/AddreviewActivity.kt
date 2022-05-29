@@ -30,8 +30,8 @@ import java.util.HashMap
 import kotlin.properties.Delegates
 
 class AddreviewActivity : AppCompatActivity() {
-    // 로딩 다이얼로그
-    private lateinit var progressDialog : ProgressDialog
+
+    private lateinit var progressDialog : ProgressDialog    // 로딩 다이얼로그
 
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInteface
@@ -40,7 +40,7 @@ class AddreviewActivity : AppCompatActivity() {
     private lateinit var myGenres: TextView
     private lateinit var myPoster: ImageView
 
-    var defaultImage = R.drawable.spider
+    var defaultImage = R.drawable.default_poster // 포스터 기본 이미지
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
     lateinit var id : String
@@ -67,13 +67,35 @@ class AddreviewActivity : AppCompatActivity() {
             Log.e("AddReviewActivity", "가져온 데이터 없음")
         }
 
-        // 감상했던 영화 정보 출력 및 불러오기
+        // 감상했던 영화 제목
         myTitle = findViewById<TextView>(R.id.title)
-        myGenres = findViewById<TextView>(R.id.genres)
-        myPoster = findViewById<ImageView>(R.id.poster)
-
         myTitle.setText(movie_title)
-        myGenres.setText(genres)
+
+        // 영화 장르 - String으로 받아옴 >> 문자열 자르기
+        myGenres = findViewById<TextView>(R.id.genres)
+        genres = genres
+            .replace("[","")
+            .replace("]", "")
+            .replace("'", "")
+            .replace(" ","")
+        println("부호,공백 > 제거 : $genres") // Action,Fantasy,Family
+
+        val arrGenres = genres.split(',') // 반점 기준 단어 분리
+        var result = ""
+        val size = arrGenres.size
+        println("장르 총 개수: $size")
+        for(i in 0 until size) { // i: 0 ~ (size-1)
+            if (i == (size-1)) { // 마지막이면 반점 추가 X
+                result += arrGenres[i]
+            } else {
+                result = result + arrGenres[i] + ", "
+            }
+            println("장르: $result")
+        }
+        myGenres.setText(result)
+
+        // 포스터
+        myPoster = findViewById<ImageView>(R.id.poster)
 /*
         var result = "https://image.tmdb.org/t/p/w500"
         var image_task : URLtoBitmapTask = URLtoBitmapTask().apply {
@@ -93,7 +115,7 @@ class AddreviewActivity : AppCompatActivity() {
         // 별점 - 람다식을 사용하여 처리
         ratingBar.setOnRatingBarChangeListener{ ratingBar, rating, fromUser ->
             ratingBar.rating = rating
-            Toast.makeText(applicationContext, "별점: ${rating}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(applicationContext, "별점: ${rating}", Toast.LENGTH_SHORT).show()
         }
 
         // 로딩창 선언
@@ -120,7 +142,6 @@ class AddreviewActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                     if (response.code() == 200) {
                         Toast.makeText(this@AddreviewActivity, "리뷰 보내기 성공", Toast.LENGTH_SHORT).show()
-                        // val result = response.body()
 
                         if(response.code() == 200) {
                             // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료

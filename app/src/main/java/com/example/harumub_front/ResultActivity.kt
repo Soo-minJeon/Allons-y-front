@@ -97,26 +97,49 @@ class ResultActivity : AppCompatActivity() {
 
 
         var map = HashMap<String, String>()
-        map.put("id", id!!)
-        map.put("movieTitle", movie_title!!)
+        map.put("id", id)
+        map.put("movieTitle", movie_title)
 
         val call = retrofitInterface.executeWatchResult(map)
         call!!.enqueue(object : Callback<WatchResult?> {
             override fun onResponse(call: Call<WatchResult?>, response: Response<WatchResult?>) {
                 if (response.code() == 200) {
-                    Toast.makeText(this@ResultActivity, "결과 출력 성공", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@ResultActivity, "결과 출력 성공", Toast.LENGTH_SHORT).show()
 
                     val result = response.body()
                     Log.d("감상 영화 정보 : ", "제목 : " + result!!.title
-                        + " 장르 : " + result!!.genres + " 집중 : " + result!!.concentration
-                        + " 하이라이트 시간 : " + result!!.highlight_time
-                        + " 별점 : " + result!!.rating + " 한줄평 : " + result.comment)
+                        + " 장르 : " + result.genres + " 집중 : " + result.concentration
+                        + " 하이라이트 시간 : " + result.highlight_time
+                        + " 별점 : " + result.rating + " 한줄평 : " + result.comment)
 
-                    // 감상했던 영화 정보 불러오기
-                    myTitle.text = result?.title
-                    myGenres.text = result?.genres
-                    myConPer.text = result?.concentration
-                    myHlTime.text = result?.highlight_time
+                    // 감상했던 영화 정보 불러오기 - 제목
+                    myTitle.text = result.title
+
+                    // 영화 장르 - String으로 받아옴 >> 문자열 자르기
+                    var genres = result.genres
+                    genres = genres
+                        .replace("[","")
+                        .replace("]", "")
+                        .replace("'", "")
+                        .replace(" ","")
+                    println("부호,공백 > 제거 : $genres") // Action,Fantasy,Family
+
+                    val arrGenres = genres.split(',') // 반점 기준 단어 분리
+                    var total = ""
+                    val arrSize = arrGenres.size
+                    println("장르 총 개수: $arrSize")
+                    for(i in 0 until arrSize) { // i: 0 ~ (size-1)
+                        if (i == (arrSize-1)) { // 마지막이면 반점 추가 X
+                            total += arrGenres[i]
+                        } else {
+                            total = total + arrGenres[i] + ", "
+                        }
+                        println("장르: $total")
+                    }
+                    myGenres.text = total
+
+                    myConPer.text = result.concentration + "%"
+                    myHlTime.text = result.highlight_time + "s(초)"
 
                     // 영화 포스터 출력 - 웹에서 url로 가져오기
                     var posterUrl = result?.poster
