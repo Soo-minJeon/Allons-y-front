@@ -23,7 +23,7 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
     lateinit var reco2_userId : String
     lateinit var reco2_titleList : ArrayList<String>
     lateinit var reco2_posterList : ArrayList<String>
-    var defaultImage = R.drawable.spider
+    var defaultImage = R.drawable.default_poster
 
     // 데이터
     private var movie_images = intArrayOf(R.drawable.spider, R.drawable.gucci, R.drawable.about, R.drawable.ic_launcher_foreground, R.drawable.spider, R.drawable.gucci, R.drawable.about)
@@ -93,7 +93,7 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
             itemView.setOnClickListener { // 영화 포스터 이미지 클릭 시
                 val position: Int = adapterPosition
 
-                Toast.makeText(itemView.context, "영화 콜렉션 선택", Toast.LENGTH_LONG).show()
+                //Toast.makeText(itemView.context, "영화 콜렉션 선택", Toast.LENGTH_LONG).show()
 
                 val intent = Intent(itemView.context, UserMovieListActivity::class.java)
 

@@ -111,7 +111,7 @@
                 android:id="@+id/poster"
                 android:layout_width="90dp"
                 android:layout_height="120dp"
-                android:src="@drawable/spider"
+                android:src="@drawable/default_poster"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
 

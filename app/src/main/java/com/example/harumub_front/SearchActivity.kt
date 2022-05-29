@@ -153,7 +153,7 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
 
 //                    movie_title = intent.getStringExtra("movie_title").toString()
 
-                    Toast.makeText(this@SearchActivity, "영화 정보 출력 성공", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@SearchActivity, "영화 정보 출력 성공", Toast.LENGTH_SHORT).show()
 
 /*  // SearchAdapter 수정 - 영화 클릭 시 혼자 보기 페이지로 이동
                     // 혼자보기 입장 버튼 클릭 시 혼자보기 페이지로 이동

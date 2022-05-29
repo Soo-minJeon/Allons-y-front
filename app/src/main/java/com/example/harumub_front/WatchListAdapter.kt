@@ -73,7 +73,7 @@ class WatchListAdapter(var id: String, var titles: ArrayList<String>, var poster
             itemView.setOnClickListener {
                 val position: Int = adapterPosition
 
-                Toast.makeText(itemView.context, titles[position], Toast.LENGTH_LONG).show() // 영화 클릭 시 토스트 메시지
+                //Toast.makeText(itemView.context, titles[position], Toast.LENGTH_LONG).show() // 영화 클릭 시 토스트 메시지
 
                 var movie_title = titles[position]
                 val intent = Intent(itemView.context, ResultActivity::class.java)

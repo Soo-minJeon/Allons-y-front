@@ -254,10 +254,10 @@ class SignupActivity : AppCompatActivity() {
                             result = response.body()
                             getCode = result?.code
                             Toast.makeText(this@SignupActivity, "getCode : " + getCode, Toast.LENGTH_SHORT).show()
-//                            btnAuth.setEnabled(true)
+                            //btnAuth.setEnabled(true)
                             emailCode = true
 
-                            Toast.makeText(this@SignupActivity, "email send successfully", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(this@SignupActivity, "email send successfully", Toast.LENGTH_SHORT).show()
                         }
                         else if (response.code() == 400){
                             Toast.makeText(this@SignupActivity, "email send error", Toast.LENGTH_SHORT).show()
@@ -278,8 +278,8 @@ class SignupActivity : AppCompatActivity() {
         btnAuth.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if(j_code.getText().toString() == getCode){
-                    Toast.makeText(this@SignupActivity, "email code good", Toast.LENGTH_SHORT).show()
-//                    btnJoin.setEnabled(true)
+                    Toast.makeText(this@SignupActivity, "email code 확인 완료", Toast.LENGTH_SHORT).show()
+                    // btnJoin.setEnabled(true)
                     codeAuth = true
                 }
                 else {
