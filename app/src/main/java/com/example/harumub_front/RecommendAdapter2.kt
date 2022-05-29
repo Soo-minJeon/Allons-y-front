@@ -15,7 +15,9 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_search.view.*
 import java.net.URL
 
-class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: ArrayList<ArrayList<String>>, var postersList: ArrayList<ArrayList<String>>):
+class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: ArrayList<ArrayList<String>>, var postersList: ArrayList<ArrayList<String>>,
+                        var reco1_titleArray: ArrayList<String>, var reco1_posterArray: ArrayList<String>,
+                        var reco3_titleArray: ArrayList<String>, var reco3_posterArray: ArrayList<String>):
     RecyclerView.Adapter<RecommendAdapter2.ViewHolder>() {
 
     lateinit var reco2_userId : String
@@ -102,6 +104,31 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
                 intent.putExtra("reco2_userId", reco2_userId)
                 intent.putExtra("reco2_titleList", reco2_titleList)
                 intent.putExtra("reco2_posterList", reco2_posterList)
+
+                intent.putExtra("reco1_titleArray", reco1_titleArray)
+                intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                intent.putExtra("reco2_1_userId", userIdList[0])
+                intent.putExtra("reco2_2_userId", userIdList[1])
+                intent.putExtra("reco2_3_userId", userIdList[2])
+                intent.putExtra("reco2_4_userId", userIdList[3])
+                intent.putExtra("reco2_5_userId", userIdList[4])
+
+                intent.putExtra("reco2_1_title", titlesList[0])
+                intent.putExtra("reco2_2_title", titlesList[1])
+                intent.putExtra("reco2_3_title", titlesList[2])
+                intent.putExtra("reco2_4_title", titlesList[3])
+                intent.putExtra("reco2_5_title", titlesList[4])
+
+                intent.putExtra("reco2_1_poster", postersList[0])
+                intent.putExtra("reco2_2_poster", postersList[1])
+                intent.putExtra("reco2_3_poster", postersList[2])
+                intent.putExtra("reco2_4_poster", postersList[3])
+                intent.putExtra("reco2_5_poster", postersList[4])
+
+                intent.putExtra("reco3_titleArray", reco3_titleArray)
+                intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                 itemView.context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
         }

@@ -34,6 +34,33 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
     lateinit var id : String
 //    lateinit var movie_title : String
 
+    // 추천 정보
+    lateinit var reco1_titleArray : java.util.ArrayList<String>
+    lateinit var reco1_posterArray : java.util.ArrayList<String>
+
+    lateinit var reco2_1_userId : String
+    lateinit var reco2_2_userId : String
+    lateinit var reco2_3_userId : String
+    lateinit var reco2_4_userId : String
+    lateinit var reco2_5_userId : String
+
+    lateinit var reco2_1_title : java.util.ArrayList<String>
+    lateinit var reco2_2_title : java.util.ArrayList<String>
+    lateinit var reco2_3_title : java.util.ArrayList<String>
+    lateinit var reco2_4_title : java.util.ArrayList<String>
+    lateinit var reco2_5_title : java.util.ArrayList<String>
+
+    lateinit var reco2_1_poster : java.util.ArrayList<String>
+    lateinit var reco2_2_poster : java.util.ArrayList<String>
+    lateinit var reco2_3_poster : java.util.ArrayList<String>
+    lateinit var reco2_4_poster : java.util.ArrayList<String>
+    lateinit var reco2_5_poster : java.util.ArrayList<String>
+
+    lateinit var reco3_titleArray : java.util.ArrayList<String>
+    lateinit var reco3_posterArray : java.util.ArrayList<String>
+
+    var movieList = ArrayList<MovieModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -42,6 +69,30 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
         retrofitInterface = retrofitBuilder.api
 
         id = intent.getStringExtra("user_id").toString()
+
+        reco1_titleArray = intent.getSerializableExtra("reco1_titleArray") as java.util.ArrayList<String>
+        reco1_posterArray = intent.getSerializableExtra("reco1_posterArray") as java.util.ArrayList<String>
+
+        reco2_1_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_2_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_3_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_4_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_5_userId = intent.getStringExtra("reco2_1_userId").toString()
+
+        reco2_1_title = intent.getSerializableExtra("reco2_1_title") as java.util.ArrayList<String>
+        reco2_2_title = intent.getSerializableExtra("reco2_2_title") as java.util.ArrayList<String>
+        reco2_3_title = intent.getSerializableExtra("reco2_3_title") as java.util.ArrayList<String>
+        reco2_4_title = intent.getSerializableExtra("reco2_4_title") as java.util.ArrayList<String>
+        reco2_5_title = intent.getSerializableExtra("reco2_5_title") as java.util.ArrayList<String>
+
+        reco2_1_poster = intent.getSerializableExtra("reco2_1_poster") as java.util.ArrayList<String>
+        reco2_2_poster = intent.getSerializableExtra("reco2_2_poster") as java.util.ArrayList<String>
+        reco2_3_poster = intent.getSerializableExtra("reco2_3_poster") as java.util.ArrayList<String>
+        reco2_4_poster = intent.getSerializableExtra("reco2_4_poster") as java.util.ArrayList<String>
+        reco2_5_poster = intent.getSerializableExtra("reco2_5_poster") as java.util.ArrayList<String>
+
+        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as java.util.ArrayList<String>
+        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as java.util.ArrayList<String>
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {
@@ -85,7 +136,17 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
                         items_runningTime.add(running_time!![i])
                     }
 
-                    adapter = SearchAdapter(applicationContext, id, items_title, items_poster, items_runningTime)
+                    for (i in 0..(items_title.size - 1)) {
+                        movieList.add(MovieModel(items_title[i], items_poster[i], items_runningTime[i]))
+                        Log.d("movieList : ", movieList[i].movieTitle + " " + movieList[i].moviePoster + " " + movieList[i].movieRunningTime)
+                    }
+
+//                    adapter = SearchAdapter(applicationContext, id, movieList, items_title, items_poster, items_runningTime)
+                    adapter = SearchAdapter(applicationContext, id, movieList, items_title, items_poster, items_runningTime,
+                        reco1_titleArray, reco1_posterArray, reco2_1_userId, reco2_2_userId, reco2_3_userId, reco2_4_userId, reco2_5_userId,
+                        reco2_1_title, reco2_2_title, reco2_3_title, reco2_4_title, reco2_5_title,
+                        reco2_1_poster, reco2_2_poster, reco2_3_poster, reco2_4_poster, reco2_5_poster,
+                        reco3_titleArray, reco3_posterArray)
                     recyclerView!!.layoutManager =
                         LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
                     recyclerView!!.adapter = adapter

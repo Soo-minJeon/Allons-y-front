@@ -33,6 +33,34 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     lateinit var reco2_titleList : ArrayList<String>
     lateinit var reco2_posterList : ArrayList<String>
 
+    // 현재 로그인하고 있는 사용자 아이디
+    lateinit var id : String
+
+    // 추천 정보
+    lateinit var reco1_titleArray : java.util.ArrayList<String>
+    lateinit var reco1_posterArray : java.util.ArrayList<String>
+
+    lateinit var reco2_1_userId : String
+    lateinit var reco2_2_userId : String
+    lateinit var reco2_3_userId : String
+    lateinit var reco2_4_userId : String
+    lateinit var reco2_5_userId : String
+
+    lateinit var reco2_1_title : java.util.ArrayList<String>
+    lateinit var reco2_2_title : java.util.ArrayList<String>
+    lateinit var reco2_3_title : java.util.ArrayList<String>
+    lateinit var reco2_4_title : java.util.ArrayList<String>
+    lateinit var reco2_5_title : java.util.ArrayList<String>
+
+    lateinit var reco2_1_poster : java.util.ArrayList<String>
+    lateinit var reco2_2_poster : java.util.ArrayList<String>
+    lateinit var reco2_3_poster : java.util.ArrayList<String>
+    lateinit var reco2_4_poster : java.util.ArrayList<String>
+    lateinit var reco2_5_poster : java.util.ArrayList<String>
+
+    lateinit var reco3_titleArray : java.util.ArrayList<String>
+    lateinit var reco3_posterArray : java.util.ArrayList<String>
+
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInteface
 
@@ -52,6 +80,32 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         } else {
             Log.e("UserMovieListActivity", "가져온 데이터 없음")
         }
+
+        id = intent.getStringExtra("user_id").toString()
+
+        reco1_titleArray = intent.getSerializableExtra("reco1_titleArray") as java.util.ArrayList<String>
+        reco1_posterArray = intent.getSerializableExtra("reco1_posterArray") as java.util.ArrayList<String>
+
+        reco2_1_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_2_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_3_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_4_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_5_userId = intent.getStringExtra("reco2_1_userId").toString()
+
+        reco2_1_title = intent.getSerializableExtra("reco2_1_title") as java.util.ArrayList<String>
+        reco2_2_title = intent.getSerializableExtra("reco2_2_title") as java.util.ArrayList<String>
+        reco2_3_title = intent.getSerializableExtra("reco2_3_title") as java.util.ArrayList<String>
+        reco2_4_title = intent.getSerializableExtra("reco2_4_title") as java.util.ArrayList<String>
+        reco2_5_title = intent.getSerializableExtra("reco2_5_title") as java.util.ArrayList<String>
+
+        reco2_1_poster = intent.getSerializableExtra("reco2_1_poster") as java.util.ArrayList<String>
+        reco2_2_poster = intent.getSerializableExtra("reco2_2_poster") as java.util.ArrayList<String>
+        reco2_3_poster = intent.getSerializableExtra("reco2_3_poster") as java.util.ArrayList<String>
+        reco2_4_poster = intent.getSerializableExtra("reco2_4_poster") as java.util.ArrayList<String>
+        reco2_5_poster = intent.getSerializableExtra("reco2_5_poster") as java.util.ArrayList<String>
+
+        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as java.util.ArrayList<String>
+        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as java.util.ArrayList<String>
 
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
@@ -107,18 +161,70 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         // 최근 감상 기록 (시계) 버튼 클릭 -> 페이지 이동
         recent_button.setOnClickListener{
             val intent = Intent(this, WatchListActivity::class.java)
+            intent.putExtra("user_id", id)
+
+            intent.putExtra("reco1_titleArray", reco1_titleArray)
+            intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+            intent.putExtra("reco2_1_userId", reco2_1_userId)
+            intent.putExtra("reco2_2_userId", reco2_2_userId)
+            intent.putExtra("reco2_3_userId", reco2_3_userId)
+            intent.putExtra("reco2_4_userId", reco2_4_userId)
+            intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+            intent.putExtra("reco2_1_title", reco2_1_title)
+            intent.putExtra("reco2_2_title", reco2_2_title)
+            intent.putExtra("reco2_3_title", reco2_3_title)
+            intent.putExtra("reco2_4_title", reco2_4_title)
+            intent.putExtra("reco2_5_title", reco2_5_title)
+
+            intent.putExtra("reco2_1_poster", reco2_1_poster)
+            intent.putExtra("reco2_2_poster", reco2_2_poster)
+            intent.putExtra("reco2_3_poster", reco2_3_poster)
+            intent.putExtra("reco2_4_poster", reco2_4_poster)
+            intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+            intent.putExtra("reco3_titleArray", reco3_titleArray)
+            intent.putExtra("reco3_posterArray", reco3_posterArray)
+
             startActivity(intent)
         }
 
         // 유사 사용자 감상기록 RecyclerView와 UserMovieListAdapter 연결
         layoutManager = GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        adapter = UserMovieListAdapter(reco2_posterList, reco2_titleList)
+        adapter = UserMovieListAdapter(reco2_titleList, reco2_posterList)
         recyclerView.adapter = adapter
 
         // 메인으로 돌아가는 버튼
         list2main.setOnClickListener{
             val intent = Intent(this, MainActivity2::class.java)
+            intent.putExtra("user_id", id)
+
+            intent.putExtra("reco1_titleArray", reco1_titleArray)
+            intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+            intent.putExtra("reco2_1_userId", reco2_1_userId)
+            intent.putExtra("reco2_2_userId", reco2_2_userId)
+            intent.putExtra("reco2_3_userId", reco2_3_userId)
+            intent.putExtra("reco2_4_userId", reco2_4_userId)
+            intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+            intent.putExtra("reco2_1_title", reco2_1_title)
+            intent.putExtra("reco2_2_title", reco2_2_title)
+            intent.putExtra("reco2_3_title", reco2_3_title)
+            intent.putExtra("reco2_4_title", reco2_4_title)
+            intent.putExtra("reco2_5_title", reco2_5_title)
+
+            intent.putExtra("reco2_1_poster", reco2_1_poster)
+            intent.putExtra("reco2_2_poster", reco2_2_poster)
+            intent.putExtra("reco2_3_poster", reco2_3_poster)
+            intent.putExtra("reco2_4_poster", reco2_4_poster)
+            intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+            intent.putExtra("reco3_titleArray", reco3_titleArray)
+            intent.putExtra("reco3_posterArray", reco3_posterArray)
+
             startActivity(intent)
         }
     }
@@ -131,6 +237,32 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     //Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, WatchListActivity::class.java)
+                    intent.putExtra("user_id", id)
+
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -140,6 +272,32 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     //Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, SearchActivity::class.java)
+                    intent.putExtra("user_id", id)
+
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
