@@ -17,7 +17,15 @@ import java.net.URL
 import kotlin.properties.Delegates
 
 //class SearchAdapter(var context: Context, var id: String, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>, var runningTimeList: ArrayList<Int>) :
-class SearchAdapter(var context: Context, var id: String, var movieList: ArrayList<MovieModel>, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>, var runningTimeList: ArrayList<Int>) :
+class SearchAdapter(var context: Context, var id: String, var movieList: ArrayList<MovieModel>, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>, var runningTimeList: ArrayList<Int>,
+                    var reco1_titleArray: ArrayList<String>, var reco1_posterArray: ArrayList<String>,
+                    var reco2_1_userId: String, var reco2_2_userId: String, var reco2_3_userId: String,
+                    var reco2_4_userId: String, var reco2_5_userId: String,
+                    var reco2_1_title : ArrayList<String>, var reco2_2_title : ArrayList<String>, var reco2_3_title : ArrayList<String>,
+                    var reco2_4_title : ArrayList<String>, var reco2_5_title : ArrayList<String>,
+                    var reco2_1_poster : ArrayList<String>, var reco2_2_poster : ArrayList<String>, var reco2_3_poster : ArrayList<String>,
+                    var reco2_4_poster : ArrayList<String>, var reco2_5_poster : ArrayList<String>,
+                    var reco3_titleArray : ArrayList<String>, var reco3_posterArray : ArrayList<String>) :
     RecyclerView.Adapter<SearchAdapter.MyViewHolder>(), Filterable {
 
     var filteredMovieList = ArrayList<MovieModel>()
@@ -87,6 +95,31 @@ class SearchAdapter(var context: Context, var id: String, var movieList: ArrayLi
                 intent.putExtra("user_id", id)
                 intent.putExtra("movie_title", movie_title)
                 intent.putExtra("running_time", running_time)
+
+                intent.putExtra("reco1_titleArray", reco1_titleArray)
+                intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                intent.putExtra("reco2_1_userId", reco2_1_userId)
+                intent.putExtra("reco2_2_userId", reco2_2_userId)
+                intent.putExtra("reco2_3_userId", reco2_3_userId)
+                intent.putExtra("reco2_4_userId", reco2_4_userId)
+                intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                intent.putExtra("reco2_1_title", reco2_1_title)
+                intent.putExtra("reco2_2_title", reco2_2_title)
+                intent.putExtra("reco2_3_title", reco2_3_title)
+                intent.putExtra("reco2_4_title", reco2_4_title)
+                intent.putExtra("reco2_5_title", reco2_5_title)
+
+                intent.putExtra("reco2_1_poster", reco2_1_poster)
+                intent.putExtra("reco2_2_poster", reco2_2_poster)
+                intent.putExtra("reco2_3_poster", reco2_3_poster)
+                intent.putExtra("reco2_4_poster", reco2_4_poster)
+                intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                intent.putExtra("reco3_titleArray", reco3_titleArray)
+                intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                 itemView.context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
             }
         }
