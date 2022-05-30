@@ -25,7 +25,7 @@ class WatchListAdapter(var id: String, var titles: ArrayList<String>, var poster
                        var reco3_titleArray : ArrayList<String>, var reco3_posterArray : ArrayList<String>):
     RecyclerView.Adapter<WatchListAdapter.ViewHolder>() {
 
-    var defaultImage = R.drawable.spider
+    var defaultImage = R.drawable.default_poster
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

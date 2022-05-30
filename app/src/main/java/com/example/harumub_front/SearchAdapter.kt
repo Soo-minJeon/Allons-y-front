@@ -31,7 +31,7 @@ class SearchAdapter(var context: Context, var id: String, var movieList: ArrayLi
     var filteredMovieList = ArrayList<MovieModel>()
 
     var filteredList: ArrayList<String>
-    var defaultImage = R.drawable.spider
+    var defaultImage = R.drawable.default_poster
 
     var running_time by Delegates.notNull<Int>()
 
