@@ -257,7 +257,7 @@ class SignupActivity : AppCompatActivity() {
                             //btnAuth.setEnabled(true)
                             emailCode = true
 
-                            //Toast.makeText(this@SignupActivity, "email send successfully", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@SignupActivity, "email send successfully", Toast.LENGTH_SHORT).show()
                         }
                         else if (response.code() == 400){
                             Toast.makeText(this@SignupActivity, "email send error", Toast.LENGTH_SHORT).show()

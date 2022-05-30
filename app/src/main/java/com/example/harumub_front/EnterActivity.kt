@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var drawer_button : ImageButton
     lateinit var recent_button: ImageButton
     lateinit var drawer_view : NavigationView
+    lateinit var message : TextView
 
     // 현재 로그인하고 있는 사용자 아이디, 이름
     lateinit var id : String
@@ -71,7 +73,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
 
-        // 방 생성 버튼 - 호스트(Publisher)가 방 생성 후 입장
+        // 방 생성 버튼 - 호스트가 방 생성 후 입장
         createNewroom.setOnClickListener{
             val map = HashMap<String, String>()
 
@@ -81,19 +83,31 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     if (response.code() == 200) {
                         val result = response.body()
 
-                        // enter code - 클립보드에 자동 복사
-                        var clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager // 클립보드 매니저 호출
-                        val clip : ClipData = ClipData.newPlainText("roomCode", result!!.roomCode) // roomCode 이름표로 값 복사하여 저장
-                        clipboardManager.setPrimaryClip(clip)
+                        // 알림창 다이얼로그 띄우기
+                        val dig = AlertDialog.Builder(this@EnterActivity)
+                        val dialogView = View.inflate(this@EnterActivity, R.layout.dialog_entercode_copy, null)
+                        message = dialogView.findViewById(R.id.myEnterCode)
+                        message.text = result!!.roomCode
+                        dig.setView(dialogView)
 
-                        val builder1 = androidx.appcompat.app.AlertDialog.Builder(this@EnterActivity)
-                        builder1.setTitle("방 생성 성공, 초대코드 : " + result!!.roomCode)
-                        builder1.show()
+                        // 다이얼로그 확인 버튼 클릭
+                        dig.setPositiveButton("확인") { dialog, which ->
+                            // 초대코드 클립보드에 자동 복사
+                            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager // 클립보드 매니저 호출
+                            val clip : ClipData = ClipData.newPlainText("roomCode", result.roomCode) // roomCode 이름표로 값 복사하여 저장
+                            clipboardManager.setPrimaryClip(clip)
+
+                            Toast.makeText(this@EnterActivity, "초대 코드 클립보드에 복사 완료!", Toast.LENGTH_LONG).show()
+                        }
+                        dig.show()
+
+//                        val builder1 = androidx.appcompat.app.AlertDialog.Builder(this@EnterActivity)
+//                        builder1.setTitle("방 생성 성공, 초대코드 : " + result.roomCode)
+//                        builder1.show()
 
                         var intent = Intent(applicationContext, TogetherActivity::class.java) // 두번째 인자에 이동할 액티비티
                         intent.putExtra("roomCode", result.roomCode)
                         intent.putExtra("user_id", id)
-                        intent.putExtra("user_role", "Publisher") // 참가자 역할
                         // startActivityForResult(intent, 0)
                         startActivity(intent)
                     }
@@ -101,7 +115,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Toast.makeText(this@EnterActivity, "정의되지 않음", Toast.LENGTH_LONG).show()
                     }
                 }
-
                 override fun onFailure(call: Call<MakeRoomResult?>, t: Throwable) {
                     Toast.makeText(this@EnterActivity, t.message,
                         Toast.LENGTH_LONG).show()
@@ -109,14 +122,14 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
         }
 
-        // 초대 코드 입력 버튼 - 참가자(Subscriber)가 다이얼로그에 코드 입력
+        // 초대 코드 입력 버튼 - 참가자가 다이얼로그에 코드 입력
         writeCode.setOnClickListener() { // 초대코드 입장 버튼 클릭 시 다이얼로그 띄워 줌
             val dig = AlertDialog.Builder(this)
             val dialogView = View.inflate(this, R.layout.dialog_entercode, null)
             dig.setView(dialogView)
 
             // 확인 버튼 클릭 - 같이 보기 페이지로 이동동
-           dig.setPositiveButton("확인") { dialog, which ->
+            dig.setPositiveButton("확인") { dialog, which ->
                 //Toast.makeText(this@EnterActivity, "확인 누름", Toast.LENGTH_LONG).show()
                 val map = HashMap<String, String>()
 
@@ -135,10 +148,10 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
-                            intent.putExtra("user_role", "Publisher") // 참가자 역할
                             // startActivityForResult(intent, 0)
                             startActivity(intent)
-                        } else if (response.code() == 400) {
+                        }
+                        else if (response.code() == 400) {
                             Toast.makeText(this@EnterActivity, "잘못된 방 코드 입니다.",
                                 Toast.LENGTH_LONG).show()
                         }
