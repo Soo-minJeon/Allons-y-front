@@ -239,23 +239,29 @@ class ResultActivity : AppCompatActivity() {
                     val top3 = Array(7, {" "})
                     var m = 0
                     mapSorted.forEach { (key, value) ->
-                        // println("key: "+ key)
-                        top3[m] = key
-                        m += 1
+                        // println("key: "+ key + ", value: "+ value)
+                        if(value != 0) {
+                            top3[m] = key
+                            m += 1
+                        }
                     }
                     for(i in 0..2) {
                         for (j in 0..6) {
                             if (i == 0) {
                                 if(top3[i] == emotionIndex[j]) emotion1.setImageResource(emoji[j])
+                                else if(top3[i] == " ") emotion1.setImageResource(emoji[7]) // value=0: calm
                             }
                             else if (i == 1) {
                                 if(top3[i] == emotionIndex[j]) emotion2.setImageResource(emoji[j])
+                                else if(top3[i] == " ") emotion2.setImageResource(emoji[7]) // value=0: calm
                             }
                             else if (i == 2) {
                                 if(top3[i] == emotionIndex[j]) emotion3.setImageResource(emoji[j])
+                                else if(top3[i] == " ") emotion3.setImageResource(emoji[7]) // value=0: calm
                             }
                         }
                     }
+
 
                     // 감정 그래프 출력
                     val chart = ArrayList<Entry>() // 감정 차트 배열 > 새 데이터 좌표값 추가 가능
