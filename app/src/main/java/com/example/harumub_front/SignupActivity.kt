@@ -253,7 +253,7 @@ class SignupActivity : AppCompatActivity() {
                         if(response.code() == 200){
                             result = response.body()
                             getCode = result?.code
-                            Toast.makeText(this@SignupActivity, "getCode : " + getCode, Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(this@SignupActivity, "getCode : " + getCode, Toast.LENGTH_SHORT).show()
                             //btnAuth.setEnabled(true)
                             emailCode = true
 

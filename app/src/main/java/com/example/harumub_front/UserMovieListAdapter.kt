@@ -16,7 +16,7 @@ class UserMovieListAdapter(var titles: ArrayList<String>, var posters: ArrayList
     // 데이터  - 영화 제목, 포스터 url => 모두 String
     private var movie_images = intArrayOf(R.drawable.spider, R.drawable.gucci, R.drawable.about, R.drawable.ic_launcher_foreground, R.drawable.spider, R.drawable.gucci, R.drawable.about)
     private var movie_titles = arrayOf("제목 1", "제목 2", "제목 3", "제목 4", "제목 5", "제목 6", "제목 7")
-    var defaultImage = R.drawable.spider
+    var defaultImage = R.drawable.default_poster
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

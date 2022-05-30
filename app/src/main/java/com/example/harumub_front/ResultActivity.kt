@@ -45,7 +45,7 @@ class ResultActivity : AppCompatActivity() {
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface: RetrofitInteface
 
-    // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디, 별점 평가, 한줄평
+    // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 제목, 별점 평가, 한줄평
     lateinit var id : String
     lateinit var movie_title : String
 
@@ -79,7 +79,7 @@ class ResultActivity : AppCompatActivity() {
     lateinit var photoFile: File
     lateinit var photoBitmap: Bitmap
 
-    var defaultImage = R.drawable.spider
+    var defaultImage = R.drawable.default_poster
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -321,8 +321,10 @@ class ResultActivity : AppCompatActivity() {
                     myChart.invalidate() // 차트 갱신
 
 
+//                    var highlight_movie_title = movie_title.replace(" ", "") // 영화 제목 공백 제거
                     // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
                     var highlightUrl = id + "_" + movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
+//                    var highlightUrl = id + "_" + highlight_movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
     //                downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
 
                     var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl)
