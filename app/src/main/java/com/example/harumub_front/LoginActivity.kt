@@ -1,14 +1,22 @@
 package com.example.harumub_front
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
+import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.CubeGrid
+import kotlinx.android.synthetic.main.dialog_spinkit.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,7 +25,7 @@ import java.util.HashMap
 import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var progressDialog : ProgressDialog    // 로딩 다이얼로그
+    private lateinit var progressDialog : ProgressDialog1    // 로딩 다이얼로그
     private lateinit var okHttpClient: OkHttpClient
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInteface
@@ -41,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         var btnSignup = findViewById<Button>(R.id.btn_signup)
 
         // 로딩창 선언
-        progressDialog = ProgressDialog(this)
+        progressDialog = ProgressDialog1(this)
         progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // 백그라운드를 투명하게
 
         // 단방향 페이지 이동
@@ -177,6 +185,17 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent2)
         }
     }
+}
+class ProgressDialog1(context: Context?) : Dialog(context!!) {
+    init {
+        // 다이얼 로그 제목을 안보이게 설정
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        setContentView(R.layout.dialog_spinkit)
 
-
+        // 라이브러리 로딩 이미지 사용 - CubeGrid
+        val progressBar = findViewById<View>(R.id.spin_kit) as ProgressBar
+        val cubeGrid: Sprite = CubeGrid()
+        progressBar.indeterminateDrawable = cubeGrid
+        textView.text = "당신의 취향을 분석중입니다..."
+    }
 }
