@@ -216,7 +216,7 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         layoutManager2 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView2.layoutManager = layoutManager2
 //        adapter2 = RecommendAdapter2(reco2_userIdList, reco2_titleList, reco2_posterList)
-        adapter2 = RecommendAdapter2(reco2_userIdList, reco2_titleList, reco2_posterList,
+        adapter2 = RecommendAdapter2(id, reco2_userIdList, reco2_titleList, reco2_posterList,
             reco1_titleArray, reco1_posterArray, reco3_titleArray, reco3_posterArray)
         recyclerView2.adapter = adapter2
 

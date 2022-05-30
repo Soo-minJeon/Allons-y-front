@@ -371,6 +371,31 @@ class WatchAloneActivity : AppCompatActivity() {
                                     intent.putExtra("movie_title", movie_title)
                                     intent.putExtra("genres", result!!.genres)
                                     intent.putExtra("poster", result!!.poster)
+
+                                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                                    intent.putExtra("reco2_1_title", reco2_1_title)
+                                    intent.putExtra("reco2_2_title", reco2_2_title)
+                                    intent.putExtra("reco2_3_title", reco2_3_title)
+                                    intent.putExtra("reco2_4_title", reco2_4_title)
+                                    intent.putExtra("reco2_5_title", reco2_5_title)
+
+                                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                                    intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                                     startActivity(intent)
 
                                     Log.d("WatchAloneEnd : ", "감상 리뷰 작성 페이지로 이동")
@@ -420,6 +445,31 @@ class WatchAloneActivity : AppCompatActivity() {
                                 intent.putExtra("movie_title", movie_title)
                                 intent.putExtra("genres", result!!.genres)
                                 intent.putExtra("poster", result!!.poster)
+
+                                intent.putExtra("reco1_titleArray", reco1_titleArray)
+                                intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                                intent.putExtra("reco2_1_userId", reco2_1_userId)
+                                intent.putExtra("reco2_2_userId", reco2_2_userId)
+                                intent.putExtra("reco2_3_userId", reco2_3_userId)
+                                intent.putExtra("reco2_4_userId", reco2_4_userId)
+                                intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                                intent.putExtra("reco2_1_title", reco2_1_title)
+                                intent.putExtra("reco2_2_title", reco2_2_title)
+                                intent.putExtra("reco2_3_title", reco2_3_title)
+                                intent.putExtra("reco2_4_title", reco2_4_title)
+                                intent.putExtra("reco2_5_title", reco2_5_title)
+
+                                intent.putExtra("reco2_1_poster", reco2_1_poster)
+                                intent.putExtra("reco2_2_poster", reco2_2_poster)
+                                intent.putExtra("reco2_3_poster", reco2_3_poster)
+                                intent.putExtra("reco2_4_poster", reco2_4_poster)
+                                intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                                intent.putExtra("reco3_titleArray", reco3_titleArray)
+                                intent.putExtra("reco3_posterArray", reco3_posterArray)
+
                                 startActivity(intent)
 
                                 Log.d("WatchAloneEnd : ", "감상 리뷰 작성 페이지로 이동")

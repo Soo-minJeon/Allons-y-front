@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_search.view.*
 import java.net.URL
 
-class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: ArrayList<ArrayList<String>>, var postersList: ArrayList<ArrayList<String>>,
+class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var titlesList: ArrayList<ArrayList<String>>, var postersList: ArrayList<ArrayList<String>>,
                         var reco1_titleArray: ArrayList<String>, var reco1_posterArray: ArrayList<String>,
                         var reco3_titleArray: ArrayList<String>, var reco3_posterArray: ArrayList<String>):
     RecyclerView.Adapter<RecommendAdapter2.ViewHolder>() {
@@ -100,6 +100,8 @@ class RecommendAdapter2(var userIdList: ArrayList<String>, var titlesList: Array
                 reco2_userId = userIdList[position] // 해당 아이템의 유사 사용자 아이디
                 reco2_titleList = titlesList[position] // 해당 아이템의 추천 영화 제목 리스트
                 reco2_posterList = postersList[position] // 해당 아이템의 추천 영화 포스터 링크 리스트
+
+                intent.putExtra("user_id", id)
 
                 intent.putExtra("reco2_userId", reco2_userId)
                 intent.putExtra("reco2_titleList", reco2_titleList)
