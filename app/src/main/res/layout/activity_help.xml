@@ -65,7 +65,7 @@
                     android:text="은 영화 감상 기록을 기반으로 하는"
                     android:textSize="20sp"
                     android:fontFamily="@font/dohyun"
-                    android:textColor="#333333"
+                    android:textColor="#000000"
                     />
             </LinearLayout>
             <TextView
@@ -73,7 +73,15 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/dohyun"
-                android:text="영화 추천 시스템입니다.\n\n하루뭅에 대해 같이 알아보아요!\n\n"
+                android:text="영화 추천 시스템입니다.\n"
+                android:textColor="#000000"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/dohyun"
+                android:text="하루뭅에 대해 같이 알아보아요!\n\n"
                 android:textColor="#333333"
                 android:textSize="20sp"/>
             <LinearLayout
@@ -127,9 +135,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="30dp"
                 android:fontFamily="@font/dohyun"
-                android:text=" 영화를 보는 동안 사용자의 감정과 관심사를 기록하고, 이를 문서화하여 제공함으로써 사용자가 편리하게 자신의 영화 감상 기록을 관리할 수 있어요. 이를 기반으로 사용자의 취향에 꼭 맞는 영화를 추천해줍니다.\n\n"
+                android:text=" 영화를 보는 동안 사용자의 감정과 관심사를 기록하고, 이를 문서화하여 제공함으로써 사용자가 편리하게 자신의 영화 감상 기록을 관리할 수 있습니다. 이를 기반으로 사용자의 취향에 꼭 맞는 영화를 추천해줍니다.\n"
                 android:textColor="#444444"
                 android:lineSpacingExtra="10sp"
                 android:textSize="20sp"/>
@@ -137,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="15dp">
+                android:layout_marginBottom="20dp">
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -157,16 +165,56 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="13dp"
+                android:fontFamily="@font/dohyun"
+                android:text="⦁ 새롭게 가입하셨나요?"
+                android:textColor="#000000"
+                android:lineSpacingExtra="10sp"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/dohyun"
-                android:text="-새롭게 가입하셨나요?\n
-하루뭅은 사용자의 감상 기록을 기반으로 영화를 추천해주며 새로 가입하여 감상 기록이 없는 사용자를 위해 회원가입 시 작성한 좋아하는 영화와 선호 장르를 기반으로 추천해준답니다. 메뉴에서 ’감상하기’ 버튼을 눌러 감상 기록을 남겨주세요!
-\n\n
-- 감상 기록이 있으신가요?\n
-하루뭅이 여러분의 감정과 평점 등을 비롯한 감상 기록을 기반으로 영화를 추천해봤어요. 메인화면에서 하루뭅이 추천하는 영화와 여러분과 비슷한 선호도를 가진 사용자들의 감상 기록, 그리고 여러분의 선호 배우가 출연하는 작품을 확인해보세요.
-\n\n
-- 영화 감상기록을 확인하고 싶으신가요?\n
-메인 화면 우측 상단의 시계 모양 아이콘을 눌러주세요! 여러분이 감상한 영화를 확인할 수 있습니다. 영화 포스터를 눌러 영화 정보, 한줄평, 별점, 감상 로그 등. 여러분이 영화를 감상할 동안 하루뭅이 기록한 감상 기록들을 확인해주세요!
+                android:text="하루뭅은 사용자의 감상 기록을 기반으로 영화를 추천해주며 새로 가입하여 감상 기록이 없는 사용자를 위해 회원가입 시 작성한 좋아하는 영화와 선호 장르를 기반으로 추천해준답니다. 메뉴에서 ’감상하기’ 버튼을 눌러 감상 기록을 남겨주세요!
+                \n"
+                android:textColor="#444444"
+                android:lineSpacingExtra="10sp"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="13dp"
+                android:fontFamily="@font/dohyun"
+                android:text="⦁ 감상 기록이 있으신가요?"
+                android:textColor="#000000"
+                android:lineSpacingExtra="10sp"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/dohyun"
+                android:text="하루뭅이 여러분의 감정과 평점 등을 비롯한 감상 기록을 기반으로 영화를 추천해봤어요. 메인화면에서 하루뭅이 추천하는 영화와 여러분과 비슷한 선호도를 가진 사용자들의 감상 기록, 그리고 여러분의 선호 배우가 출연하는 작품을 확인해보세요.
+\n"
+                android:textColor="#444444"
+                android:lineSpacingExtra="10sp"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="13dp"
+                android:fontFamily="@font/dohyun"
+                android:text="⦁ 영화 감상기록을 확인하고 싶으신가요?"
+                android:textColor="#000000"
+                android:lineSpacingExtra="10sp"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/dohyun"
+                android:text="메인 화면 우측 상단의 시계 모양 아이콘을 눌러주세요! 여러분이 감상한 영화를 확인할 수 있습니다. 영화 포스터를 눌러 영화 정보, 한줄평, 별점, 감상 로그 등. 여러분이 영화를 감상할 동안 하루뭅이 기록한 감상 기록들을 확인해주세요!
 \n\n"
                 android:textColor="#444444"
                 android:lineSpacingExtra="10sp"
