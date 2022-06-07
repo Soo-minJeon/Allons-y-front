@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.recyclerview_row.view.*
 import java.net.URL
 import kotlin.properties.Delegates
 
-//class SearchAdapter(var context: Context, var id: String, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>, var runningTimeList: ArrayList<Int>) :
+//class SearchAdapter(var context: Context, var id: String, var movieList: ArrayList<MovieModel>, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>, var runningTimeList: ArrayList<Int>) :
 class SearchAdapter(var context: Context, var id: String, var movieList: ArrayList<MovieModel>, var unFilteredlist: ArrayList<String>, var posterList: ArrayList<String>, var runningTimeList: ArrayList<Int>,
                     var reco1_titleArray: ArrayList<String>, var reco1_posterArray: ArrayList<String>,
                     var reco2_1_userId: String, var reco2_2_userId: String, var reco2_3_userId: String,
@@ -33,7 +33,7 @@ class SearchAdapter(var context: Context, var id: String, var movieList: ArrayLi
     var filteredList: ArrayList<String>
     var defaultImage = R.drawable.default_poster
 
-    var running_time by Delegates.notNull<Int>()
+//    var running_time by Delegates.notNull<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.recyclerview_row, parent, false) // RecyclerView에 들어갈 아이템의 레이아웃 설정
@@ -51,6 +51,7 @@ class SearchAdapter(var context: Context, var id: String, var movieList: ArrayLi
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var textView: TextView
+        var movie_running_time by Delegates.notNull<Int>()
 
         init {
             textView = itemView.findViewById<View>(R.id.textview) as TextView
@@ -81,7 +82,8 @@ class SearchAdapter(var context: Context, var id: String, var movieList: ArrayLi
 
                     itemView.textview.text = filteredMovieList[i].movieTitle
 
-                    running_time = filteredMovieList[i].movieRunningTime
+//                    running_time = filteredMovieList[i].movieRunningTime
+                    movie_running_time = filteredMovieList[i].movieRunningTime
                 }
             }
 
@@ -90,8 +92,11 @@ class SearchAdapter(var context: Context, var id: String, var movieList: ArrayLi
 
                 // movie title 전달
                 var movie_title = itemView.textview.text
+                var running_time = movie_running_time
+
                 var intent = Intent(itemView.context, WatchAloneActivity::class.java) // WatchAloneActivity로 전달
   //              var intent = Intent(itemView.context, SearchActivity::class.java) // SearchActivity로 전달
+
                 intent.putExtra("user_id", id)
                 intent.putExtra("movie_title", movie_title)
                 intent.putExtra("running_time", running_time)
