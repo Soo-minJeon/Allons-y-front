@@ -326,7 +326,8 @@ class WatchAloneActivity : AppCompatActivity() {
                 if (running_time > 0) {
                     // 0 초 ~ 60 초 : 10 초마다 3n + 2 (n 단위 : 초)
                     // 1 분 이상 : 1 분마다 18n + 2 (n 단위 : 분)
-                    if (count < (3 * (running_time_sec / 10)) + 2) {
+                    //if (count < (3 * (running_time_sec / 10)) + 2) { // running_time 단위가 분일 경우
+                    if (count < (3 * (running_time / 10)) + 2) { // running_time 단위가 초일 경우
                         takePhoto("capture", id + "_" + movie_title + "_" + (9 + i).toString(), id, movie_title, (9 + i).toString())
                         sleep(1000)
                         takePhoto("capture", id + "_" + movie_title + "_" + (10 + i).toString(), id, movie_title, (10 + i).toString())
