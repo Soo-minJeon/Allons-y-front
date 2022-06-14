@@ -339,8 +339,7 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                         }
 
                         override fun onFailure(call: Call<Void?>, t: Throwable) {
-                            Toast.makeText(this@MainActivity2, t.message,
-                                Toast.LENGTH_LONG).show()
+                            //Toast.makeText(this@MainActivity2, t.message, Toast.LENGTH_LONG).show()
                         }
                     })
                 }

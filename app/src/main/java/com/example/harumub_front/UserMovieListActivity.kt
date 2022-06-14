@@ -340,8 +340,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                         }
 
                         override fun onFailure(call: Call<Void?>, t: Throwable) {
-                            Toast.makeText(this@UserMovieListActivity, t.message,
-                                Toast.LENGTH_LONG).show()
+                            //Toast.makeText(this@UserMovieListActivity, t.message, Toast.LENGTH_LONG).show()
                         }
                     })
                 }

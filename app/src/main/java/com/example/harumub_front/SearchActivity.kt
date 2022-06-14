@@ -167,12 +167,12 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
                 }
 
                 else {
-                    Toast.makeText(this@SearchActivity, "영화 정보 출력 실패", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@SearchActivity, "영화 정보 출력 실패", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<SearchData?>, t: Throwable) {
-                Toast.makeText(this@SearchActivity, t.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@SearchActivity, t.message, Toast.LENGTH_SHORT).show()
             }
 
         })

@@ -168,12 +168,12 @@ class WatchAloneActivity : AppCompatActivity() {
                         cameraThread!!.start()
                     }
                     else if (response.code() == 400){
-                        Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<Void?>, t: Throwable) {
-                    Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
 /*
@@ -262,13 +262,13 @@ class WatchAloneActivity : AppCompatActivity() {
                         Log.d("text : ", "선택")
                     }
                     else if (response.code() == 400){
-                        Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
 
 //                override fun onFailure(call: Call<Void?>, t: Throwable) {
                 override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
-                    Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
 /*
@@ -402,12 +402,12 @@ class WatchAloneActivity : AppCompatActivity() {
                                     Log.d("WatchAloneEnd : ", "감상 리뷰 작성 페이지로 이동")
                                 }
                                 else if (response.code() == 400){
-                                    Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                                    //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
                                 }
                             }
 
                             override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
-                                Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                                //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                             }
                         })
 
@@ -476,12 +476,12 @@ class WatchAloneActivity : AppCompatActivity() {
                                 Log.d("WatchAloneEnd : ", "감상 리뷰 작성 페이지로 이동")
                             }
                             else if (response.code() == 400){
-                                Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                                //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
                             }
                         }
 
                         override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
-                            Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
 
@@ -517,9 +517,9 @@ class WatchAloneActivity : AppCompatActivity() {
             if (allPermissionsGranted()) { // 권한이 부여되면 startCamera() 함수 호출
                 startCamera()
             } else { // 권한이 부여되지 않은 경우 사용자에게 권한이 부여되지 않았음을 알리는 Toast 메시지 표시
-                Toast.makeText(this,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this,
+                //    "Permissions not granted by the user.",
+                //    Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -697,12 +697,12 @@ class WatchAloneActivity : AppCompatActivity() {
                                 SleepDialog()
                             }
                             else if(response.code() == 400) {
-                                Toast.makeText(this@WatchAloneActivity, "캡처 신호 실패", Toast.LENGTH_SHORT).show()
+                                //Toast.makeText(this@WatchAloneActivity, "캡처 신호 실패", Toast.LENGTH_SHORT).show()
                             }
                         }
 
                         override fun onFailure(call: Call<Void?>, t: Throwable) {
-                            Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
                 }

@@ -231,11 +231,11 @@ class AddreviewActivity : AppCompatActivity() {
                         }
                     }
                     else if (response.code() == 400) {
-                        Toast.makeText(this@AddreviewActivity, "오류 발생", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this@AddreviewActivity, "오류 발생", Toast.LENGTH_LONG).show()
                     }
                 }
                 override fun onFailure(call: Call<Void?>, t: Throwable) {
-                    Toast.makeText(this@AddreviewActivity, t.message, Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this@AddreviewActivity, t.message, Toast.LENGTH_LONG).show()
                 }
             })
         }
