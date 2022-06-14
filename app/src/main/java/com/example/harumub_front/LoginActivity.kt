@@ -165,15 +165,14 @@ class LoginActivity : AppCompatActivity() {
                         startActivityForResult(intent, 0)
                     }
                     else if (response.code() == 400) {
-                        Toast.makeText(this@LoginActivity, "정의되지 않은 사용자", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this@LoginActivity, "정의되지 않은 사용자", Toast.LENGTH_LONG).show()
                     }
                     else if (response.code() == 404) {
-                        Toast.makeText(this@LoginActivity, "404 오류", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this@LoginActivity, "404 오류", Toast.LENGTH_LONG).show()
                     }
                 }
                 override fun onFailure(call: Call<LoginResult?>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, t.message,
-                        Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this@LoginActivity, t.message, Toast.LENGTH_LONG).show()
                 }
             })
         }

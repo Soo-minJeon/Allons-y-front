@@ -260,13 +260,13 @@ class SignupActivity : AppCompatActivity() {
                             Toast.makeText(this@SignupActivity, "email send successfully", Toast.LENGTH_SHORT).show()
                         }
                         else if (response.code() == 400){
-                            Toast.makeText(this@SignupActivity, "email send error", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(this@SignupActivity, "email send error", Toast.LENGTH_SHORT).show()
                             emailCode = false
                         }
                     }
 
                     override fun onFailure(call: Call<EmailResult?>, t: Throwable) {
-                        Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -347,8 +347,7 @@ class SignupActivity : AppCompatActivity() {
                         }
                     }
                     override fun onFailure(call: Call<Void?>, t: Throwable) {
-                        Toast.makeText(this@SignupActivity, "회원가입에 실패했습니다.",
-                            Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this@SignupActivity, "회원가입에 실패했습니다.", Toast.LENGTH_LONG).show()
 
                         //Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_LONG).show()
                         Log.d("회원가입 실패 : ", t.message.toString())

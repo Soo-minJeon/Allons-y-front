@@ -165,11 +165,11 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     //Toast.makeText(this@WatchListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()
                 }
                 else if (response.code() == 400){
-                    Toast.makeText(this@WatchListActivity, "get movie list error", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@WatchListActivity, "get movie list error", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<WatchListResult?>, t: Throwable) {
-                Toast.makeText(this@WatchListActivity, t.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@WatchListActivity, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -372,8 +372,7 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         }
 
                         override fun onFailure(call: Call<Void?>, t: Throwable) {
-                            Toast.makeText(this@WatchListActivity, t.message,
-                                Toast.LENGTH_LONG).show()
+                            //Toast.makeText(this@WatchListActivity, t.message, Toast.LENGTH_LONG).show()
                         }
                     })
                 }

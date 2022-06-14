@@ -340,15 +340,12 @@ class ResultActivity : AppCompatActivity() {
 
                 }
                 else if (response.code() == 400) {
-                    Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<WatchResult?>, t: Throwable) {
-                Toast.makeText(
-                    this@ResultActivity, t.message,
-                    Toast.LENGTH_LONG
-                ).show()
+                //Toast.makeText(this@ResultActivity, t.message, Toast.LENGTH_LONG).show()
             }
         })
         // 메인으로 돌아가는 버튼
