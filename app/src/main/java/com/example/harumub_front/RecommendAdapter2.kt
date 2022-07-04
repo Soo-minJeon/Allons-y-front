@@ -161,10 +161,18 @@ private fun mergeBitmapImg(bitmapList: ArrayList<Bitmap>): Bitmap {
     var collection_poster : Bitmap = Bitmap.createBitmap(bitmapList[0].width, bitmapList[0].height, Bitmap.Config.ARGB_8888)
     var canvas = Canvas(collection_poster)
 
+    bitmapList[0] = Bitmap.createScaledBitmap(bitmapList[0], bitmapList[0].width / 2, bitmapList[0].height / 2, true) // width = width / 2  // height = height / (width / (width / 2))
+    bitmapList[1] = Bitmap.createScaledBitmap(bitmapList[1], bitmapList[1].width / 2, bitmapList[1].height / 2, true)
+    bitmapList[2] = Bitmap.createScaledBitmap(bitmapList[2], bitmapList[2].width / 2, bitmapList[2].height / 2, true)
+    bitmapList[3] = Bitmap.createScaledBitmap(bitmapList[3], bitmapList[3].width / 2, bitmapList[3].height / 2, true)
+
     canvas.drawBitmap(bitmapList[0], 0.toFloat(), 0.toFloat(), null)
-    canvas.drawBitmap(bitmapList[1], (bitmapList[1].width / 2).toFloat(), 0.toFloat(), null)
-    canvas.drawBitmap(bitmapList[2], 0.toFloat(), (bitmapList[1].height / 2).toFloat(), null)
-    canvas.drawBitmap(bitmapList[3], (bitmapList[1].width / 2).toFloat(), (bitmapList[1].height / 2).toFloat(), null)
+    //canvas.drawBitmap(bitmapList[1], (bitmapList[1].width / 2).toFloat(), 0.toFloat(), null)
+    canvas.drawBitmap(bitmapList[1], (collection_poster.width / 2).toFloat(), 0.toFloat(), null)
+    //canvas.drawBitmap(bitmapList[2], 0.toFloat(), (bitmapList[1].height / 2).toFloat(), null)
+    canvas.drawBitmap(bitmapList[2], 0.toFloat(), (collection_poster.height / 2).toFloat(), null)
+    //canvas.drawBitmap(bitmapList[3], (bitmapList[1].width / 2).toFloat(), (bitmapList[1].height / 2).toFloat(), null)
+    canvas.drawBitmap(bitmapList[3], (collection_poster.width / 2).toFloat(), (collection_poster.height / 2).toFloat(), null)
 
     return collection_poster
 }
