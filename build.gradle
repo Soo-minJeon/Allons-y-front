@@ -3,9 +3,14 @@ buildscript {
     ext.kotlin_version = '1.6.21'
     repositories {
         mavenCentral()
+
+        // agora 1:1
+        google()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:7.0.3' // agora 1:1
     }
 }
 plugins {
