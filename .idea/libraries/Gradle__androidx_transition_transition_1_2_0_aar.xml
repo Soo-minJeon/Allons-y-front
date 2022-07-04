@@ -2,15 +2,15 @@
   <library name="Gradle: androidx.transition:transition:1.2.0@aar">
     <ANNOTATIONS>
       <root url="jar://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/7052e54329d45d6f921cd2134c6515b3/transformed/transition-1.2.0/annotations.zip!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d7c1b5b54d8cb55f8fdf407f68ba4d3d/transformed/transition-1.2.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5502c478c7bd0e730df22b975c3a9e43/transformed/transition-1.2.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/7052e54329d45d6f921cd2134c6515b3/transformed/transition-1.2.0/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/7052e54329d45d6f921cd2134c6515b3/transformed/transition-1.2.0/res" />
       <root url="file://$PROJECT_DIR$/../../../CookAndroid/.gradle/caches/transforms-3/7052e54329d45d6f921cd2134c6515b3/transformed/transition-1.2.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d7c1b5b54d8cb55f8fdf407f68ba4d3d/transformed/transition-1.2.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d7c1b5b54d8cb55f8fdf407f68ba4d3d/transformed/transition-1.2.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d7c1b5b54d8cb55f8fdf407f68ba4d3d/transformed/transition-1.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5502c478c7bd0e730df22b975c3a9e43/transformed/transition-1.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5502c478c7bd0e730df22b975c3a9e43/transformed/transition-1.2.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5502c478c7bd0e730df22b975c3a9e43/transformed/transition-1.2.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
