@@ -323,36 +323,42 @@ class SignupActivity : AppCompatActivity() {
                     }
                 }
 
-                // 회원정보 retrofit 연동
-                val map = HashMap<String, String>()
-                map.put("id", id)
-                map.put("password", pw)
-                map.put("name", name)
-                map.put("favorite", like_movie1 + "," + like_movie2 + "," + like_movie3)
-                map.put("genre", genre!!)
+                if (codeAuth == true) {
+                    // 회원정보 retrofit 연동
+                    val map = HashMap<String, String>()
+                    map.put("id", id)
+                    map.put("password", pw)
+                    map.put("name", name)
+                    map.put("favorite", like_movie1 + "," + like_movie2 + "," + like_movie3)
+                    map.put("genre", genre!!)
 
-                val call = retrofitInterface.executeSignup(map)
+                    val call = retrofitInterface.executeSignup(map)
 
-                call!!.enqueue(object : Callback<Void?> {
-                    override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                        if (response.code() == 200) {
-                            Toast.makeText(this@SignupActivity,
-                                "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show()
-                            val intent = Intent(applicationContext, LoginActivity::class.java)
-                            startActivity(intent)
+                    call!!.enqueue(object : Callback<Void?> {
+                        override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                            if (response.code() == 200) {
+                                Toast.makeText(
+                                    this@SignupActivity,
+                                    "회원가입이 완료되었습니다.", Toast.LENGTH_LONG
+                                ).show()
+                                val intent = Intent(applicationContext, LoginActivity::class.java)
+                                startActivity(intent)
+                            } else if (response.code() == 400) {
+                                Toast.makeText(
+                                    this@SignupActivity, "이미 가입된 정보입니다.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
-                        else if (response.code() == 400) {
-                            Toast.makeText(this@SignupActivity, "이미 가입된 정보입니다.",
-                                Toast.LENGTH_LONG).show()
-                        }
-                    }
-                    override fun onFailure(call: Call<Void?>, t: Throwable) {
-                        //Toast.makeText(this@SignupActivity, "회원가입에 실패했습니다.", Toast.LENGTH_LONG).show()
 
-                        //Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_LONG).show()
-                        Log.d("회원가입 실패 : ", t.message.toString())
-                    }
-                })
+                        override fun onFailure(call: Call<Void?>, t: Throwable) {
+                            //Toast.makeText(this@SignupActivity, "회원가입에 실패했습니다.", Toast.LENGTH_LONG).show()
+
+                            //Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_LONG).show()
+                            Log.d("회원가입 실패 : ", t.message.toString())
+                        }
+                    })
+                }
             }
         }
     }
