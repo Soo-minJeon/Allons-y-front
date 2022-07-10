@@ -106,8 +106,9 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                        builder1.show()
 
                         var intent = Intent(applicationContext, TogetherActivity::class.java) // 두번째 인자에 이동할 액티비티
-                        intent.putExtra("roomCode", result.roomCode)
                         intent.putExtra("user_id", id)
+                        intent.putExtra("roomCode", result.roomCode)
+                        intent.putExtra("roomToken", result.roomToken)
                         // startActivityForResult(intent, 0)
                         startActivity(intent)
                     }
@@ -139,15 +140,18 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 map.put("roomCode", getroomCode)
 
                 val call = retrofitInterface.executeEnterRoom(map)
-
-                call!!.enqueue(object : Callback<Void?> {
-                    override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                call!!.enqueue(object : Callback<EnterRoomResult?> {
+                    override fun onResponse(call: Call<EnterRoomResult?>, response: Response<EnterRoomResult?>) {
                         if (response.code() == 200) {
+                            val result = response.body()
+
                             Toast.makeText(this@EnterActivity,
                                 "방 코드 : " + getroomCode + " 에 입장합니다.", Toast.LENGTH_LONG).show()
 
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
+                            intent.putExtra("roomCode", getroomCode)
+                            intent.putExtra("roomToken", result?.roomToken)
                             // startActivityForResult(intent, 0)
                             startActivity(intent)
                         }
@@ -156,7 +160,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 Toast.LENGTH_LONG).show()
                         }
                     }
-                    override fun onFailure(call: Call<Void?>, t: Throwable) {
+                    override fun onFailure(call: Call<EnterRoomResult?>, t: Throwable) {
                         Toast.makeText(this@EnterActivity, t.message,
                             Toast.LENGTH_LONG).show()
                     }

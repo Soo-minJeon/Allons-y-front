@@ -35,7 +35,7 @@ interface RetrofitInteface {
     fun executeWatchResult(@Body map: HashMap<String, String>): Call<WatchResult?>?
 
     @POST("/enterroom")
-    fun executeEnterRoom(@Body map: HashMap<String, String>): Call<Void?>?
+    fun executeEnterRoom(@Body map: HashMap<String, String>): Call<EnterRoomResult?>?
 
     @POST("/recommend2")
     fun executeRecommend2(@Body map: HashMap<String, String>): Call<List<Recommend2Result?>>?
