@@ -27,9 +27,6 @@ class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var t
     lateinit var reco2_posterList : ArrayList<String>
     var defaultImage = R.drawable.default_poster
 
-    // 데이터
-    private var movie_images = intArrayOf(R.drawable.spider, R.drawable.gucci, R.drawable.about, R.drawable.ic_launcher_foreground, R.drawable.spider, R.drawable.gucci, R.drawable.about)
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,57 +36,8 @@ class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var t
     }
 
     override fun onBindViewHolder(holder: RecommendAdapter2.ViewHolder, position: Int) { // 데이터 설정
-//        holder.movieImage.setImageResource(movie_images[position])
-/*
-        var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
-//            url = URL("https://image.tmdb.org/t/p/w500" + postersList[position][0]) // 첫 번째 poster를 대표 이미지로 설정
-            url = URL("https://image.tmdb.org/t/p/w500" + "/xoqr4dMbRJnzuhsWDF3XNHQwJ9x.jpg")
-        }
-
-        var bitmap: Bitmap = image_task.execute().get()
-        holder.movieImage.setImageBitmap(bitmap)
-*/
-/*
-        // 첫 번째 poster를 대표 이미지로 설정
         Glide.with(holder.itemView.context)
-            .load("https://image.tmdb.org/t/p/w500" + postersList[position][0]) // 불러올 이미지 url
-            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
-            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
-            .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
-            .into(holder.movieImage) // 이미지를 넣을 뷰
-*/
-
-        var image_task1: URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL("https://image.tmdb.org/t/p/w500" + postersList[position][0]) // 첫 번째 poster
-        }
-        var bitmap1: Bitmap = image_task1.execute().get()
-
-        var image_task2: URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL("https://image.tmdb.org/t/p/w500" + postersList[position][1]) // 두 번째 poster
-        }
-        var bitmap2: Bitmap = image_task2.execute().get()
-
-        var image_task3: URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL("https://image.tmdb.org/t/p/w500" + postersList[position][2]) // 세 번째 poster
-        }
-        var bitmap3: Bitmap = image_task3.execute().get()
-
-        var image_task4: URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL("https://image.tmdb.org/t/p/w500" + postersList[position][3]) // 네 번째 poster
-        }
-        var bitmap4: Bitmap = image_task4.execute().get()
-
-        var bitmapList = ArrayList<Bitmap>()
-        bitmapList.add(bitmap1)
-        bitmapList.add(bitmap2)
-        bitmapList.add(bitmap3)
-        bitmapList.add(bitmap4)
-
-        // 4 개의 poster 합쳐서 하나의 대표 이미지 만들기
-        var collection_poster = mergeBitmapImg(bitmapList)
-
-        Glide.with(holder.itemView.context)
-            .load(collection_poster) // 불러올 이미지 url
+            .load(mergeBitmapImg(postersList[position])) // 불러올 이미지 url  // 4 개의 poster를 합쳐서 만든 하나의 대표 이미지
             .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
             .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
             .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
@@ -97,12 +45,10 @@ class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var t
     }
 
     override fun getItemCount(): Int {
-//        return movie_images.size // 영화 개수
         return userIdList.size // 영화 개수
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-//        var movieImage: ImageButton
         var movieImage: ImageView
 
         init {
@@ -112,7 +58,7 @@ class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var t
             itemView.setOnClickListener { // 영화 포스터 이미지 클릭 시
                 val position: Int = adapterPosition
 
-                //Toast.makeText(itemView.context, "영화 콜렉션 선택", Toast.LENGTH_LONG).show()
+                //Toast.makeText(itemView.context, "영화 컬렉션 선택", Toast.LENGTH_LONG).show()
 
                 val intent = Intent(itemView.context, UserMovieListActivity::class.java)
 
@@ -157,7 +103,33 @@ class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var t
 }
 
 // 4 개의 poster 합쳐서 하나의 대표 이미지 만드는 함수
-private fun mergeBitmapImg(bitmapList: ArrayList<Bitmap>): Bitmap {
+private fun mergeBitmapImg(posterList: ArrayList<String>): Bitmap {
+    var image_task1: URLtoBitmapTask = URLtoBitmapTask().apply {
+        url = URL("https://image.tmdb.org/t/p/w500" + posterList[0]) // 첫 번째 poster
+    }
+    var bitmap1: Bitmap = image_task1.execute().get()
+
+    var image_task2: URLtoBitmapTask = URLtoBitmapTask().apply {
+        url = URL("https://image.tmdb.org/t/p/w500" + posterList[1]) // 두 번째 poster
+    }
+    var bitmap2: Bitmap = image_task2.execute().get()
+
+    var image_task3: URLtoBitmapTask = URLtoBitmapTask().apply {
+        url = URL("https://image.tmdb.org/t/p/w500" + posterList[2]) // 세 번째 poster
+    }
+    var bitmap3: Bitmap = image_task3.execute().get()
+
+    var image_task4: URLtoBitmapTask = URLtoBitmapTask().apply {
+        url = URL("https://image.tmdb.org/t/p/w500" + posterList[3]) // 네 번째 poster
+    }
+    var bitmap4: Bitmap = image_task4.execute().get()
+
+    var bitmapList = ArrayList<Bitmap>()
+    bitmapList.add(bitmap1)
+    bitmapList.add(bitmap2)
+    bitmapList.add(bitmap3)
+    bitmapList.add(bitmap4)
+
     var collection_poster : Bitmap = Bitmap.createBitmap(bitmapList[0].width, bitmapList[0].height, Bitmap.Config.ARGB_8888)
     var canvas = Canvas(collection_poster)
 
@@ -167,11 +139,8 @@ private fun mergeBitmapImg(bitmapList: ArrayList<Bitmap>): Bitmap {
     bitmapList[3] = Bitmap.createScaledBitmap(bitmapList[3], bitmapList[3].width / 2, bitmapList[3].height / 2, true)
 
     canvas.drawBitmap(bitmapList[0], 0.toFloat(), 0.toFloat(), null)
-    //canvas.drawBitmap(bitmapList[1], (bitmapList[1].width / 2).toFloat(), 0.toFloat(), null)
     canvas.drawBitmap(bitmapList[1], (collection_poster.width / 2).toFloat(), 0.toFloat(), null)
-    //canvas.drawBitmap(bitmapList[2], 0.toFloat(), (bitmapList[1].height / 2).toFloat(), null)
     canvas.drawBitmap(bitmapList[2], 0.toFloat(), (collection_poster.height / 2).toFloat(), null)
-    //canvas.drawBitmap(bitmapList[3], (bitmapList[1].width / 2).toFloat(), (bitmapList[1].height / 2).toFloat(), null)
     canvas.drawBitmap(bitmapList[3], (collection_poster.width / 2).toFloat(), (collection_poster.height / 2).toFloat(), null)
 
     return collection_poster
