@@ -48,7 +48,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {
-            Log.e("EnterActivity", "메인에서 받아온 id : $id")
+            Log.d("EnterActivity", "메인에서 받아온 id : $id")
         } else {
             Log.e("EnterActivity", "가져온 데이터 없음")
         }
@@ -73,7 +73,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
 
-        // 방 생성 버튼 - 호스트가 방 생성 후 입장
+        // #1. 방 생성 버튼 - 방 코드 생성 및 자동 복사
         createNewroom.setOnClickListener{
             val map = HashMap<String, String>()
 
@@ -100,17 +100,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             Toast.makeText(this@EnterActivity, "초대 코드 클립보드에 복사 완료!", Toast.LENGTH_LONG).show()
                         }
                         dig.show()
-
-//                        val builder1 = androidx.appcompat.app.AlertDialog.Builder(this@EnterActivity)
-//                        builder1.setTitle("방 생성 성공, 초대코드 : " + result.roomCode)
-//                        builder1.show()
-
-                        var intent = Intent(applicationContext, TogetherActivity::class.java) // 두번째 인자에 이동할 액티비티
-                        intent.putExtra("user_id", id)
-                        intent.putExtra("roomCode", result.roomCode)
-                        intent.putExtra("roomToken", result.roomToken)
-                        // startActivityForResult(intent, 0)
-                        startActivity(intent)
                     }
                     else if (response.code() == 400) {
                         Toast.makeText(this@EnterActivity, "정의되지 않음", Toast.LENGTH_LONG).show()
@@ -123,13 +112,13 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
         }
 
-        // 초대 코드 입력 버튼 - 참가자가 다이얼로그에 코드 입력
-        writeCode.setOnClickListener() { // 초대코드 입장 버튼 클릭 시 다이얼로그 띄워 줌
+        // #2. 방 입장 버튼 - 참가자가 다이얼로그에 방 코드 입력 후 방 입장
+        writeCode.setOnClickListener() { // 입장 버튼 클릭 시 다이얼로그 띄워 줌
             val dig = AlertDialog.Builder(this)
             val dialogView = View.inflate(this, R.layout.dialog_entercode, null)
             dig.setView(dialogView)
 
-            // 확인 버튼 클릭 - 같이 보기 페이지로 이동동
+            // 확인 버튼 클릭 - 같이 보기 페이지로 이동
             dig.setPositiveButton("확인") { dialog, which ->
                 //Toast.makeText(this@EnterActivity, "확인 누름", Toast.LENGTH_LONG).show()
                 val map = HashMap<String, String>()
