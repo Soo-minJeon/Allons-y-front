@@ -37,6 +37,27 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     // 현재 로그인하고 있는 사용자 아이디, 이름
     lateinit var id : String
 
+    // 추천 정보
+    lateinit var reco1_titleArray : ArrayList<String>
+    lateinit var reco1_posterArray : ArrayList<String>
+    lateinit var reco2_1_userId : String
+    lateinit var reco2_2_userId : String
+    lateinit var reco2_3_userId : String
+    lateinit var reco2_4_userId : String
+    lateinit var reco2_5_userId : String
+    lateinit var reco2_1_title : ArrayList<String>
+    lateinit var reco2_2_title : ArrayList<String>
+    lateinit var reco2_3_title : ArrayList<String>
+    lateinit var reco2_4_title : ArrayList<String>
+    lateinit var reco2_5_title : ArrayList<String>
+    lateinit var reco2_1_poster : ArrayList<String>
+    lateinit var reco2_2_poster : ArrayList<String>
+    lateinit var reco2_3_poster : ArrayList<String>
+    lateinit var reco2_4_poster : ArrayList<String>
+    lateinit var reco2_5_poster : ArrayList<String>
+    lateinit var reco3_titleArray : ArrayList<String>
+    lateinit var reco3_posterArray : ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter)
@@ -45,6 +66,26 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         retrofitInterface = retrofitBuilder.api
 
         id = intent.getStringExtra("user_id").toString()
+
+        reco1_titleArray = intent.getSerializableExtra("reco1_titleArray") as ArrayList<String>
+        reco1_posterArray = intent.getSerializableExtra("reco1_posterArray") as ArrayList<String>
+        reco2_1_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_2_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_3_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_4_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_5_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_1_title = intent.getSerializableExtra("reco2_1_title") as ArrayList<String>
+        reco2_2_title = intent.getSerializableExtra("reco2_2_title") as ArrayList<String>
+        reco2_3_title = intent.getSerializableExtra("reco2_3_title") as ArrayList<String>
+        reco2_4_title = intent.getSerializableExtra("reco2_4_title") as ArrayList<String>
+        reco2_5_title = intent.getSerializableExtra("reco2_5_title") as ArrayList<String>
+        reco2_1_poster = intent.getSerializableExtra("reco2_1_poster") as ArrayList<String>
+        reco2_2_poster = intent.getSerializableExtra("reco2_2_poster") as ArrayList<String>
+        reco2_3_poster = intent.getSerializableExtra("reco2_3_poster") as ArrayList<String>
+        reco2_4_poster = intent.getSerializableExtra("reco2_4_poster") as ArrayList<String>
+        reco2_5_poster = intent.getSerializableExtra("reco2_5_poster") as ArrayList<String>
+        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
+        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {
@@ -73,9 +114,11 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
 
-        // #1. 방 생성 버튼 - 방 코드 생성 및 자동 복사
+        // #1. 방 생성 버튼 - 방 코드 생성 및 자동 복사 > 방 입장
         createNewroom.setOnClickListener{
             val map = HashMap<String, String>()
+            map.put("user_id", id)
+            map.put("role", "publisher")
 
             val call = retrofitInterface.executeMakeRoom(map)
             call!!.enqueue(object : Callback<MakeRoomResult?> {
@@ -97,7 +140,37 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val clip : ClipData = ClipData.newPlainText("roomCode", result.roomCode) // roomCode 이름표로 값 복사하여 저장
                             clipboardManager.setPrimaryClip(clip)
 
-                            Toast.makeText(this@EnterActivity, "초대 코드 클립보드에 복사 완료!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@EnterActivity, "초대 코드 클립보드에 복사 완료!", Toast.LENGTH_SHORT).show()
+
+                            // 호스트로 방 입장
+                            val intent = Intent(applicationContext, TogetherActivity::class.java)
+                            intent.putExtra("user_id", id)
+                            intent.putExtra("roomCode", result.roomCode)
+                            intent.putExtra("roomToken", result.roomToken)
+
+                            intent.putExtra("reco1_titleArray", reco1_titleArray)
+                            intent.putExtra("reco1_posterArray", reco1_posterArray)
+                            intent.putExtra("reco2_1_userId", reco2_1_userId)
+                            intent.putExtra("reco2_2_userId", reco2_2_userId)
+                            intent.putExtra("reco2_3_userId", reco2_3_userId)
+                            intent.putExtra("reco2_4_userId", reco2_4_userId)
+                            intent.putExtra("reco2_5_userId", reco2_5_userId)
+                            intent.putExtra("reco2_1_title", reco2_1_title)
+                            intent.putExtra("reco2_2_title", reco2_2_title)
+                            intent.putExtra("reco2_3_title", reco2_3_title)
+                            intent.putExtra("reco2_4_title", reco2_4_title)
+                            intent.putExtra("reco2_5_title", reco2_5_title)
+                            intent.putExtra("reco2_1_poster", reco2_1_poster)
+                            intent.putExtra("reco2_2_poster", reco2_2_poster)
+                            intent.putExtra("reco2_3_poster", reco2_3_poster)
+                            intent.putExtra("reco2_4_poster", reco2_4_poster)
+                            intent.putExtra("reco2_5_poster", reco2_5_poster)
+                            intent.putExtra("reco3_titleArray", reco3_titleArray)
+                            intent.putExtra("reco3_posterArray", reco3_posterArray)
+                            // startActivityForResult(intent, 0)
+                            startActivity(intent)
+                            Toast.makeText(this@EnterActivity,
+                                "방 코드 [" + result.roomCode + "]에 HOST로 입장합니다.", Toast.LENGTH_SHORT).show()
                         }
                         dig.show()
                     }
@@ -121,11 +194,12 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // 확인 버튼 클릭 - 같이 보기 페이지로 이동
             dig.setPositiveButton("확인") { dialog, which ->
                 //Toast.makeText(this@EnterActivity, "확인 누름", Toast.LENGTH_LONG).show()
-                val map = HashMap<String, String>()
-
                 var codeEdit = dialogView.findViewById<EditText>(R.id.code_edittext)
-
                 var getroomCode = codeEdit.text.toString()
+
+                val map = HashMap<String, String>()
+                map.put("user_id", id)
+                map.put("role", "subscriber")
                 map.put("roomCode", getroomCode)
 
                 val call = retrofitInterface.executeEnterRoom(map)
@@ -135,12 +209,32 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val result = response.body()
 
                             Toast.makeText(this@EnterActivity,
-                                "방 코드 : " + getroomCode + " 에 입장합니다.", Toast.LENGTH_LONG).show()
+                                "방 코드 [" + getroomCode + "]에 참가자로 입장합니다.", Toast.LENGTH_LONG).show()
 
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", getroomCode)
                             intent.putExtra("roomToken", result?.roomToken)
+
+                            intent.putExtra("reco1_titleArray", reco1_titleArray)
+                            intent.putExtra("reco1_posterArray", reco1_posterArray)
+                            intent.putExtra("reco2_1_userId", reco2_1_userId)
+                            intent.putExtra("reco2_2_userId", reco2_2_userId)
+                            intent.putExtra("reco2_3_userId", reco2_3_userId)
+                            intent.putExtra("reco2_4_userId", reco2_4_userId)
+                            intent.putExtra("reco2_5_userId", reco2_5_userId)
+                            intent.putExtra("reco2_1_title", reco2_1_title)
+                            intent.putExtra("reco2_2_title", reco2_2_title)
+                            intent.putExtra("reco2_3_title", reco2_3_title)
+                            intent.putExtra("reco2_4_title", reco2_4_title)
+                            intent.putExtra("reco2_5_title", reco2_5_title)
+                            intent.putExtra("reco2_1_poster", reco2_1_poster)
+                            intent.putExtra("reco2_2_poster", reco2_2_poster)
+                            intent.putExtra("reco2_3_poster", reco2_3_poster)
+                            intent.putExtra("reco2_4_poster", reco2_4_poster)
+                            intent.putExtra("reco2_5_poster", reco2_5_poster)
+                            intent.putExtra("reco3_titleArray", reco3_titleArray)
+                            intent.putExtra("reco3_posterArray", reco3_posterArray)
                             // startActivityForResult(intent, 0)
                             startActivity(intent)
                         }
@@ -171,6 +265,25 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     val intent = Intent(applicationContext, WatchListActivity::class.java)
                     intent.putExtra("user_id", id)
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -181,6 +294,25 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     val intent = Intent(applicationContext, SearchActivity::class.java)
                     intent.putExtra("user_id", id)
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -191,6 +323,25 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     val intent = Intent(applicationContext, EnterActivity::class.java)
                     intent.putExtra("user_id", id)
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }

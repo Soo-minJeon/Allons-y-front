@@ -16,6 +16,8 @@ data class MakeRoomResult(var roomCode: String, var roomToken: String)
 
 data class EnterRoomResult(var roomToken: String)
 
+data class WatchTogether(var emotion_count_array : List<Emotion>) // 같이보기 실시간 감정 배열
+
 data class EmailResult(var code: String)
 
 data class WatchListResult(var title: ArrayList<String>, var poster: ArrayList<String>)
