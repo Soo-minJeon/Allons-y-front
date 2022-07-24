@@ -130,6 +130,19 @@ class LoginActivity : AppCompatActivity() {
                         val reco3_titleArray = reco3.titleArray // 추천 3의 추천 영화 제목 리스트
                         val reco3_posterArray = reco3.posterArray // 추천 3의 추천 영화 포스터 링크 리스트
 
+                        val reco4 = result.reco4 // 연도별 영화 추천
+                        val reco4_year = reco4.year // 추천 4의 추천 연도
+                        val reco4_titleArray = reco4.titleArray // 추천 4의 추천 영화 제목 리스트
+                        val reco4_posterArray = reco4.posterArray // 추천 4의 추천 영화 포스터 링크 리스트
+
+                        val reco5 = result.reco5 // 리메이크 작품 추천
+                        val reco5_titleArray = reco5.titleArray // 추천 5의 추천 영화 제목 리스트
+                        val reco5_posterArray = reco5.posterArray // 추천 5의 추천 영화 포스터 링크 리스트
+
+                        val reco6 = result.reco6 // 고전 TOP 10
+                        val reco6_titleArray = reco6.titleArray // 추천 6의 추천 영화 제목 리스트
+                        val reco6_posterArray = reco6.posterArray // 추천 6의 추천 영화 포스터 링크 리스트
+
                         // 메인2로 이동
                         var intent = Intent(applicationContext, MainActivity2::class.java)
                         intent.putExtra("user_id", result.id)
@@ -159,6 +172,16 @@ class LoginActivity : AppCompatActivity() {
                         intent.putExtra("reco3_titleArray", reco3_titleArray)
                         intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+                        intent.putExtra("reco4_year", reco4_year)
+                        intent.putExtra("reco4_titleArray", reco4_titleArray)
+                        intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                        intent.putExtra("reco5_titleArray", reco5_titleArray)
+                        intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                        intent.putExtra("reco6_titleArray", reco6_titleArray)
+                        intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                         // 서버에서 성공한 신호(응답)를 받으면 로딩창 종료
                         progressDialog.dismiss()
 
@@ -185,6 +208,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
+
 class ProgressDialog1(context: Context?) : Dialog(context!!) {
     init {
         // 다이얼 로그 제목을 안보이게 설정
