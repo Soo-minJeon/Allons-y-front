@@ -4,13 +4,23 @@ package com.example.harumub_front
 data class LoginResult(var id: String, var name: String, var record: Boolean, var reco1: Recommend1,
                        var reco2_1: Recommend2, var reco2_2: Recommend2,
                        var reco2_3: Recommend2, var reco2_4: Recommend2,
-                       var reco2_5: Recommend2, var reco3: Recommend3)
+                       var reco2_5: Recommend2, var reco3: Recommend3,
+                       var reco4: Recommend4, var reco5: Recommend5, var reco6: Recommend6)
 
 data class Recommend1(var titleArray: ArrayList<String>, var posterArray: ArrayList<String>)
 
 data class Recommend2(var userId: String, var title: ArrayList<String>, var poster: ArrayList<String>)
 
 data class Recommend3(var titleArray: ArrayList<String>, var posterArray: ArrayList<String>)
+
+// 연도별 영화 추천
+data class Recommend4(var year: String, var titleArray: ArrayList<String>, var posterArray: ArrayList<String>)
+
+// 리메이크 작품 추천
+data class Recommend5(var titleArray: ArrayList<String>, var posterArray: ArrayList<String>)
+
+// 고전 TOP 10
+data class Recommend6(var titleArray: ArrayList<String>, var posterArray: ArrayList<String>)
 
 data class MakeRoomResult(var roomCode: String, var roomToken: String)
 

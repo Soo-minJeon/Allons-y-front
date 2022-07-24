@@ -38,6 +38,15 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private var layoutManager3: RecyclerView.LayoutManager? = null
     private var adapter3: RecyclerView.Adapter<RecommendAdapter3.ViewHolder>? = null
 
+    private var layoutManager4: RecyclerView.LayoutManager? = null
+    private var adapter4: RecyclerView.Adapter<RecommendAdapter4.ViewHolder>? = null
+
+    private var layoutManager5: RecyclerView.LayoutManager? = null
+    private var adapter5: RecyclerView.Adapter<RecommendAdapter5.ViewHolder>? = null
+
+    private var layoutManager6: RecyclerView.LayoutManager? = null
+    private var adapter6: RecyclerView.Adapter<RecommendAdapter6.ViewHolder>? = null
+
     // 현재 로그인하고 있는 사용자 아이디, 이름
     lateinit var id : String
     lateinit var name : String
@@ -68,6 +77,16 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     lateinit var reco3_titleArray : ArrayList<String>
     lateinit var reco3_posterArray : ArrayList<String>
+
+    lateinit var reco4_year : String
+    lateinit var reco4_titleArray : ArrayList<String>
+    lateinit var reco4_posterArray : ArrayList<String>
+
+    lateinit var reco5_titleArray : ArrayList<String>
+    lateinit var reco5_posterArray : ArrayList<String>
+
+    lateinit var reco6_titleArray : ArrayList<String>
+    lateinit var reco6_posterArray : ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +140,16 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
         reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
+
+        reco4_year = intent.getStringExtra("reco4_year").toString()
+        reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
+        reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
+
+        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
+        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
+
+        reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
+        reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
 
         // 로그인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("user_name")) {
@@ -203,6 +232,16 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             intent.putExtra("reco3_titleArray", reco3_titleArray)
             intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+            intent.putExtra("reco4_year", reco4_year)
+            intent.putExtra("reco4_titleArray", reco4_titleArray)
+            intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+            intent.putExtra("reco5_titleArray", reco5_titleArray)
+            intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+            intent.putExtra("reco6_titleArray", reco6_titleArray)
+            intent.putExtra("reco6_posterArray", reco6_posterArray)
+
             startActivity(intent)
         }
 
@@ -225,6 +264,26 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         recyclerView3.layoutManager = layoutManager3
         adapter3 = RecommendAdapter3(reco3_titleArray, reco3_posterArray)
         recyclerView3.adapter = adapter3
+
+        // '연도별 영화 추천' 영화 목록 이름 변경
+        year_textView.setText(reco4_year + "년 영화 추천")
+        // '연도별 영화 추천' 영화 목록 year_recyclerView와 RecommendAdapter4 연결
+        layoutManager4 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        year_recyclerView.layoutManager = layoutManager4
+        adapter4 = RecommendAdapter4(reco4_titleArray, reco4_posterArray)
+        recyclerView3.adapter = adapter4
+
+        // '리메이크 작품 추천' 영화 목록 remake_recyclerView와 RecommendAdapter5 연결
+        layoutManager5 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        remake_recyclerView.layoutManager = layoutManager5
+        adapter5 = RecommendAdapter5(reco5_titleArray, reco5_posterArray)
+        recyclerView3.adapter = adapter5
+
+        // '고전 TOP 10' 영화 목록 top_Ten_recyclerView와 RecommendAdapter6 연결
+        layoutManager6 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        top_Ten_recyclerView.layoutManager = layoutManager6
+        adapter6 = RecommendAdapter6(reco6_titleArray, reco6_posterArray)
+        recyclerView3.adapter = adapter6
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행
@@ -261,6 +320,16 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                     intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -296,6 +365,16 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                     intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -325,6 +404,17 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     intent.putExtra("reco2_5_poster", reco2_5_poster)
                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                     intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
