@@ -266,24 +266,24 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         recyclerView3.adapter = adapter3
 
         // '연도별 영화 추천' 영화 목록 이름 변경
-        year_textView.setText(reco4_year + "년 영화 추천")
+        year_textView.text = reco4_year + "년 영화 추천"
         // '연도별 영화 추천' 영화 목록 year_recyclerView와 RecommendAdapter4 연결
         layoutManager4 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         year_recyclerView.layoutManager = layoutManager4
         adapter4 = RecommendAdapter4(reco4_titleArray, reco4_posterArray)
-        recyclerView3.adapter = adapter4
+        year_recyclerView.adapter = adapter4
 
         // '리메이크 작품 추천' 영화 목록 remake_recyclerView와 RecommendAdapter5 연결
         layoutManager5 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         remake_recyclerView.layoutManager = layoutManager5
         adapter5 = RecommendAdapter5(reco5_titleArray, reco5_posterArray)
-        recyclerView3.adapter = adapter5
+        remake_recyclerView.adapter = adapter5
 
         // '고전 TOP 10' 영화 목록 top_Ten_recyclerView와 RecommendAdapter6 연결
         layoutManager6 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         top_Ten_recyclerView.layoutManager = layoutManager6
         adapter6 = RecommendAdapter6(reco6_titleArray, reco6_posterArray)
-        recyclerView3.adapter = adapter6
+        top_Ten_recyclerView.adapter = adapter6
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행
