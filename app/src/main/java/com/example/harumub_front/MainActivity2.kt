@@ -256,7 +256,9 @@ class MainActivity2 : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         recyclerView2.layoutManager = layoutManager2
 //        adapter2 = RecommendAdapter2(reco2_userIdList, reco2_titleList, reco2_posterList)
         adapter2 = RecommendAdapter2(id, reco2_userIdList, reco2_titleList, reco2_posterList,
-            reco1_titleArray, reco1_posterArray, reco3_titleArray, reco3_posterArray)
+            reco1_titleArray, reco1_posterArray, reco3_titleArray, reco3_posterArray,
+            reco4_year, reco4_titleArray, reco4_posterArray, reco5_titleArray, reco5_posterArray,
+            reco6_titleArray, reco6_posterArray)
         recyclerView2.adapter = adapter2
 
         // '당신이 선호하는' 영화 목록 RecyclerView와 RecommendAdapter3 연결

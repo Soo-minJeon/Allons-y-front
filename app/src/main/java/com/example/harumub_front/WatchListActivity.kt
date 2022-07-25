@@ -61,6 +61,16 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     lateinit var reco3_titleArray : ArrayList<String>
     lateinit var reco3_posterArray : ArrayList<String>
 
+    lateinit var reco4_year : String
+    lateinit var reco4_titleArray : ArrayList<String>
+    lateinit var reco4_posterArray : ArrayList<String>
+
+    lateinit var reco5_titleArray : ArrayList<String>
+    lateinit var reco5_posterArray : ArrayList<String>
+
+    lateinit var reco6_titleArray : ArrayList<String>
+    lateinit var reco6_posterArray : ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_movie_list)
@@ -91,6 +101,16 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
         reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
+
+        reco4_year = intent.getStringExtra("reco4_year").toString()
+        reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as java.util.ArrayList<String>
+        reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as java.util.ArrayList<String>
+
+        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as java.util.ArrayList<String>
+        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as java.util.ArrayList<String>
+
+        reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as java.util.ArrayList<String>
+        reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as java.util.ArrayList<String>
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {
@@ -159,7 +179,8 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         reco2_1_userId, reco2_2_userId, reco2_3_userId, reco2_4_userId, reco2_5_userId,
                         reco2_1_title, reco2_2_title, reco2_3_title, reco2_4_title, reco2_5_title,
                         reco2_1_poster, reco2_2_poster, reco2_3_poster, reco2_4_poster, reco2_5_poster,
-                        reco3_titleArray, reco3_posterArray)
+                        reco3_titleArray, reco3_posterArray, reco4_year, reco4_titleArray, reco4_posterArray,
+                        reco5_titleArray, reco5_posterArray, reco6_titleArray, reco6_posterArray)
                     recyclerView.adapter = adapter
 
                     //Toast.makeText(this@WatchListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()
@@ -216,6 +237,16 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             intent.putExtra("reco3_titleArray", reco3_titleArray)
             intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+            intent.putExtra("reco4_year", reco4_year)
+            intent.putExtra("reco4_titleArray", reco4_titleArray)
+            intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+            intent.putExtra("reco5_titleArray", reco5_titleArray)
+            intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+            intent.putExtra("reco6_titleArray", reco6_titleArray)
+            intent.putExtra("reco6_posterArray", reco6_posterArray)
+
             startActivity(intent)
         }
 
@@ -256,6 +287,16 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             intent.putExtra("reco3_titleArray", reco3_titleArray)
             intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+            intent.putExtra("reco4_year", reco4_year)
+            intent.putExtra("reco4_titleArray", reco4_titleArray)
+            intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+            intent.putExtra("reco5_titleArray", reco5_titleArray)
+            intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+            intent.putExtra("reco6_titleArray", reco6_titleArray)
+            intent.putExtra("reco6_posterArray", reco6_posterArray)
+
             startActivity(intent)
         }
     }
@@ -294,6 +335,16 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                     intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -329,6 +380,16 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                     intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
@@ -358,6 +419,17 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     intent.putExtra("reco2_5_poster", reco2_5_poster)
                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                     intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                     startActivityForResult(intent, 0) // + 결과값 전달 // requestCode: 액티비티 식별값 - 원하는 값
                     commit()
                 }
