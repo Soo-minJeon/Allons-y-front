@@ -84,6 +84,16 @@ class WatchAloneActivity : AppCompatActivity() {
     lateinit var reco3_titleArray : ArrayList<String>
     lateinit var reco3_posterArray : ArrayList<String>
 
+    lateinit var reco4_year : String
+    lateinit var reco4_titleArray : ArrayList<String>
+    lateinit var reco4_posterArray : ArrayList<String>
+
+    lateinit var reco5_titleArray : ArrayList<String>
+    lateinit var reco5_posterArray : ArrayList<String>
+
+    lateinit var reco6_titleArray : ArrayList<String>
+    lateinit var reco6_posterArray : ArrayList<String>
+
     var map_Capture = HashMap<String, String>()
     var call_Capture  = retrofitInterface.executeWatchImageCaptureEyetrack(map_Capture)
 
@@ -118,6 +128,16 @@ class WatchAloneActivity : AppCompatActivity() {
 
         reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
         reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
+
+        reco4_year = intent.getStringExtra("reco4_year").toString()
+        reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
+        reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
+
+        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
+        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
+
+        reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
+        reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
 
         // 검색 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")) {
@@ -256,6 +276,16 @@ class WatchAloneActivity : AppCompatActivity() {
 
                         intent.putExtra("reco3_titleArray", reco3_titleArray)
                         intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                        intent.putExtra("reco4_year", reco4_year)
+                        intent.putExtra("reco4_titleArray", reco4_titleArray)
+                        intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                        intent.putExtra("reco5_titleArray", reco5_titleArray)
+                        intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                        intent.putExtra("reco6_titleArray", reco6_titleArray)
+                        intent.putExtra("reco6_posterArray", reco6_posterArray)
 
                         startActivity(intent)
 
@@ -397,6 +427,16 @@ class WatchAloneActivity : AppCompatActivity() {
                                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                                     intent.putExtra("reco3_posterArray", reco3_posterArray)
 
+                                    intent.putExtra("reco4_year", reco4_year)
+                                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+                                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                                     startActivity(intent)
 
                                     Log.d("WatchAloneEnd : ", "감상 리뷰 작성 페이지로 이동")
@@ -470,6 +510,16 @@ class WatchAloneActivity : AppCompatActivity() {
 
                                 intent.putExtra("reco3_titleArray", reco3_titleArray)
                                 intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                                intent.putExtra("reco4_year", reco4_year)
+                                intent.putExtra("reco4_titleArray", reco4_titleArray)
+                                intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                                intent.putExtra("reco5_titleArray", reco5_titleArray)
+                                intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                                intent.putExtra("reco6_titleArray", reco6_titleArray)
+                                intent.putExtra("reco6_posterArray", reco6_posterArray)
 
                                 startActivity(intent)
 
