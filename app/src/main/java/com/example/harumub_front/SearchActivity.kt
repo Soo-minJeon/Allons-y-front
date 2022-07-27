@@ -63,8 +63,8 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
     lateinit var reco4_titleArray : ArrayList<String>
     lateinit var reco4_posterArray : ArrayList<String>
 
-    lateinit var reco5_titleArray : ArrayList<String>
-    lateinit var reco5_posterArray : ArrayList<String>
+//    lateinit var reco5_titleArray : ArrayList<String>
+//    lateinit var reco5_posterArray : ArrayList<String>
 
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
@@ -108,8 +108,8 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
 
-        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
-        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
+//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
+//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
 
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
@@ -124,19 +124,6 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
         recyclerView = findViewById<View>(R.id.recylcerview) as RecyclerView
         editText = findViewById<View>(R.id.search_edt) as EditText
         editText!!.addTextChangedListener(this)
-
-/*
-        // items 배열에 영화 제목 넣기
-        for(i: Int in 0..poster.size-1) {
-            items.add(title[i]) // item 배열에 영화 제목 추가
-        }
-
-        //
-        adapter = SearchAdapter(applicationContext, items)
-        recyclerView!!.layoutManager =
-            LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
-        recyclerView!!.adapter = adapter
-*/
 
         var map = HashMap<String, String>()
         val call = retrofitInterface.executeGetAllMovieList(map)
@@ -167,16 +154,11 @@ class SearchActivity : AppCompatActivity() , TextWatcher {
                         reco2_1_title, reco2_2_title, reco2_3_title, reco2_4_title, reco2_5_title,
                         reco2_1_poster, reco2_2_poster, reco2_3_poster, reco2_4_poster, reco2_5_poster,
                         reco3_titleArray, reco3_posterArray, reco4_year, reco4_titleArray, reco4_posterArray,
-                        reco5_titleArray, reco5_posterArray, reco6_titleArray, reco6_posterArray)
+                        reco6_titleArray, reco6_posterArray) //reco5_titleArray, reco5_posterArray,
                     recyclerView!!.layoutManager =
                         LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
                     recyclerView!!.adapter = adapter
-
-//                    movie_title = intent.getStringExtra("movie_title").toString()
-
-                    //Toast.makeText(this@SearchActivity, "영화 정보 출력 성공", Toast.LENGTH_SHORT).show()
-
-/*  // SearchAdapter 수정 - 영화 클릭 시 혼자 보기 페이지로 이동
+/*
                     // 혼자보기 입장 버튼 클릭 시 혼자보기 페이지로 이동
                     watch_alone_enter_button.setOnClickListener {
                         var intent = Intent(applicationContext, WatchAloneActivity::class.java)

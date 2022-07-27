@@ -88,8 +88,8 @@ class WatchAloneActivity : AppCompatActivity() {
     lateinit var reco4_titleArray : ArrayList<String>
     lateinit var reco4_posterArray : ArrayList<String>
 
-    lateinit var reco5_titleArray : ArrayList<String>
-    lateinit var reco5_posterArray : ArrayList<String>
+//    lateinit var reco5_titleArray : ArrayList<String>
+//    lateinit var reco5_posterArray : ArrayList<String>
 
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
@@ -133,8 +133,8 @@ class WatchAloneActivity : AppCompatActivity() {
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
 
-        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
-        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
+//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
+//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
 
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
@@ -161,8 +161,8 @@ class WatchAloneActivity : AppCompatActivity() {
         // 감상시작 버튼 누르면 -> 노드에 map 전송
         watch_start.setOnClickListener {
             var map = HashMap<String, String>()
-            map.put("id", id!!)
-            map.put("movieTitle", movie_title!!)
+            map.put("id", id)
+            map.put("movieTitle", movie_title)
             map.put("signal", "start")
 
             var call = retrofitInterface.executeWatchAloneStart(map)
@@ -225,8 +225,8 @@ class WatchAloneActivity : AppCompatActivity() {
 //            startActivity(intent)
 
             var map = HashMap<String, String>()
-            map.put("id", id!!)
-            map.put("movieTitle", movie_title!!)
+            map.put("id", id)
+            map.put("movieTitle", movie_title)
             map.put("signal", "end")
 
             var call = retrofitInterface.executeWatchAloneEnd(map)
@@ -281,8 +281,8 @@ class WatchAloneActivity : AppCompatActivity() {
                         intent.putExtra("reco4_titleArray", reco4_titleArray)
                         intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-                        intent.putExtra("reco5_titleArray", reco5_titleArray)
-                        intent.putExtra("reco5_posterArray", reco5_posterArray)
+//                        intent.putExtra("reco5_titleArray", reco5_titleArray)
+//                        intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                         intent.putExtra("reco6_titleArray", reco6_titleArray)
                         intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -431,8 +431,8 @@ class WatchAloneActivity : AppCompatActivity() {
                                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                                     intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-                                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-                                    intent.putExtra("reco5_posterArray", reco5_posterArray)
+//                                    intent.putExtra("reco5_titleArray", reco5_titleArray)
+//                                    intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                                     intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -515,8 +515,8 @@ class WatchAloneActivity : AppCompatActivity() {
                                 intent.putExtra("reco4_titleArray", reco4_titleArray)
                                 intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-                                intent.putExtra("reco5_titleArray", reco5_titleArray)
-                                intent.putExtra("reco5_posterArray", reco5_posterArray)
+//                                intent.putExtra("reco5_titleArray", reco5_titleArray)
+//                                intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                                 intent.putExtra("reco6_titleArray", reco6_titleArray)
                                 intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -672,7 +672,7 @@ class WatchAloneActivity : AppCompatActivity() {
     // S3 Bucket Upload
     fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?) {
         val awsCredentials: AWSCredentials =
-            BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
+            BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
         val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
         val transferUtility =
             TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
@@ -710,7 +710,7 @@ class WatchAloneActivity : AppCompatActivity() {
     // S3 Bucket Upload - Eyetracking
     fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?, user_id: String?, movie_title: String?, time: String?) {
         val awsCredentials: AWSCredentials =
-            BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
+            BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
         val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
         val transferUtility =
             TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
