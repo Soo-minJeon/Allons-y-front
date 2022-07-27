@@ -71,6 +71,13 @@ class TogetherActivity : AppCompatActivity() {
     lateinit var reco2_5_poster : ArrayList<String>
     lateinit var reco3_titleArray : ArrayList<String>
     lateinit var reco3_posterArray : ArrayList<String>
+    lateinit var reco4_year : String
+    lateinit var reco4_titleArray : ArrayList<String>
+    lateinit var reco4_posterArray : ArrayList<String>
+    //    lateinit var reco5_titleArray : ArrayList<String>
+//    lateinit var reco5_posterArray : ArrayList<String>
+    lateinit var reco6_titleArray : ArrayList<String>
+    lateinit var reco6_posterArray : ArrayList<String>
 
     private var mRtcEngine: RtcEngine? = null
     private val mRtcEventHandler = object : IRtcEngineEventHandler() {
@@ -122,6 +129,14 @@ class TogetherActivity : AppCompatActivity() {
         reco2_5_poster = intent.getSerializableExtra("reco2_5_poster") as ArrayList<String>
         reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
         reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
+        reco4_year = intent.getStringExtra("reco4_year").toString()
+        reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
+        reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
+//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
+//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
+        reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
+        reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
+
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("roomCode") && intent.hasExtra("roomToken")) {
@@ -150,7 +165,7 @@ class TogetherActivity : AppCompatActivity() {
     // #1
     private fun initializeAgoraEngine() {
         try {
-            mRtcEngine = RtcEngine.create(baseContext, getString(R.string.agora_app_id), mRtcEventHandler)
+            mRtcEngine = RtcEngine.create(baseContext, getString(R.string.AGORA_APP_ID), mRtcEventHandler)
 
             Log.e("TogetherActivity", "rtc엔진 생성 완료")
         } catch (e: Exception) { Log.e("TogetherActivity", "rtc엔진 생성 실패")
@@ -354,6 +369,13 @@ class TogetherActivity : AppCompatActivity() {
         intent.putExtra("reco2_5_poster", reco2_5_poster)
         intent.putExtra("reco3_titleArray", reco3_titleArray)
         intent.putExtra("reco3_posterArray", reco3_posterArray)
+        intent.putExtra("reco4_year", reco4_year)
+        intent.putExtra("reco4_titleArray", reco4_titleArray)
+        intent.putExtra("reco4_posterArray", reco4_posterArray)
+//        intent.putExtra("reco5_titleArray", reco5_titleArray)
+//        intent.putExtra("reco5_posterArray", reco5_posterArray)
+        intent.putExtra("reco6_titleArray", reco6_titleArray)
+        intent.putExtra("reco6_posterArray", reco6_posterArray)
         startActivity(intent)
     }
 

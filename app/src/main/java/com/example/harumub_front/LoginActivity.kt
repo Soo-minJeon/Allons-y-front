@@ -34,12 +34,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-//        okHttpClient = OkHttpClient.Builder()
-//            .connectTimeout(40, TimeUnit.SECONDS)
-//            .readTimeout(40, TimeUnit.SECONDS)
-//            .writeTimeout(40, TimeUnit.SECONDS)
-//            .build()
-
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
 
@@ -81,23 +75,6 @@ class LoginActivity : AppCompatActivity() {
                         builder1.setMessage(result!!.name + "님 환영합니다!")
                         builder1.show()
 
-/*
-                        // 서버에서 전달받은 감상결과 record=false => 메인1로 이동
-                        if(result.record == false) {
-                            var intent = Intent(applicationContext, MainActivity1::class.java)
-                            intent.putExtra("user_id", result.id)
-                            intent.putExtra("user_name", result.name)
-                            startActivityForResult(intent, 0)
-                        }
-                        // 서버에서 전달받은 감상결과 record=true => 메인2로 이동
-                         if (result.record == true) {
-                             var intent = Intent(applicationContext, MainActivity2::class.java)
-                             intent.putExtra("user_id", result.id)
-                             intent.putExtra("user_name", result.name)
-                             startActivityForResult(intent, 0)
-                         }
-*/
-
                         val reco1 = result.reco1 // 추천 1
                         val reco1_titleArray = reco1.titleArray // 추천 1의 추천 영화 제목 리스트
                         val reco1_posterArray = reco1.posterArray // 추천 1의 추천 영화 포스터 링크 리스트
@@ -135,9 +112,10 @@ class LoginActivity : AppCompatActivity() {
                         val reco4_titleArray = reco4.titleArray // 추천 4의 추천 영화 제목 리스트
                         val reco4_posterArray = reco4.posterArray // 추천 4의 추천 영화 포스터 링크 리스트
 
-                        val reco5 = result.reco5 // 리메이크 작품 추천
-                        val reco5_titleArray = reco5.titleArray // 추천 5의 추천 영화 제목 리스트
-                        val reco5_posterArray = reco5.posterArray // 추천 5의 추천 영화 포스터 링크 리스트
+                        // 리메이크 작품 추천 >> 결과 페이지
+//                        val reco5 = result.reco5 // 리메이크 작품 추천
+//                        val reco5_titleArray = reco5.titleArray // 추천 5의 추천 영화 제목 리스트
+//                        val reco5_posterArray = reco5.posterArray // 추천 5의 추천 영화 포스터 링크 리스트
 
                         val reco6 = result.reco6 // 고전 TOP 10
                         val reco6_titleArray = reco6.titleArray // 추천 6의 추천 영화 제목 리스트
@@ -176,8 +154,8 @@ class LoginActivity : AppCompatActivity() {
                         intent.putExtra("reco4_titleArray", reco4_titleArray)
                         intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-                        intent.putExtra("reco5_titleArray", reco5_titleArray)
-                        intent.putExtra("reco5_posterArray", reco5_posterArray)
+//                        intent.putExtra("reco5_titleArray", reco5_titleArray)
+//                        intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                         intent.putExtra("reco6_titleArray", reco6_titleArray)
                         intent.putExtra("reco6_posterArray", reco6_posterArray)

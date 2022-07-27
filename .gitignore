@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,kotlin,androidstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,kotlin,androidstudio
 
+# api key, id, path etc.
+personal_info.xml
+
 ### Kotlin ###
 # Compiled class file
 *.class

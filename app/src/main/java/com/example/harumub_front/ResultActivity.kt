@@ -129,8 +129,8 @@ class ResultActivity : AppCompatActivity() {
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
 
-        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
-        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
+//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
+//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
 
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
@@ -353,7 +353,7 @@ class ResultActivity : AppCompatActivity() {
 //                    var highlightUrl = id + "_" + highlight_movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
     //                downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
 
-                    var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl)
+                    var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
 //                    var path = "/data/data/com.example.harumub_front/img" // path 설정
 //                    var downloadFile = File(path + "/" + highlightUrl) // 설정한 path로 다운로드 파일 생성
                     downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
@@ -406,8 +406,8 @@ class ResultActivity : AppCompatActivity() {
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-            intent.putExtra("reco5_titleArray", reco5_titleArray)
-            intent.putExtra("reco5_posterArray", reco5_posterArray)
+//            intent.putExtra("reco5_titleArray", reco5_titleArray)
+//            intent.putExtra("reco5_posterArray", reco5_posterArray)
 
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -451,8 +451,8 @@ class ResultActivity : AppCompatActivity() {
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-            intent.putExtra("reco5_titleArray", reco5_titleArray)
-            intent.putExtra("reco5_posterArray", reco5_posterArray)
+//            intent.putExtra("reco5_titleArray", reco5_titleArray)
+//            intent.putExtra("reco5_posterArray", reco5_posterArray)
 
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -531,7 +531,7 @@ class ResultActivity : AppCompatActivity() {
 */
 
     fun downloadWithTransferUtility(fileName: String?, file: File?) {
-        val awsCredentials: AWSCredentials = BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
+        val awsCredentials: AWSCredentials = BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
         val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
 
         val transferUtility = TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
@@ -547,11 +547,11 @@ class ResultActivity : AppCompatActivity() {
 
                     if (file != null) {
                         // 감상결과 페이지 하이라이트 이미지 설정
-                        photoBitmap = BitmapFactory.decodeFile(file!!.absolutePath)
+                        photoBitmap = BitmapFactory.decodeFile(file!!.absolutePath) // getString(R.string.FILE_PATH)
                         myHighlight.setImageBitmap(photoBitmap)
                         Log.d("하이라이트 이미지 ", "설정 완료")
 
-                        Log.d("파일 경로 : ", file.absolutePath)
+                        Log.d("파일 경로 : ", file.absolutePath) // getString(R.string.FILE_PATH)
 
                         // S3 Bucket에서 file 다운로드 후 Emulator에서 삭제
                         file.delete()
