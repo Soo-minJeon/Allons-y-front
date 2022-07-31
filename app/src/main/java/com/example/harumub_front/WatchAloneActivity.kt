@@ -2,14 +2,17 @@ package com.example.harumub_front
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import android.view.SurfaceHolder
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -39,7 +42,7 @@ import retrofit2.Response
 import java.util.HashMap
 import kotlin.properties.Delegates
 
-class WatchAloneActivity : AppCompatActivity() {
+class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
     private var retrofitBuilder = RetrofitBuilder
     private var retrofitInterface = retrofitBuilder.api
 
@@ -53,6 +56,10 @@ class WatchAloneActivity : AppCompatActivity() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
+
+    private lateinit var surfaceHolder: SurfaceHolder
+    private lateinit var mediaPlayer: MediaPlayer
+    private var isPlayed by Delegates.notNull<Boolean>()
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
     lateinit var id : String
@@ -157,6 +164,11 @@ class WatchAloneActivity : AppCompatActivity() {
 
         cameraHandler = CameraHandler()
 
+        isPlayed = false
+        mediaPlayer = MediaPlayer()
+        surfaceHolder = video_test_surfaceView.holder
+        surfaceHolder.addCallback(this)
+
         // 감상시작 버튼 클릭
         // 감상시작 버튼 누르면 -> 노드에 map 전송
         watch_start.setOnClickListener {
@@ -174,18 +186,24 @@ class WatchAloneActivity : AppCompatActivity() {
 
                         Log.d("감상 시작 : ", SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()))
 
-                        takePhoto("capture", id + "_" + movie_title + "_" + "0", id, movie_title, "0")
-                        sleep(1000)
-                        takePhoto("capture", id + "_" + movie_title + "_" + "1", id, movie_title, "1")
-                        sleep(1000)
-                        takePhoto("capture", id + "_" + movie_title + "_" + "2", id, movie_title, "2")
-                        sleep(7000)
+                        mediaPlayer.setScreenOnWhilePlaying(true)
+                        mediaPlayer.start()
+                        isPlayed = true
 
-                        if (cameraThread != null) {
-                            cameraThread!!.endThread()
+                        if (mediaPlayer != null && mediaPlayer.isPlaying) { // 미디어 플레이어 객체가 존재하는데 재생 중이면 캡처 시작
+                            takePhoto("capture", id + "_" + movie_title + "_" + "0", id, movie_title, "0")
+                            sleep(1000)
+                            takePhoto("capture", id + "_" + movie_title + "_" + "1", id, movie_title, "1")
+                            sleep(1000)
+                            takePhoto("capture", id + "_" + movie_title + "_" + "2", id, movie_title, "2")
+                            sleep(7000)
+
+                            if (cameraThread != null) {
+                                cameraThread!!.endThread()
+                            }
+                            cameraThread = CameraThread()
+                            cameraThread!!.start()
                         }
-                        cameraThread = CameraThread()
-                        cameraThread!!.start()
                     }
                     else if (response.code() == 400){
                         //Toast.makeText(this@WatchAloneActivity, "감상시작 신호 보내기 실패", Toast.LENGTH_SHORT).show()
@@ -224,6 +242,10 @@ class WatchAloneActivity : AppCompatActivity() {
 //            val intent = Intent(applicationContext, AddreviewActivity::class.java)
 //            startActivity(intent)
 
+            cameraHandler.sendEmptyMessage(WATCH_END)
+            mediaPlayer.release()
+            Log.d("감상 : ", "종료되었습니다.")
+
             var map = HashMap<String, String>()
             map.put("id", id)
             map.put("movieTitle", movie_title)
@@ -238,15 +260,12 @@ class WatchAloneActivity : AppCompatActivity() {
                     if(response.code() == 200){
                         //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
-                        cameraHandler.sendEmptyMessage(WATCH_END)
-                        Log.d("감상 : ", "종료되었습니다.")
+//                        cameraHandler.sendEmptyMessage(WATCH_END)
+//                        mediaPlayer.release()
+//                        Log.d("감상 : ", "종료되었습니다.")
 
                         val result = response.body()
 
-                        // 감상 리뷰 작성 페이지로 이동 (액티비티 -> 프래그먼트)
-//                        supportFragmentManager.beginTransaction()
-//                            .replace(R.id.watch_alone, AddreviewFragment())
-//                            .commit()
                         val intent = Intent(applicationContext, AddreviewActivity::class.java)
                         intent.putExtra("user_id", id)
                         intent.putExtra("movie_title", movie_title)
@@ -380,6 +399,10 @@ class WatchAloneActivity : AppCompatActivity() {
 //                        intent.putExtra("movie_title", movie_title)
   //                      startActivity(intent)
 
+                        cameraHandler.sendEmptyMessage(WATCH_END)
+                        mediaPlayer.release()
+                        Log.d("감상 : ", "종료되었습니다.")
+
                         var map = HashMap<String, String>()
                         map.put("id", id!!)
                         map.put("movieTitle", movie_title!!)
@@ -392,8 +415,9 @@ class WatchAloneActivity : AppCompatActivity() {
                                 if(response.code() == 200){
                                     //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
-                                    cameraHandler.sendEmptyMessage(WATCH_END)
-                                    Log.d("감상 : ", "종료되었습니다.")
+//                                    cameraHandler.sendEmptyMessage(WATCH_END)
+//                                    mediaPlayer.release()
+//                                    Log.d("감상 : ", "종료되었습니다.")
 
                                     val result = response.body()
 
@@ -464,6 +488,10 @@ class WatchAloneActivity : AppCompatActivity() {
 //                    intent.putExtra("movie_title", movie_title)
   //                  startActivity(intent)
 
+                    cameraHandler.sendEmptyMessage(WATCH_END)
+                    mediaPlayer.release()
+                    Log.d("감상 : ", "종료되었습니다.")
+
                     var map = HashMap<String, String>()
                     map.put("id", id!!)
                     map.put("movieTitle", movie_title!!)
@@ -476,8 +504,9 @@ class WatchAloneActivity : AppCompatActivity() {
                             if(response.code() == 200){
                                 //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
 
-                                cameraHandler.sendEmptyMessage(WATCH_END)
-                                Log.d("감상 : ", "종료되었습니다.")
+//                                cameraHandler.sendEmptyMessage(WATCH_END)
+//                                mediaPlayer.release()
+//                                Log.d("감상 : ", "종료되었습니다.")
 
                                 val result = response.body()
 
@@ -567,9 +596,9 @@ class WatchAloneActivity : AppCompatActivity() {
             if (allPermissionsGranted()) { // 권한이 부여되면 startCamera() 함수 호출
                 startCamera()
             } else { // 권한이 부여되지 않은 경우 사용자에게 권한이 부여되지 않았음을 알리는 Toast 메시지 표시
-                //Toast.makeText(this,
-                //    "Permissions not granted by the user.",
-                //    Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -597,7 +626,7 @@ class WatchAloneActivity : AppCompatActivity() {
                     val msg = "Photo capture succeeded: $savedUri"
 //                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
-//                    uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile, user_id, movie_title, time)
+                    Log.d("Capture time : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
 
                     if (time!!.toInt() % 10 == 0) { // Eyetracking
                         uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile, user_id, movie_title, time)
@@ -660,6 +689,8 @@ class WatchAloneActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+
+        mediaPlayer.release()
     }
 
     companion object {
@@ -773,12 +804,226 @@ class WatchAloneActivity : AppCompatActivity() {
         val dig = AlertDialog.Builder(this)
         val dialogView = View.inflate(this, R.layout.dialog_sleep, null)
 
+        var intent = Intent(applicationContext, AddreviewActivity::class.java)
+
+        cameraHandler.sendEmptyMessage(WATCH_END)
+        cameraExecutor.shutdown()
+        mediaPlayer.release()
+        Log.d("Sleep Dialog : ", "감상 종료되었습니다.")
+
         dig.setView(dialogView)
         dig.setPositiveButton("확인") { dialog, which ->
-            cameraHandler.sendEmptyMessage(WATCH_END)
-            finish()
+//            cameraHandler.sendEmptyMessage(WATCH_END)
+//            cameraExecutor.shutdown()
+//            mediaPlayer.release()
+
+//            finish()
+
+            var map = HashMap<String, String>()
+            map.put("id", id)
+            map.put("movieTitle", movie_title)
+            map.put("signal", "end")
+
+            var call = retrofitInterface.executeWatchAloneEnd(map)
+
+            call!!.enqueue(object : Callback<WatchAloneMovie?> {
+                override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
+                    if(response.code() == 200){
+                        //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                        val result = response.body()
+
+                        intent.putExtra("user_id", id)
+                        intent.putExtra("movie_title", movie_title)
+                        intent.putExtra("genres", result!!.genres)
+                        intent.putExtra("poster", result!!.poster)
+
+                        intent.putExtra("reco1_titleArray", reco1_titleArray)
+                        intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                        intent.putExtra("reco2_1_userId", reco2_1_userId)
+                        intent.putExtra("reco2_2_userId", reco2_2_userId)
+                        intent.putExtra("reco2_3_userId", reco2_3_userId)
+                        intent.putExtra("reco2_4_userId", reco2_4_userId)
+                        intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                        intent.putExtra("reco2_1_title", reco2_1_title)
+                        intent.putExtra("reco2_2_title", reco2_2_title)
+                        intent.putExtra("reco2_3_title", reco2_3_title)
+                        intent.putExtra("reco2_4_title", reco2_4_title)
+                        intent.putExtra("reco2_5_title", reco2_5_title)
+
+                        intent.putExtra("reco2_1_poster", reco2_1_poster)
+                        intent.putExtra("reco2_2_poster", reco2_2_poster)
+                        intent.putExtra("reco2_3_poster", reco2_3_poster)
+                        intent.putExtra("reco2_4_poster", reco2_4_poster)
+                        intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                        intent.putExtra("reco3_titleArray", reco3_titleArray)
+                        intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                        intent.putExtra("reco4_year", reco4_year)
+                        intent.putExtra("reco4_titleArray", reco4_titleArray)
+                        intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+//                        intent.putExtra("reco5_titleArray", reco5_titleArray)
+//                        intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                        intent.putExtra("reco6_titleArray", reco6_titleArray)
+                        intent.putExtra("reco6_posterArray", reco6_posterArray)
+
+                        startActivity(intent)
+
+                        Log.d("text : ", "선택")
+                    }
+                    else if (response.code() == 400){
+                        //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
+                    //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
+        dig.setCancelable(true)
         dig.show()
+    }
+
+    override fun surfaceCreated(holder : SurfaceHolder) {
+        val awsCredentials : AWSCredentials = BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
+        val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
+
+        var bucketUrl = s3Client.getResourceUrl("allonsyvideotestbucket", null).toString()
+        var videoName : String? = "avengers.mp4"
+//        var videoName : String? = movie_title
+
+        try {
+            mediaPlayer.setDataSource(bucketUrl + videoName)
+            mediaPlayer.setDisplay(holder)
+            mediaPlayer.prepare()
+
+            Log.d("MediaPlayer : ", bucketUrl + videoName + " 재생")
+        }
+        catch (e: Exception) {
+            Log.e("Exception : ", e.toString())
+        }
+    }
+
+    override fun surfaceChanged(holder : SurfaceHolder, format : Int, width : Int, height : Int) {
+        Log.d("SurfaceView Change : ", "surfaceChanged")
+    }
+
+    override fun surfaceDestroyed(holder : SurfaceHolder) {
+        cameraHandler.sendEmptyMessage(WATCH_END)
+        Log.d("SurfaceView Destroy : ", "surfaceDestroyed")
+    }
+
+    override fun onUserLeaveHint() { // 홈 버튼 감지
+        super.onUserLeaveHint()
+
+        Log.d("Home Button : ", "이벤트 감지")
+
+        if (allPermissionsGranted()) {
+            if (isPlayed) {
+                // 이벤트 작성
+                cameraHandler.sendEmptyMessage(WATCH_END)
+                cameraExecutor.shutdown()
+                Log.d("Home Button : ", "캡처 종료")
+                mediaPlayer.release()
+                Log.d("Home Button : ", "영화 재생 종료")
+
+                var intent = Intent(applicationContext, AddreviewActivity::class.java)
+
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("감상 종료")
+                    .setMessage("영화 감상이 종료됩니다.")
+                    .setPositiveButton("확인",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            var map = HashMap<String, String>()
+                            map.put("id", id)
+                            map.put("movieTitle", movie_title)
+                            map.put("signal", "end")
+
+                            var call = retrofitInterface.executeWatchAloneEnd(map)
+
+                            call!!.enqueue(object : Callback<WatchAloneMovie?> {
+                                override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
+                                    if(response.code() == 200){
+                                        //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                                        val result = response.body()
+
+                                        intent.putExtra("user_id", id)
+                                        intent.putExtra("movie_title", movie_title)
+                                        intent.putExtra("genres", result!!.genres)
+                                        intent.putExtra("poster", result!!.poster)
+
+                                        intent.putExtra("reco1_titleArray", reco1_titleArray)
+                                        intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                                        intent.putExtra("reco2_1_userId", reco2_1_userId)
+                                        intent.putExtra("reco2_2_userId", reco2_2_userId)
+                                        intent.putExtra("reco2_3_userId", reco2_3_userId)
+                                        intent.putExtra("reco2_4_userId", reco2_4_userId)
+                                        intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                                        intent.putExtra("reco2_1_title", reco2_1_title)
+                                        intent.putExtra("reco2_2_title", reco2_2_title)
+                                        intent.putExtra("reco2_3_title", reco2_3_title)
+                                        intent.putExtra("reco2_4_title", reco2_4_title)
+                                        intent.putExtra("reco2_5_title", reco2_5_title)
+
+                                        intent.putExtra("reco2_1_poster", reco2_1_poster)
+                                        intent.putExtra("reco2_2_poster", reco2_2_poster)
+                                        intent.putExtra("reco2_3_poster", reco2_3_poster)
+                                        intent.putExtra("reco2_4_poster", reco2_4_poster)
+                                        intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                                        intent.putExtra("reco3_titleArray", reco3_titleArray)
+                                        intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                                        intent.putExtra("reco4_year", reco4_year)
+                                        intent.putExtra("reco4_titleArray", reco4_titleArray)
+                                        intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+//                                        intent.putExtra("reco5_titleArray", reco5_titleArray)
+//                                        intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                                        intent.putExtra("reco6_titleArray", reco6_titleArray)
+                                        intent.putExtra("reco6_posterArray", reco6_posterArray)
+
+                                        startActivity(intent)
+
+                                        Log.d("text : ", "선택")
+                                    }
+                                    else if (response.code() == 400){
+                                        //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<WatchAloneMovie?>, t: Throwable) {
+                                    //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        })
+                    .setCancelable(false) // 뒤로 가기 버튼과 영역 외 클릭 시 Dialog가 사라지지 않도록 한다.
+                // Dialog 띄워 주기
+                builder.show()
+            }
+            else {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("영화 재선택")
+                    .setMessage("영화를 다시 선택해 주세요.")
+                    .setPositiveButton("확인",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            finish() // 액티비티 종료
+                        })
+                    .setCancelable(false) // 뒤로 가기 버튼과 영역 외 클릭 시 Dialog가 사라지지 않도록 한다.
+                // Dialog 띄워 주기
+                builder.show()
+            }
+        }
     }
 }

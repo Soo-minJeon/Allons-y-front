@@ -21,6 +21,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- MediaPlayer 재생 중 스크린 잠김 방지 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,7 +33,10 @@
         android:theme="@style/Theme.Harumub_front">
 
         <activity android:name=".WatchListActivity"/>
-        <activity android:name=".WatchAloneActivity"/>
+        <activity
+            android:name=".WatchAloneActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape"/>
         <activity android:name=".AddreviewActivity"/>
         <activity android:name=".ResultActivity"/>
         <activity android:name=".MainActivity2"/>
