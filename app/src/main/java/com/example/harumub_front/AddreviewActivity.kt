@@ -267,7 +267,10 @@ class AddreviewActivity : AppCompatActivity() {
                 }
             })
         }
+    }
 
+    override fun onBackPressed() { // 뒤로 가기 버튼 막기
+        //super.onBackPressed()
     }
 }
 
