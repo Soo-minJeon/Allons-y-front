@@ -163,6 +163,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
         }
 
         cameraHandler = CameraHandler()
+        cameraThread = CameraThread()
 
         isPlayed = false
         mediaPlayer = MediaPlayer()
@@ -191,18 +192,19 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                         isPlayed = true
 
                         if (mediaPlayer != null && mediaPlayer.isPlaying) { // 미디어 플레이어 객체가 존재하는데 재생 중이면 캡처 시작
+                            Log.d("첫 번째 캡처 시작 - 1 : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
                             takePhoto("capture", id + "_" + movie_title + "_" + "0", id, movie_title, "0")
                             sleep(1000)
+                            Log.d("첫 번째 캡처 시작 - 2 : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
                             takePhoto("capture", id + "_" + movie_title + "_" + "1", id, movie_title, "1")
                             sleep(1000)
+                            Log.d("첫 번째 캡처 시작 - 3 : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
                             takePhoto("capture", id + "_" + movie_title + "_" + "2", id, movie_title, "2")
                             sleep(7000)
 
-                            if (cameraThread != null) {
-                                cameraThread!!.endThread()
-                            }
-                            cameraThread = CameraThread()
                             cameraThread!!.start()
+
+                            watch_start.setEnabled(false)
                         }
                     }
                     else if (response.code() == 400){
@@ -377,10 +379,13 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                     // 1 분 이상 : 1 분마다 18n + 2 (n 단위 : 분)
                     //if (count < (3 * (running_time_sec / 10)) + 2) { // running_time 단위가 분일 경우
                     if (count < (3 * (running_time / 10)) + 2) { // running_time 단위가 초일 경우
+                        Log.d("스레드 캡처 시작 - 1 : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
                         takePhoto("capture", id + "_" + movie_title + "_" + (9 + i).toString(), id, movie_title, (9 + i).toString())
                         sleep(1000)
+                        Log.d("스레드 캡처 시작 - 2 : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
                         takePhoto("capture", id + "_" + movie_title + "_" + (10 + i).toString(), id, movie_title, (10 + i).toString())
                         sleep(1000)
+                        Log.d("스레드 캡처 시작 - 3 : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
                         takePhoto("capture", id + "_" + movie_title + "_" + (11 + i).toString(), id, movie_title, (11 + i).toString())
                         cameraHandler.sendMessage(message)
                         i += 10
@@ -610,6 +615,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
         // Create time-stamped output file to hold the image
         val photoFile = File(outputDirectory, fileName + ".jpg") // 이미지를 저장할 파일을 만든다.
+        Log.d("캡처 파일 : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
@@ -626,7 +632,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                     val msg = "Photo capture succeeded: $savedUri"
 //                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
-                    Log.d("Capture time : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
+                    Log.d("Capture Saved time : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
 
                     if (time!!.toInt() % 10 == 0) { // Eyetracking
                         uploadWithTransferUtilty(s3Bucket_FolderName, photoFile.name, photoFile, user_id, movie_title, time)
@@ -715,6 +721,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                 if (state === TransferState.COMPLETED) {
                     // Handle a completed upload
                     Log.d("S3 Bucket ", "Upload Completed!")
+//                    Log.d("Capture S3 Bucket : ", SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
 
                     // S3 Bucket에 file 업로드 후 Emulator에서 삭제
                     if (file != null) {
@@ -753,6 +760,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                 if (state === TransferState.COMPLETED) {
                     // Handle a completed upload
                     Log.d("S3 Bucket ", "Upload Completed!")
+//                    Log.d("Capture S3 Bucket : " + time, SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA).format(System.currentTimeMillis()))
 
                     // 사용자 아이디, 영화 제목, 캡처 시간, 캡처 사진 이름 전달
                     map_Capture.put("id", user_id!!)
