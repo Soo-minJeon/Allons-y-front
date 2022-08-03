@@ -2,8 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.harumub_front">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Agora -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- The Agora SDK requires Bluetooth permissions in case users are using Bluetooth devices. -->
+    <!-- Emulator에서 블루투스 지원 X => 실제 기기에서 실행해야 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
     <!-- CameraX -->
     <uses-feature android:name="android.hardware.camera.any" />
@@ -15,6 +21,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- MediaPlayer 재생 중 스크린 잠김 방지 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,7 +33,10 @@
         android:theme="@style/Theme.Harumub_front">
 
         <activity android:name=".WatchListActivity"/>
-        <activity android:name=".WatchAloneActivity"/>
+        <activity
+            android:name=".WatchAloneActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape"/>
         <activity android:name=".AddreviewActivity"/>
         <activity android:name=".ResultActivity"/>
         <activity android:name=".MainActivity2"/>
@@ -40,7 +52,10 @@
         <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".SignupActivity" android:exported="true" />
         <activity android:name=".MainActivity1" android:exported="true" />
-        <activity android:name=".TogetherActivity" />
+        <activity
+            android:name=".TogetherActivity"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/FullScreenVideoTheme" />
         <activity android:name=".EnterActivity" />
         <activity android:name=".HelpActivity" />
 

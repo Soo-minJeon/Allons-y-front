@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#264713">
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="초대 코드 발급"
+        android:fontFamily="@font/jua"
+        android:textSize="28dp"
+        android:textColor="#FFFFFF"/>
+
+    <TextView
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인 버튼 클릭시 초대코드가 자동으로 복사됩니다."
+        android:fontFamily="@font/jua"
+        android:textSize="17sp"
+        android:textColor="#EEEEEE" />
+
+    <TextView
+        android:id="@+id/myEnterCode"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edittext_round"
+        android:padding="15dp"
+        android:text="My Entercode"
+        android:textSize="20sp"
+        android:fontFamily="@font/jua"
+        android:textColor="#264713" />
+
+</LinearLayout>

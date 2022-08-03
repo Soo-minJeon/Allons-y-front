@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.CubeGrid
 import kotlinx.android.synthetic.main.fragment_addreview.*
@@ -29,18 +30,58 @@ import java.util.HashMap
 import kotlin.properties.Delegates
 
 class AddreviewActivity : AppCompatActivity() {
-    // 로딩 다이얼로그
-    private lateinit var progressDialog : ProgressDialog
+
+    private lateinit var progressDialog : ProgressDialog    // 로딩 다이얼로그
 
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInteface
 
     private lateinit var myTitle: TextView
+    private lateinit var myGenres: TextView
     private lateinit var myPoster: ImageView
 
+    var defaultImage = R.drawable.default_poster // 포스터 기본 이미지
+
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
-    private val id = intent.getStringExtra("user_id")
-    private val movie_title = intent.getStringExtra("movie_title")
+    lateinit var id : String
+    lateinit var movie_title : String
+    lateinit var genres : String
+    lateinit var poster : String
+
+    // 추천 정보
+    lateinit var reco1_titleArray : java.util.ArrayList<String>
+    lateinit var reco1_posterArray : java.util.ArrayList<String>
+
+    lateinit var reco2_1_userId : String
+    lateinit var reco2_2_userId : String
+    lateinit var reco2_3_userId : String
+    lateinit var reco2_4_userId : String
+    lateinit var reco2_5_userId : String
+
+    lateinit var reco2_1_title : java.util.ArrayList<String>
+    lateinit var reco2_2_title : java.util.ArrayList<String>
+    lateinit var reco2_3_title : java.util.ArrayList<String>
+    lateinit var reco2_4_title : java.util.ArrayList<String>
+    lateinit var reco2_5_title : java.util.ArrayList<String>
+
+    lateinit var reco2_1_poster : java.util.ArrayList<String>
+    lateinit var reco2_2_poster : java.util.ArrayList<String>
+    lateinit var reco2_3_poster : java.util.ArrayList<String>
+    lateinit var reco2_4_poster : java.util.ArrayList<String>
+    lateinit var reco2_5_poster : java.util.ArrayList<String>
+
+    lateinit var reco3_titleArray : java.util.ArrayList<String>
+    lateinit var reco3_posterArray : java.util.ArrayList<String>
+
+    lateinit var reco4_year : String
+    lateinit var reco4_titleArray : ArrayList<String>
+    lateinit var reco4_posterArray : ArrayList<String>
+
+//    lateinit var reco5_titleArray : ArrayList<String>
+//    lateinit var reco5_posterArray : ArrayList<String>
+
+    lateinit var reco6_titleArray : ArrayList<String>
+    lateinit var reco6_posterArray : ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,32 +89,103 @@ class AddreviewActivity : AppCompatActivity() {
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
 
-        // 검색 페이지에서 전달받은 인텐트 데이터 확인
-        if (intent.hasExtra("user_id")&&intent.hasExtra("movie_title")) {
-            Log.d("WatchAloneActivity", "검색에서 받아온 id : $id , movie title : $movie_title")
+        id = intent.getStringExtra("user_id").toString()
+        movie_title = intent.getStringExtra("movie_title").toString()
+        genres = intent.getStringExtra("genres").toString()
+        poster = intent.getStringExtra("poster").toString()
+
+        reco1_titleArray = intent.getSerializableExtra("reco1_titleArray") as ArrayList<String>
+        reco1_posterArray = intent.getSerializableExtra("reco1_posterArray") as ArrayList<String>
+
+        reco2_1_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_2_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_3_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_4_userId = intent.getStringExtra("reco2_1_userId").toString()
+        reco2_5_userId = intent.getStringExtra("reco2_1_userId").toString()
+
+        reco2_1_title = intent.getSerializableExtra("reco2_1_title") as ArrayList<String>
+        reco2_2_title = intent.getSerializableExtra("reco2_2_title") as ArrayList<String>
+        reco2_3_title = intent.getSerializableExtra("reco2_3_title") as ArrayList<String>
+        reco2_4_title = intent.getSerializableExtra("reco2_4_title") as ArrayList<String>
+        reco2_5_title = intent.getSerializableExtra("reco2_5_title") as ArrayList<String>
+
+        reco2_1_poster = intent.getSerializableExtra("reco2_1_poster") as ArrayList<String>
+        reco2_2_poster = intent.getSerializableExtra("reco2_2_poster") as ArrayList<String>
+        reco2_3_poster = intent.getSerializableExtra("reco2_3_poster") as ArrayList<String>
+        reco2_4_poster = intent.getSerializableExtra("reco2_4_poster") as ArrayList<String>
+        reco2_5_poster = intent.getSerializableExtra("reco2_5_poster") as ArrayList<String>
+
+        reco3_titleArray = intent.getSerializableExtra("reco3_titleArray") as ArrayList<String>
+        reco3_posterArray = intent.getSerializableExtra("reco3_posterArray") as ArrayList<String>
+
+        reco4_year = intent.getStringExtra("reco4_year").toString()
+        reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
+        reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
+
+//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
+//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
+
+        reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
+        reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
+
+        // 혼자보기 페이지에서 전달받은 인텐트 데이터 확인
+        if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")) {
+            Log.d("AddReviewActivity", "받아온 id : $id , movie title : $movie_title")
+            Log.d("AddReviewActivity", "받아온 genres : $genres , poster : $poster")
         } else {
-            Log.e("WatchAloneActivity", "가져온 데이터 없음")
+            Log.e("AddReviewActivity", "가져온 데이터 없음")
         }
 
-        // 감상했던 영화 정보 출력 및 불러오기
+        // 감상했던 영화 제목
         myTitle = findViewById<TextView>(R.id.title)
-        myPoster = findViewById<ImageView>(R.id.poster)
-
         myTitle.setText(movie_title)
 
-        var myUrl = "" // 서버에서 poster url 받아와야 함!! -- 수정 필요
+        // 영화 장르 - String으로 받아옴 >> 문자열 자르기
+        myGenres = findViewById<TextView>(R.id.genres)
+        genres = genres
+            .replace("[","")
+            .replace("]", "")
+            .replace("'", "")
+            .replace(" ","")
+        println("부호,공백 > 제거 : $genres") // Action,Fantasy,Family
+
+        val arrGenres = genres.split(',') // 반점 기준 단어 분리
+        var result = ""
+        val size = arrGenres.size
+        println("장르 총 개수: $size")
+        for(i in 0 until size) { // i: 0 ~ (size-1)
+            if (i == (size-1)) { // 마지막이면 반점 추가 X
+                result += arrGenres[i]
+            } else {
+                result = result + arrGenres[i] + ", "
+            }
+            println("장르: $result")
+        }
+        myGenres.setText(result)
+
+        // 포스터
+        myPoster = findViewById<ImageView>(R.id.poster)
+        
+/*
         var result = "https://image.tmdb.org/t/p/w500"
         var image_task : URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL(result+myUrl)
+            url = URL(result + poster)
         }
         var bitmap : Bitmap = image_task.execute().get()
         myPoster.setImageBitmap(bitmap)
+*/
+        Glide.with(this)
+            .load("https://image.tmdb.org/t/p/w500" + poster) // 불러올 이미지 url
+            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+            .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+            .into(myPoster) // 이미지를 넣을 뷰
 
 
         // 별점 - 람다식을 사용하여 처리
         ratingBar.setOnRatingBarChangeListener{ ratingBar, rating, fromUser ->
             ratingBar.rating = rating
-            Toast.makeText(applicationContext, "별점: ${rating}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(applicationContext, "별점: ${rating}", Toast.LENGTH_SHORT).show()
         }
 
         // 로딩창 선언
@@ -88,11 +200,11 @@ class AddreviewActivity : AppCompatActivity() {
 
             var user_comment = comment.text.toString() // EditText 입력값을 텍스트로
 
-            // 현재 로그인하고 있는 사용자 아이디 (수정 필요) --수민 작성
-            //var userid = ""
-
             var map = HashMap<String, String>()
             map.put("id", id!!)
+            map.put("movieTitle", movie_title)
+            map.put("rating", ratingBar.rating.toString())
+            map.put("comment", user_comment)
 
             // val call = retrofitInterface.executeSceneAnalyze(map)
             val call = retrofitInterface.executeAddReview(map)
@@ -100,7 +212,6 @@ class AddreviewActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                     if (response.code() == 200) {
                         Toast.makeText(this@AddreviewActivity, "리뷰 보내기 성공", Toast.LENGTH_SHORT).show()
-                        // val result = response.body()
 
                         if(response.code() == 200) {
                             // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료
@@ -109,21 +220,57 @@ class AddreviewActivity : AppCompatActivity() {
                             var intent = Intent(applicationContext, ResultActivity::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("movie_title", movie_title)
-                            intent.putExtra("user_rating", ratingBar.rating)
-                            intent.putExtra("user_comment", user_comment)
+
+                            intent.putExtra("reco1_titleArray", reco1_titleArray)
+                            intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                            intent.putExtra("reco2_1_userId", reco2_1_userId)
+                            intent.putExtra("reco2_2_userId", reco2_2_userId)
+                            intent.putExtra("reco2_3_userId", reco2_3_userId)
+                            intent.putExtra("reco2_4_userId", reco2_4_userId)
+                            intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                            intent.putExtra("reco2_1_title", reco2_1_title)
+                            intent.putExtra("reco2_2_title", reco2_2_title)
+                            intent.putExtra("reco2_3_title", reco2_3_title)
+                            intent.putExtra("reco2_4_title", reco2_4_title)
+                            intent.putExtra("reco2_5_title", reco2_5_title)
+
+                            intent.putExtra("reco2_1_poster", reco2_1_poster)
+                            intent.putExtra("reco2_2_poster", reco2_2_poster)
+                            intent.putExtra("reco2_3_poster", reco2_3_poster)
+                            intent.putExtra("reco2_4_poster", reco2_4_poster)
+                            intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                            intent.putExtra("reco3_titleArray", reco3_titleArray)
+                            intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                            intent.putExtra("reco4_year", reco4_year)
+                            intent.putExtra("reco4_titleArray", reco4_titleArray)
+                            intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+//                            intent.putExtra("reco5_titleArray", reco5_titleArray)
+//                            intent.putExtra("reco5_posterArray", reco5_posterArray)
+
+                            intent.putExtra("reco6_titleArray", reco6_titleArray)
+                            intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                             startActivityForResult(intent, 0)
                         }
                     }
                     else if (response.code() == 400) {
-                        Toast.makeText(this@AddreviewActivity, "오류 발생", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this@AddreviewActivity, "오류 발생", Toast.LENGTH_LONG).show()
                     }
                 }
                 override fun onFailure(call: Call<Void?>, t: Throwable) {
-                    Toast.makeText(this@AddreviewActivity, t.message, Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this@AddreviewActivity, t.message, Toast.LENGTH_LONG).show()
                 }
             })
         }
+    }
 
+    override fun onBackPressed() { // 뒤로 가기 버튼 막기
+        //super.onBackPressed()
     }
 }
 

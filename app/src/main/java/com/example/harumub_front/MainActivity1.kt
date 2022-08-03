@@ -26,8 +26,10 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
     lateinit var drawer_view : NavigationView
     lateinit var btnRecord : Button
 
-    private val id = intent.getStringExtra("user_id")
-    private val name = intent.getStringExtra("user_name")
+//    private val id = intent.getStringExtra("user_id")
+//    private val name = intent.getStringExtra("user_name")
+    lateinit var id : String
+    lateinit var name : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,9 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
 
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
+
+        id = intent.getStringExtra("user_id").toString()
+        name = intent.getStringExtra("user_name").toString()
 
         // 로그인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("user_name")) {
@@ -67,8 +72,8 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
         // 감상하기 버튼
         btnRecord = findViewById(R.id.btnRecord)
         btnRecord.setOnClickListener { // 감상하기 버튼 클릭 시 영화 검색 페이지로 이동
-            //val intent = Intent(this, SearchActivity::class.java) // 영화 검색 페이지
-            val intent = Intent(this, MainActivity2::class.java) // 메인 2 페이지
+            val intent = Intent(this, SearchActivity::class.java) // 영화 검색 페이지
+//            val intent = Intent(this, MainActivity2::class.java) // 메인 2 페이지
             intent.putExtra("user_id", id)
             startActivity(intent)
         }
@@ -79,7 +84,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
             R.id.drawer_UserRecord -> {
                 // fragment manager 가져와서 fragment transaction 생성
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "사용자 기록보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, WatchListActivity::class.java)
                     intent.putExtra("user_id", id)
@@ -89,7 +94,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
             }
             R.id.drawer_WatchAlone -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "혼자 보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, SearchActivity::class.java)
                     intent.putExtra("user_id", id)
@@ -99,7 +104,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
             }
             R.id.drawer_WatchTogether -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "같이 보기", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, EnterActivity::class.java)
                     intent.putExtra("user_id", id)
@@ -109,7 +114,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
             }
             R.id.drawer_Help -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "도움말", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "도움말", Toast.LENGTH_SHORT).show()
 
                     var intent = Intent(applicationContext, HelpActivity::class.java)
                     startActivityForResult(intent, 0)
@@ -118,7 +123,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)

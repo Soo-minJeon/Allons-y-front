@@ -24,14 +24,14 @@ interface RetrofitInteface {
     @POST("/email")
     fun executeEmail(@Body map: HashMap<String, String>): Call<EmailResult?>?
 
-    @POST("/watchList")
-    fun executeWatchList(@Body map: HashMap<String, String>): Call<List<WatchListResult?>>?
+    @POST("/watchlist")
+    fun executeWatchList(@Body map: HashMap<String, String>): Call<WatchListResult?>?
 
     @POST("/watchresult")
     fun executeWatchResult(@Body map: HashMap<String, String>): Call<WatchResult?>?
 
     @POST("/enterroom")
-    fun executeEnterRoom(@Body map: HashMap<String, String>): Call<Void?>?
+    fun executeEnterRoom(@Body map: HashMap<String, String>): Call<EnterRoomResult?>?
 
     @POST("/recommend2")
     fun executeRecommend2(@Body map: HashMap<String, String>): Call<List<Recommend2Result?>>?
@@ -39,8 +39,15 @@ interface RetrofitInteface {
     @POST("/watchAloneStart")
     fun executeWatchAloneStart(@Body map: HashMap<String, String>): Call<Void?>?
 
+/*
     @POST("/watchAloneEnd")
     fun executeWatchAloneEnd(@Body map: HashMap<String, String>): Call<Void?>?
+*/
+    @POST("/watchAloneEnd")
+    fun executeWatchAloneEnd(@Body map: HashMap<String, String>): Call<WatchAloneMovie?>?
+
+    @POST("/watchTogether") // 캡처 및 감정 출력
+    fun executeWatchTogether(@Body map: HashMap<String, String>): Call<WatchTogether?>?
 
     @POST("addReview") // 추가: 리뷰 작성 후 버튼 클릭시 데이터 전달
     fun executeAddReview(@Body map: HashMap<String, String>): Call<Void?>?
@@ -50,4 +57,7 @@ interface RetrofitInteface {
 
     @POST("/watchImageCaptureEyetrack")
     fun executeWatchImageCaptureEyetrack(@Body map: HashMap<String, String>): Call<Void?>?
+
+    @POST("/getAllMovieList")
+    fun executeGetAllMovieList(@Body map: HashMap<String, String>): Call<SearchData?>?
 }

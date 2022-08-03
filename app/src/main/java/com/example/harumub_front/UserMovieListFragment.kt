@@ -45,8 +45,8 @@ class UserMovieListFragment : Fragment() {
         // 다른 사용자의 감상기록 RecyclerView와 RecommendAdapter1 연결
         layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        adapter = RecommendAdapter1()
-        recyclerView.adapter = adapter
+//        adapter = RecommendAdapter1()
+//        recyclerView.adapter = adapter
 
         return view
     }
