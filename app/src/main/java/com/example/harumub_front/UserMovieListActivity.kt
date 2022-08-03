@@ -65,9 +65,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     lateinit var reco4_titleArray : ArrayList<String>
     lateinit var reco4_posterArray : ArrayList<String>
 
-//    lateinit var reco5_titleArray : ArrayList<String>
-//    lateinit var reco5_posterArray : ArrayList<String>
-
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
 
@@ -120,9 +117,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         reco4_year = intent.getStringExtra("reco4_year").toString()
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
-
-//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
-//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
 
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
@@ -211,9 +205,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
-
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -258,9 +249,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             intent.putExtra("reco4_year", reco4_year)
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
 
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -307,9 +295,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
-
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -352,9 +337,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
-
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -391,9 +373,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     intent.putExtra("reco4_year", reco4_year)
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)

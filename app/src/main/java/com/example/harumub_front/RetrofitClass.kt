@@ -32,10 +32,11 @@ data class EmailResult(var code: String)
 
 data class WatchListResult(var title: ArrayList<String>, var poster: ArrayList<String>)
 
-data class WatchResult(var title: String, var poster : String, var genres: String,
+data class WatchResult(var date: String, var title: String, var poster : String, var genres: String,
                        var concentration: String, var highlight_time : String,
                        var emotion_count_array : List<Emotion>, var highlight_array: List<Highlight>,
-                       var rating : Float, var comment : String, var sleepingCount: Int)
+                       var rating : Float, var comment : String, var sleepingCount: Int,
+                       var remake : Boolean, var remakeTitle : String, var remakePoster : String)
 
 data class Emotion(val HAPPY : Int, val SAD : Int, val ANGRY : Int, val CONFUSED : Int,
                    val DISGUSTED : Int, val SURPRISED : Int, val FEAR : Int)

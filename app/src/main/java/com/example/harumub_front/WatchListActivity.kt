@@ -65,9 +65,6 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     lateinit var reco4_titleArray : ArrayList<String>
     lateinit var reco4_posterArray : ArrayList<String>
 
-//    lateinit var reco5_titleArray : ArrayList<String>
-//    lateinit var reco5_posterArray : ArrayList<String>
-
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
 
@@ -105,9 +102,6 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         reco4_year = intent.getStringExtra("reco4_year").toString()
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as java.util.ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as java.util.ArrayList<String>
-
-//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as java.util.ArrayList<String>
-//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as java.util.ArrayList<String>
 
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as java.util.ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as java.util.ArrayList<String>
@@ -180,7 +174,7 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         reco2_1_title, reco2_2_title, reco2_3_title, reco2_4_title, reco2_5_title,
                         reco2_1_poster, reco2_2_poster, reco2_3_poster, reco2_4_poster, reco2_5_poster,
                         reco3_titleArray, reco3_posterArray, reco4_year, reco4_titleArray, reco4_posterArray,
-                        reco6_titleArray, reco6_posterArray) //reco5_titleArray, reco5_posterArray,
+                        reco6_titleArray, reco6_posterArray)
                     recyclerView.adapter = adapter
 
                     //Toast.makeText(this@WatchListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()
@@ -241,9 +235,6 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
-
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -291,9 +282,6 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
-
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -339,9 +327,6 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
-
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -384,9 +369,6 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
-
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -423,9 +405,6 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     intent.putExtra("reco4_year", reco4_year)
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)

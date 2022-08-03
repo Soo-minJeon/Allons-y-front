@@ -179,7 +179,10 @@ class ResultActivity : AppCompatActivity() {
                     Log.d("감상 영화 정보 : ", "제목 : " + result!!.title
                         + " 장르 : " + result.genres + " 집중 : " + result.concentration
                         + " 하이라이트 시간 : " + result.highlight_time
-                        + " 별점 : " + result.rating + " 한줄평 : " + result.comment)
+                        + " 별점 : " + result.rating + " 한줄평 : " + result.comment
+                        + " 감상 날짜 : " + result.date
+                        + " 리메이크 여부 : " + result.remake + " 리메이크 작품 : " + result.remakeTitle
+                        + " 리메이크 포스터 : " + result.remakePoster)
 
                     // 감상했던 영화 정보 불러오기 - 제목
                     myTitle.text = result.title
@@ -357,7 +360,6 @@ class ResultActivity : AppCompatActivity() {
 //                    var path = "/data/data/com.example.harumub_front/img" // path 설정
 //                    var downloadFile = File(path + "/" + highlightUrl) // 설정한 path로 다운로드 파일 생성
                     downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
-
                 }
                 else if (response.code() == 400) {
                     //Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
