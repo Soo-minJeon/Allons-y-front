@@ -19,15 +19,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.HashMap
 
-class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class WatchListActivity : AppCompatActivity()
+//    , NavigationView.OnNavigationItemSelectedListener
+{
 
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<WatchListAdapter.ViewHolder>? = null
 
-    lateinit var main_this : androidx.drawerlayout.widget.DrawerLayout
-    lateinit var drawer_button : ImageButton
-    lateinit var recent_button: ImageButton
-    lateinit var drawer_view : NavigationView
+//    lateinit var main_this : androidx.drawerlayout.widget.DrawerLayout
+//    lateinit var drawer_button : ImageButton
+//    lateinit var recent_button: ImageButton
+//    lateinit var drawer_view : NavigationView
 
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInteface
@@ -195,7 +197,7 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         })
 
 
-        main_this = findViewById(R.id.main_drawer)
+ /*       main_this = findViewById(R.id.main_drawer)
         drawer_button = findViewById(R.id.drawer_button) // 드로어 열기(메뉴버튼)
         drawer_view = findViewById(R.id.drawer_view) // 드로어
         val drawerHeader = drawer_view.getHeaderView(0) // 드로어 헤더
@@ -298,9 +300,9 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             intent.putExtra("reco6_posterArray", reco6_posterArray)
 
             startActivity(intent)
-        }
+        }*/
     }
-
+/*
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행
         when(item.itemId){ // 드로어 메뉴 눌렸을 시 수행. 수정 필요
             R.id.drawer_UserRecord -> {
@@ -471,5 +473,5 @@ class WatchListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
         main_this.closeDrawers() // 네비게이션 뷰 닫기
         return false
-    }
+    }*/
 }

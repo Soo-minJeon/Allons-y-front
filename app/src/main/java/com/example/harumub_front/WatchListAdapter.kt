@@ -1,18 +1,13 @@
 package com.example.harumub_front
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import java.net.URL
 
 class WatchListAdapter(var id: String, var titles: ArrayList<String>, var posters: ArrayList<String>,
                        var reco1_titleArray: ArrayList<String>, var reco1_posterArray: ArrayList<String>,
@@ -79,7 +74,7 @@ class WatchListAdapter(var id: String, var titles: ArrayList<String>, var poster
                 //Toast.makeText(itemView.context, titles[position], Toast.LENGTH_LONG).show() // 영화 클릭 시 토스트 메시지
 
                 var movie_title = titles[position]
-                val intent = Intent(itemView.context, ResultActivity::class.java)
+                val intent = Intent(itemView.context, ResultActivity_ticket_front::class.java)
                 intent.putExtra("user_id", id)
                 intent.putExtra("movie_title", movie_title)
 

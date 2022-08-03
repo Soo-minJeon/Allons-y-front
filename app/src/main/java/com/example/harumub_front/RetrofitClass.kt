@@ -32,7 +32,7 @@ data class EmailResult(var code: String)
 
 data class WatchListResult(var title: ArrayList<String>, var poster: ArrayList<String>)
 
-data class WatchResult(var title: String, var poster : String, var genres: String,
+data class WatchResult(var date: String, var title: String, var poster : String, var genres: String,
                        var concentration: String, var highlight_time : String,
                        var emotion_count_array : List<Emotion>, var highlight_array: List<Highlight>,
                        var rating : Float, var comment : String, var sleepingCount: Int)

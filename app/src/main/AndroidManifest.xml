@@ -38,7 +38,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape"/>
         <activity android:name=".AddreviewActivity"/>
-        <activity android:name=".ResultActivity"/>
+        <activity android:name=".ResultActivity_ticket_front"/>
+        <activity android:name=".ResultActivity_ticket_back"/>
         <activity android:name=".MainActivity2"/>
         <activity android:name=".UserMovieListActivity"/>
         <activity android:name=".SplashActivity" android:exported="true">
