@@ -76,7 +76,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
-
+    
 
     lateinit var totalTicket : LinearLayout
     lateinit var myTitle : TextView
