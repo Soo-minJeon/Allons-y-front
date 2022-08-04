@@ -134,7 +134,7 @@
                         android:layout_marginBottom="16dp" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/top_Ten_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
@@ -164,24 +164,6 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/year_recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginBottom="16dp" />
-
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="리메이크 작품 추천"
-                        android:textSize="27dp"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/jua" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/remake_recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"

@@ -22,7 +22,6 @@ class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var t
                         var reco3_titleArray: ArrayList<String>, var reco3_posterArray: ArrayList<String>,
                         var reco4_year: String, var reco4_titleArray: ArrayList<String>, var reco4_posterArray: ArrayList<String>,
                         var reco6_titleArray: ArrayList<String>, var reco6_posterArray: ArrayList<String>):
-                        // var reco5_titleArray: ArrayList<String>, var reco5_posterArray: ArrayList<String>,
     RecyclerView.Adapter<RecommendAdapter2.ViewHolder>() {
 
     lateinit var reco2_userId : String
@@ -102,9 +101,6 @@ class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var t
                 intent.putExtra("reco4_year", reco4_year)
                 intent.putExtra("reco4_titleArray", reco4_titleArray)
                 intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//                intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                 intent.putExtra("reco6_titleArray", reco6_titleArray)
                 intent.putExtra("reco6_posterArray", reco6_posterArray)

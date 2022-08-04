@@ -112,10 +112,7 @@ class LoginActivity : AppCompatActivity() {
                         val reco4_titleArray = reco4.titleArray // 추천 4의 추천 영화 제목 리스트
                         val reco4_posterArray = reco4.posterArray // 추천 4의 추천 영화 포스터 링크 리스트
 
-                        // 리메이크 작품 추천 >> 결과 페이지
-//                        val reco5 = result.reco5 // 리메이크 작품 추천
-//                        val reco5_titleArray = reco5.titleArray // 추천 5의 추천 영화 제목 리스트
-//                        val reco5_posterArray = reco5.posterArray // 추천 5의 추천 영화 포스터 링크 리스트
+                        // 리메이크 작품 추천(reco5) >> 결과 페이지
 
                         val reco6 = result.reco6 // 고전 TOP 10
                         val reco6_titleArray = reco6.titleArray // 추천 6의 추천 영화 제목 리스트
@@ -153,9 +150,6 @@ class LoginActivity : AppCompatActivity() {
                         intent.putExtra("reco4_year", reco4_year)
                         intent.putExtra("reco4_titleArray", reco4_titleArray)
                         intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//                        intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                        intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                         intent.putExtra("reco6_titleArray", reco6_titleArray)
                         intent.putExtra("reco6_posterArray", reco6_posterArray)

@@ -19,6 +19,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
+import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -73,15 +74,9 @@ class ResultActivity_ticket_back : AppCompatActivity() {
     lateinit var reco4_titleArray : ArrayList<String>
     lateinit var reco4_posterArray : ArrayList<String>
 
-//    private var layoutManager5: RecyclerView.LayoutManager? = null
-//    private var adapter5: RecyclerView.Adapter<RecommendAdapter5.ViewHolder>? = null
-
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
-
-    private var layoutManager6: RecyclerView.LayoutManager? = null
-    private var adapter6: RecyclerView.Adapter<RecommendAdapter6.ViewHolder>? = null
-
+    
 
     lateinit var totalTicket : LinearLayout
     lateinit var myTitle : TextView
@@ -141,9 +136,6 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
 
-//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
-//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
-
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
 
@@ -201,18 +193,20 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         map.put("id", id)
         map.put("movieTitle", movie_title)
 
-
         val call = retrofitInterface.executeWatchResult(map)
         call!!.enqueue(object : Callback<WatchResult?> {
             override fun onResponse(call: Call<WatchResult?>, response: Response<WatchResult?>) {
                 if (response.code() == 200) {
+                    //Toast.makeText(this@ResultActivity, "결과 출력 성공", Toast.LENGTH_SHORT).show()
 
                     val result = response.body()
-
                     Log.d("감상 영화 정보 : ", "제목 : " + result_title
-                            + " 장르 : " + result_genres + " 집중 : " + result_concentration
-                            + " 하이라이트 시간 : " + result_highlight_time
-                            + " 별점 : " + result_rating + " 한줄평 : " + result_comment)
+                        + " 장르 : " + result_genres + " 집중 : " + result_concentration
+                        + " 하이라이트 시간 : " + result_highlight_time
+                        + " 별점 : " + result_rating + " 한줄평 : " + result_comment
+                        + " 감상 날짜 : " + result!!.date
+                        + " 리메이크 여부 : " + result.remake + " 리메이크 작품 : " + result.remakeTitle
+                        + " 리메이크 포스터 : " + result.remakePoster)
 
                     // 감상했던 영화 정보 불러오기 - 제목
                     myTitle.text = result_title
@@ -244,7 +238,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                     myHlTime.text = result_highlight_time + "s(초)"
 
                     // 영화 포스터 출력 - 웹에서 url로 가져오기
-//        var posterUrl = result_poster
+//                    var posterUrl = result_poster
 /*
                     var result_url = "https://image.tmdb.org/t/p/w500"
                     var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
@@ -253,12 +247,14 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                     var bitmap: Bitmap = image_task.execute().get()
                     myPoster.setImageBitmap(bitmap)
 */
-//                    Glide.with(applicationContext)
-//                        .load("https://image.tmdb.org/t/p/w500" + posterUrl) // 불러올 이미지 url
-//                        .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
-//                        .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
-//                        .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
-//                        .into(myPoster) // 이미지를 넣을 뷰
+/*
+                    Glide.with(applicationContext)
+                        .load("https://image.tmdb.org/t/p/w500" + posterUrl) // 불러올 이미지 url
+                        .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                        .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                        .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+                        .into(myPoster) // 이미지를 넣을 뷰
+*/
 
                     // 입력했던 별점, 한줄평 값으로 초기화
                     myRating.rating = result_rating
@@ -384,13 +380,12 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                     // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
                     var highlightUrl = id + "_" + movie_title + "_" + result_highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
 //                    var highlightUrl = id + "_" + highlight_movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
-                    //                downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
+    //                downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
 
-                    var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl)
+                    var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
 //                    var path = "/data/data/com.example.harumub_front/img" // path 설정
 //                    var downloadFile = File(path + "/" + highlightUrl) // 설정한 path로 다운로드 파일 생성
                     downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
-
                 }
                 else if (response.code() == 400) {
                     //Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
@@ -402,47 +397,14 @@ class ResultActivity_ticket_back : AppCompatActivity() {
             }
         })
 
-/*        // 메인으로 돌아가는 버튼
-//        btnMain.setOnClickListener {
-//            var intent = Intent(
-//                applicationContext,
-//                MainActivity2::class.java
-//            ) // 두번째 인자에 이동할 액티비티
-//            intent.putExtra("user_id", id)
-//
-//            intent.putExtra("reco1_titleArray", reco1_titleArray)
-//            intent.putExtra("reco1_posterArray", reco1_posterArray)
-//
-//            intent.putExtra("reco2_1_userId", reco2_1_userId)
-//            intent.putExtra("reco2_2_userId", reco2_2_userId)
-//            intent.putExtra("reco2_3_userId", reco2_3_userId)
-//            intent.putExtra("reco2_4_userId", reco2_4_userId)
-//            intent.putExtra("reco2_5_userId", reco2_5_userId)
-//
-//            intent.putExtra("reco2_1_title", reco2_1_title)
-//            intent.putExtra("reco2_2_title", reco2_2_title)
-//            intent.putExtra("reco2_3_title", reco2_3_title)
-//            intent.putExtra("reco2_4_title", reco2_4_title)
-//            intent.putExtra("reco2_5_title", reco2_5_title)
-//
-//            intent.putExtra("reco2_1_poster", reco2_1_poster)
-//            intent.putExtra("reco2_2_poster", reco2_2_poster)
-//            intent.putExtra("reco2_3_poster", reco2_3_poster)
-//            intent.putExtra("reco2_4_poster", reco2_4_poster)
-//            intent.putExtra("reco2_5_poster", reco2_5_poster)
-//
-//            intent.putExtra("reco3_titleArray", reco3_titleArray)
-//            intent.putExtra("reco3_posterArray", reco3_posterArray)
-//
-//            startActivityForResult(intent, 0)
-//        } */
-
-        // 리스트 목록으로 이동하는 버튼
-        btnList.setOnClickListener {
+/*
+        // 메인으로 돌아가는 버튼
+        btnMain.setOnClickListener {
             var intent = Intent(
                 applicationContext,
-                WatchListActivity::class.java
+                MainActivity2::class.java
             ) // 두번째 인자에 이동할 액티비티
+            
             intent.putExtra("user_id", id)
 
             intent.putExtra("reco1_titleArray", reco1_titleArray)
@@ -473,18 +435,59 @@ class ResultActivity_ticket_back : AppCompatActivity() {
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
+            intent.putExtra("reco6_titleArray", reco6_titleArray)
+            intent.putExtra("reco6_posterArray", reco6_posterArray)
+
+            startActivityForResult(intent, 0)
+        }
+*/
+
+        // 리스트 목록으로 이동하는 버튼
+        btnList.setOnClickListener {
+            var intent = Intent(
+                applicationContext,
+                WatchListActivity::class.java
+            ) // 두번째 인자에 이동할 액티비티
+
+            intent.putExtra("user_id", id)
+
+            intent.putExtra("reco1_titleArray", reco1_titleArray)
+            intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+            intent.putExtra("reco2_1_userId", reco2_1_userId)
+            intent.putExtra("reco2_2_userId", reco2_2_userId)
+            intent.putExtra("reco2_3_userId", reco2_3_userId)
+            intent.putExtra("reco2_4_userId", reco2_4_userId)
+            intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+            intent.putExtra("reco2_1_title", reco2_1_title)
+            intent.putExtra("reco2_2_title", reco2_2_title)
+            intent.putExtra("reco2_3_title", reco2_3_title)
+            intent.putExtra("reco2_4_title", reco2_4_title)
+            intent.putExtra("reco2_5_title", reco2_5_title)
+
+            intent.putExtra("reco2_1_poster", reco2_1_poster)
+            intent.putExtra("reco2_2_poster", reco2_2_poster)
+            intent.putExtra("reco2_3_poster", reco2_3_poster)
+            intent.putExtra("reco2_4_poster", reco2_4_poster)
+            intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+            intent.putExtra("reco3_titleArray", reco3_titleArray)
+            intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+            intent.putExtra("reco4_year", reco4_year)
+            intent.putExtra("reco4_titleArray", reco4_titleArray)
+            intent.putExtra("reco4_posterArray", reco4_posterArray)
 
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
+
             startActivityForResult(intent, 0)
         }
     }
 
     private fun ticketClick(): View.OnClickListener? {
         return View.OnClickListener() {
-
 
             totalTicket.animate().rotationY(180f).setDuration(300).withEndAction{
                 totalTicket.translationY = 0f
@@ -519,9 +522,6 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                 intent.putExtra("reco4_year", reco4_year)
                 intent.putExtra("reco4_titleArray", reco4_titleArray)
                 intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                 intent.putExtra("reco6_titleArray", reco6_titleArray)
                 intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -602,8 +602,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 */
 
     fun downloadWithTransferUtility(fileName: String?, file: File?) {
-        val awsCredentials: AWSCredentials =
-            BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
+        val awsCredentials: AWSCredentials = BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
         val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
 
         val transferUtility = TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
@@ -619,11 +618,11 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
                     if (file != null) {
                         // 감상결과 페이지 하이라이트 이미지 설정
-                        photoBitmap = BitmapFactory.decodeFile(file!!.absolutePath)
+                        photoBitmap = BitmapFactory.decodeFile(file!!.absolutePath) // getString(R.string.FILE_PATH)
                         myHighlight.setImageBitmap(photoBitmap)
                         Log.d("하이라이트 이미지 ", "설정 완료")
 
-                        Log.d("파일 경로 : ", file.absolutePath)
+                        Log.d("파일 경로 : ", file.absolutePath) // getString(R.string.FILE_PATH)
 
                         // S3 Bucket에서 file 다운로드 후 Emulator에서 삭제
                         file.delete()
