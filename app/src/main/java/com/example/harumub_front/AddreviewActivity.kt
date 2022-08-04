@@ -3,11 +3,8 @@ package com.example.harumub_front
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,7 +13,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.github.ybq.android.spinkit.sprite.Sprite
@@ -25,9 +21,7 @@ import kotlinx.android.synthetic.main.fragment_addreview.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.net.URL
 import java.util.HashMap
-import kotlin.properties.Delegates
 
 class AddreviewActivity : AppCompatActivity() {
 
@@ -211,7 +205,7 @@ class AddreviewActivity : AppCompatActivity() {
                             // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료
                             progressDialog.dismiss()
 
-                            var intent = Intent(applicationContext, ResultActivity::class.java)
+                            var intent = Intent(applicationContext, ResultActivity_ticket_front::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("movie_title", movie_title)
 
