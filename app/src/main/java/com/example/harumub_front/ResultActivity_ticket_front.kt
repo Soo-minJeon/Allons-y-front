@@ -17,6 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import kotlin.properties.Delegates
 
 
 class ResultActivity_ticket_front : AppCompatActivity() {
@@ -56,9 +57,6 @@ class ResultActivity_ticket_front : AppCompatActivity() {
     lateinit var reco4_titleArray : ArrayList<String>
     lateinit var reco4_posterArray : ArrayList<String>
 
-    //    lateinit var reco5_titleArray : ArrayList<String>
-//    lateinit var reco5_posterArray : ArrayList<String>
-
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
 
@@ -74,9 +72,12 @@ class ResultActivity_ticket_front : AppCompatActivity() {
     lateinit var result_poster : String
     lateinit var result_genres : String
     lateinit var result_concentration : String
-    lateinit var result_highlighttime :String
+    lateinit var result_highlight_time :String
     lateinit var result_rating : Number
     lateinit var result_comment : String
+    var result_isRemaked by Delegates.notNull<Boolean>()
+    lateinit var result_remake_title : String
+    lateinit var result_remake_poster : String
 
     // ResultActivity_ticket_back에 전달해줄 배경 색
     lateinit var result_background_color : Number
@@ -94,10 +95,13 @@ class ResultActivity_ticket_front : AppCompatActivity() {
         result_poster = ""
         result_genres = ""
         result_concentration = ""
-        result_highlighttime = ""
+        result_highlight_time = ""
         result_rating = 0
         result_comment = ""
         result_background_color = 0
+        result_isRemaked = false
+        result_remake_title = ""
+        result_remake_poster = ""
 
         id = intent.getStringExtra("user_id").toString()
         movie_title = intent.getStringExtra("movie_title").toString()
@@ -129,9 +133,6 @@ class ResultActivity_ticket_front : AppCompatActivity() {
         reco4_year = intent.getStringExtra("reco4_year").toString()
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as ArrayList<String>
-
-//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as ArrayList<String>
-//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as ArrayList<String>
 
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
@@ -174,7 +175,10 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                     Log.d("감상 영화 정보 : ", "제목 : " + result!!.title
                             + " 장르 : " + result.genres + " 집중 : " + result.concentration
                             + " 하이라이트 시간 : " + result.highlight_time
-                            + " 별점 : " + result.rating + " 한줄평 : " + result.comment)
+                            + " 별점 : " + result.rating + " 한줄평 : " + result.comment
+                            + " 감상 날짜 : " + result.date
+                            + " 리메이크 여부 : " + result.remake + " 리메이크 작품 : " + result.remakeTitle
+                            + " 리메이크 포스터 : " + result.remakePoster)
 
                     // 서버에서 받아온 데이터 초기화
                     result_date = result.date
@@ -182,9 +186,12 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                     result_poster = result.poster
                     result_genres = result.genres
                     result_concentration = result.concentration
-                    result_highlighttime = result.highlight_time
+                    result_highlight_time = result.highlight_time
                     result_rating = result.rating
                     result_comment = result.comment
+                    result_isRemaked = result.remake
+                    result_remake_title = result.remakeTitle
+                    result_remake_poster = result.remakePoster
 
 
                     // 감상했던 영화 정보 불러오기 - 제목
@@ -281,9 +288,6 @@ class ResultActivity_ticket_front : AppCompatActivity() {
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
-
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -328,9 +332,6 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                 intent.putExtra("reco4_titleArray", reco4_titleArray)
                 intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
-
                 intent.putExtra("reco6_titleArray", reco6_titleArray)
                 intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -339,9 +340,12 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                 intent.putExtra("poster", result_poster)
                 intent.putExtra("genres", result_genres)
                 intent.putExtra("concentration", result_concentration)
-                intent.putExtra("highlight_time", result_highlighttime)
+                intent.putExtra("highlight_time", result_highlight_time)
                 intent.putExtra("rating", result_rating)
                 intent.putExtra("comment", result_comment)
+                intent.putExtra("remake", result_isRemaked)
+                intent.putExtra("remakeTitle", result_remake_title)
+                intent.putExtra("remakePoster", result_remake_poster)
 
                 intent.putExtra("background_color", result_background_color)
 

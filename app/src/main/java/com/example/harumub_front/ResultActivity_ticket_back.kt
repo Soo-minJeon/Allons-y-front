@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -94,6 +95,9 @@ class ResultActivity_ticket_back : AppCompatActivity() {
     lateinit var result_highlight_time :String
     var result_rating by Delegates.notNull<Float>()
     lateinit var result_comment : String
+    var result_isRemaked by Delegates.notNull<Boolean>()
+    lateinit var result_remake_title : String
+    lateinit var result_remake_poster : String
     var result_background_color by Delegates.notNull<Int>()
 
     var defaultImage = R.drawable.default_poster
@@ -148,6 +152,9 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         result_highlight_time = intent.getStringExtra("highlight_time").toString()
         result_rating = intent.getFloatExtra("rating", 0.0f)!!.toFloat()
         result_comment = intent.getStringExtra("comment").toString()
+        result_isRemaked = intent.getBooleanExtra("remake", false)
+        result_remake_title = intent.getStringExtra("remakeTitle").toString()
+        result_remake_poster = intent.getStringExtra("remakePoster").toString()
 
         result_background_color = intent.getIntExtra("background_color", 0).toInt()
 
@@ -179,6 +186,11 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
         var myChart = findViewById<LineChart>(R.id.chart)
         myHighlight = findViewById<ImageView>(R.id.img_highlight)
+        val myHighlightLayoutParams = myHighlight.layoutParams as ViewGroup.MarginLayoutParams
+
+        var remakeLayout = findViewById<LinearLayout>(R.id.remake_movie_layout)
+        var remakeTitle = findViewById<TextView>(R.id.remake_movie_title)
+        var remakePoster = findViewById<ImageView>(R.id.remake_movie_poster)
 
         totalTicket = findViewById(R.id.total_ticket)
         totalTicket.setOnClickListener(ticketClick())
@@ -204,9 +216,9 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                         + " 장르 : " + result_genres + " 집중 : " + result_concentration
                         + " 하이라이트 시간 : " + result_highlight_time
                         + " 별점 : " + result_rating + " 한줄평 : " + result_comment
-                        + " 감상 날짜 : " + result!!.date
-                        + " 리메이크 여부 : " + result.remake + " 리메이크 작품 : " + result.remakeTitle
-                        + " 리메이크 포스터 : " + result.remakePoster)
+                        + " 감상 날짜 : " + result_date
+                        + " 리메이크 여부 : " + result_isRemaked + " 리메이크 작품 : " + result_remake_title
+                        + " 리메이크 포스터 : " + result_remake_poster)
 
                     // 감상했던 영화 정보 불러오기 - 제목
                     myTitle.text = result_title
@@ -386,6 +398,28 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 //                    var path = "/data/data/com.example.harumub_front/img" // path 설정
 //                    var downloadFile = File(path + "/" + highlightUrl) // 설정한 path로 다운로드 파일 생성
                     downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
+
+                    if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
+                        remakeLayout.setVisibility(View.VISIBLE) // 리메이크 작품 레이아웃 보이도록 설정
+
+                        remakeTitle.text = result_remake_title
+                        Glide.with(applicationContext)
+                            .load("https://image.tmdb.org/t/p/w500" + result_remake_poster) // 불러올 이미지 url
+                            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                            .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+                            .into(remakePoster) // 이미지를 넣을 뷰
+                    }
+                    else { // 리메이크 작품이 없을 경우
+                        remakeLayout.setVisibility(View.GONE) // 리메이크 작품 레이아웃 아예 없는 것처럼 설정  // View.INVISIBLE : 레이아웃 공간은 있지만 보이지 않도록 설정
+
+                        var value = 50
+                        var displayMetrics = resources.displayMetrics
+                        var dp = Math.round(value * displayMetrics.density) // 단위 dp로 변환
+
+                        myHighlightLayoutParams.bottomMargin = dp // 하이라이트 이미지 layout_marginBottom 설정
+                        myHighlight.layoutParams = myHighlightLayoutParams
+                    }
                 }
                 else if (response.code() == 400) {
                     //Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
