@@ -22,11 +22,12 @@ import kotlinx.android.synthetic.main.dialog_entercode.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.ArrayList
 import java.util.HashMap
 
 class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     lateinit var enter_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton
@@ -99,7 +100,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id")) {
-            Log.d("EnterActivity", "메인에서 받아온 id : $id")
+            Log.e("EnterActivity", "메인에서 받아온 id : $id")
         } else {
             Log.e("EnterActivity", "가져온 데이터 없음")
         }
@@ -121,11 +122,43 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         recent_button.setOnClickListener{
             val intent = Intent(this, WatchListActivity::class.java)
             intent.putExtra("user_id", id)
+            intent.putExtra("user_id", id)
+
+            intent.putExtra("reco1_titleArray", reco1_titleArray)
+            intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+            intent.putExtra("reco2_1_userId", reco2_1_userId)
+            intent.putExtra("reco2_2_userId", reco2_2_userId)
+            intent.putExtra("reco2_3_userId", reco2_3_userId)
+            intent.putExtra("reco2_4_userId", reco2_4_userId)
+            intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+            intent.putExtra("reco2_1_title", reco2_1_title)
+            intent.putExtra("reco2_2_title", reco2_2_title)
+            intent.putExtra("reco2_3_title", reco2_3_title)
+            intent.putExtra("reco2_4_title", reco2_4_title)
+            intent.putExtra("reco2_5_title", reco2_5_title)
+
+            intent.putExtra("reco2_1_poster", reco2_1_poster)
+            intent.putExtra("reco2_2_poster", reco2_2_poster)
+            intent.putExtra("reco2_3_poster", reco2_3_poster)
+            intent.putExtra("reco2_4_poster", reco2_4_poster)
+            intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+            intent.putExtra("reco3_titleArray", reco3_titleArray)
+            intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+            intent.putExtra("reco4_year", reco4_year)
+            intent.putExtra("reco4_titleArray", reco4_titleArray)
+            intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+            intent.putExtra("reco6_titleArray", reco6_titleArray)
+            intent.putExtra("reco6_posterArray", reco6_posterArray)
             startActivity(intent)
         }
 
         // #1. 방 생성 버튼 - 방 코드 생성 및 자동 복사 > 방 입장
-        createNewroom.setOnClickListener{
+        createNewroom.setOnClickListener {
             val map = HashMap<String, String>()
             map.put("id", id) // map["id"] = id
             map.put("role", "publisher")
@@ -138,7 +171,8 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                         // 알림창 다이얼로그 띄우기
                         val dig = AlertDialog.Builder(this@EnterActivity)
-                        val dialogView = View.inflate(this@EnterActivity, R.layout.dialog_entercode_copy, null)
+                        val dialogView =
+                            View.inflate(this@EnterActivity, R.layout.dialog_entercode_copy, null)
                         message = dialogView.findViewById(R.id.myEnterCode)
                         message.text = result!!.roomCode
                         dig.setView(dialogView)
@@ -146,17 +180,28 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         // 다이얼로그 확인 버튼 클릭
                         dig.setPositiveButton("확인") { dialog, which ->
                             // 초대코드 클립보드에 자동 복사
-                            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager // 클립보드 매니저 호출
-                            val clip : ClipData = ClipData.newPlainText("roomCode", result.roomCode) // roomCode 이름표로 값 복사하여 저장
+                            val clipboardManager =
+                                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager // 클립보드 매니저 호출
+                            val clip: ClipData = ClipData.newPlainText(
+                                "roomCode",
+                                result.roomCode
+                            ) // roomCode 이름표로 값 복사하여 저장
                             clipboardManager.setPrimaryClip(clip)
 
-                            Toast.makeText(this@EnterActivity, "초대 코드 클립보드에 복사 완료!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@EnterActivity,
+                                "초대 코드 클립보드에 복사 완료!",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                             // 호스트로 방 입장
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", result.roomCode)
-                            intent.putExtra("roomToken", result.roomToken)
+                            //intent.putExtra("roomToken", result.roomToken)
+                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+                            intent.putExtra("role", "publisher")
+                            intent.putExtra("user_id", id)
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -182,26 +227,29 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             intent.putExtra("reco4_posterArray", reco4_posterArray)
                             intent.putExtra("reco6_titleArray", reco6_titleArray)
                             intent.putExtra("reco6_posterArray", reco6_posterArray)
-                            // startActivityForResult(intent, 0)
                             startActivity(intent)
-                            Toast.makeText(this@EnterActivity,
-                                "방 코드 [" + result.roomCode + "]에 HOST로 입장합니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@EnterActivity,
+                                "방 코드 [" + result.roomCode + "]에 HOST로 입장합니다.", Toast.LENGTH_SHORT
+                            ).show()
                         }
                         dig.show()
-                    }
-                    else if (response.code() == 400) {
+                    } else if (response.code() == 400) {
                         Toast.makeText(this@EnterActivity, "정의되지 않음", Toast.LENGTH_LONG).show()
                     }
                 }
+
                 override fun onFailure(call: Call<MakeRoomResult?>, t: Throwable) {
-                    Toast.makeText(this@EnterActivity, t.message,
-                        Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@EnterActivity, t.message,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             })
         }
 
         // #2. 방 입장 버튼 - 참가자가 다이얼로그에 방 코드 입력 후 방 입장
-        writeCode.setOnClickListener() { // 입장 버튼 클릭 시 다이얼로그 띄워 줌
+        writeCode.setOnClickListener() { // 초대코드 입장 버튼 클릭 시 다이얼로그 띄워 줌
             val dig = AlertDialog.Builder(this)
             val dialogView = View.inflate(this, R.layout.dialog_entercode, null)
             dig.setView(dialogView)
@@ -230,6 +278,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", getroomCode)
                             intent.putExtra("roomToken", result?.roomToken)
+                            intent.putExtra("role", "subscriber")
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -255,6 +304,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             intent.putExtra("reco4_posterArray", reco4_posterArray)
                             intent.putExtra("reco6_titleArray", reco6_titleArray)
                             intent.putExtra("reco6_posterArray", reco6_posterArray)
+
                             // startActivityForResult(intent, 0)
                             startActivity(intent)
                         }
@@ -399,9 +449,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     call!!.enqueue(object : Callback<Void?> {
                         override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                             if (response.code() == 200) {
-                                val result = response.body()
-
-                                var intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
+                                val intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
 
                                 Toast.makeText(this@EnterActivity, "로그아웃합니다..",
                                     Toast.LENGTH_LONG).show()

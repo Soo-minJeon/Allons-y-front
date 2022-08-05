@@ -18,7 +18,7 @@ import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() , TextWatcher {
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface: RetrofitInteface
+    private lateinit var retrofitInterface: RetrofitInterface
 
     var recyclerView: RecyclerView? = null
     var editText: EditText? = null

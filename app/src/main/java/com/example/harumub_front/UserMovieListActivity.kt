@@ -11,9 +11,8 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main2.*
-import kotlinx.android.synthetic.main.activity_main2.recyclerView
-import kotlinx.android.synthetic.main.fragment_user_movie_list.*
+import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.activity_user_movie_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -69,11 +68,11 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     lateinit var reco6_posterArray : ArrayList<String>
 
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_user_movie_list)
+        setContentView(R.layout.activity_user_movie_list)
 
         // 유사 사용자
         reco2_userId = intent.getStringExtra("reco2_userId").toString() // 유사 사용자 아이디
@@ -83,7 +82,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         // RecommendAdapter2에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("reco2_userId") && intent.hasExtra("reco2_titleList") && intent.hasExtra("reco2_posterList")) {
             Log.d("UserMovieListActivity", "추천2에서 받아온 userId : " + reco2_userId
-                    + "titleList : " + reco2_titleList + "posterList" + reco2_posterList)
+                    + "\ntitleList : " + reco2_titleList + "\nposterList" + reco2_posterList)
         } else {
             Log.e("UserMovieListActivity", "가져온 데이터 없음")
         }
@@ -219,7 +218,7 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         // 메인으로 돌아가는 버튼
         list2main.setOnClickListener{
-            val intent = Intent(this, MainActivity2::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("user_id", id)
 
             intent.putExtra("reco1_titleArray", reco1_titleArray)

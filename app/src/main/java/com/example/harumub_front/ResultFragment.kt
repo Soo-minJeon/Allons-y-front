@@ -20,9 +20,9 @@ class ResultFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
-    private lateinit var adapter : LogAdapter
+    //private lateinit var adapter : LogAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

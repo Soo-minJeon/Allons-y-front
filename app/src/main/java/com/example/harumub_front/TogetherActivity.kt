@@ -4,8 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Environment
@@ -16,35 +14,34 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.amazonaws.util.DateUtils.format
-//import com.example.harumub_front.layout.GridVideoViewContainer
-//import com.example.harumub_front.layout.RecyclerItemClickListener
-//import com.example.harumub_front.model.User
-//import io.agora.rtc.Constants
+import androidx.core.content.FileProvider
+import com.amazonaws.auth.AWSCredentials
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferNetworkLossHandler
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
 import io.agora.rtc.IRtcEngineEventHandler
 import io.agora.rtc.RtcEngine
 import io.agora.rtc.video.VideoCanvas
 import io.agora.rtc.video.VideoEncoderConfiguration
-import kotlinx.android.synthetic.main.activity_video_chat_view.*
-import okhttp3.internal.http.HttpDate.format
+import kotlinx.android.synthetic.main.activity_watch_together.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.Exception
 import java.lang.RuntimeException
 import java.util.*
-
-import java.io.File // 캡처
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.String.format
-import java.text.DateFormat
+import java.io.File
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 // 1:1 영상통화
 class TogetherActivity : AppCompatActivity() {
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     // 현재 로그인하고 있는 사용자 아이디, 이름
     lateinit var id : String
@@ -90,16 +87,13 @@ class TogetherActivity : AppCompatActivity() {
         }
     }
 
-    lateinit var bitmap : Bitmap
-    lateinit var canvas: Canvas
-    lateinit var fileScreenshot : File
-    var outputStream: FileOutputStream? = null
-    lateinit var captureView : View
+    private var isChannelActivate = false
+    lateinit var emoji1 : ImageView
+    lateinit var emoji2 : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_watch_together) // 상하 배치
-        setContentView(R.layout.activity_video_chat_view) // 우측상단 작게 배치
+        setContentView(R.layout.activity_watch_together)
 
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
@@ -196,67 +190,116 @@ class TogetherActivity : AppCompatActivity() {
         Log.e("TogetherActivity", "로컬 사용자 비디오 설정 완료")
     }
     // #4
-    // private fun joinChannel() {
     private fun joinChannel(roomCode: String, roomToken: String) {
-        // 토큰을 생성하는 데 사용되는 채널 이름에 대해서만 유효한 토큰 사용!!!
-        // uid 에러: java.lang.SecurityException: getSerial: The user 10135 does not meet the requirements to access device identifiers.
-        // => GUID로 대체도 안 될듯
-        // uniqueID = UUID.randomUUID().toString()                     uid: 지정해도 getSerial 해결X
         mRtcEngine!!.joinChannel(roomToken, roomCode, null, 0) // uid 명시X > 자동 생성
 
         Log.e("TogetherActivity", "채널 참가 완료")
         verifyStoragePermission(this) // 캡처 관련 권한 설정
-        // captureScreen() // 임의 화면 캡처 - 수정 필요
-    }
-    // 화면 캡처 - 수정 필요
-    fun captureScreen() {
-        // 경로 1
-        val now = SimpleDateFormat("yyyyMMdd_hh:mm:ss").format(Date(System.currentTimeMillis()))
-        val mPath = cacheDir.absolutePath+"/$now.jpg"
-        // 경로 2
-        val dirPath : String = Environment.getExternalStorageDirectory().toString()
-        var path = dirPath + "/$id-$now.jpeg"
 
-        // var bitmap: Bitmap? = null
-        captureView = window.decorView.rootView	//캡처할 뷰
+        isChannelActivate = true
+        var time = 0
 
-        bitmap = Bitmap.createBitmap(captureView.width, captureView.height, Bitmap.Config.ARGB_8888)
-        // val canvas = Canvas(bitmap)
-        canvas = Canvas(bitmap)
-        captureView.draw(canvas)
+        // captureScreen("together", roomCode+"_"+time+".jpg", id, roomCode, time.toString())
 
-        // val imageFile = File(mPath)
-        // val outputStream = FileOutputStream(imageFile)
-        fileScreenshot = File(
-            this.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            Calendar.getInstance().getTime().toString()+".jpg"
-        )
-        outputStream = null
+        while(isChannelActivate) { // 채널이 생성되고 활성화되어 있는 동안 계속 캡처 및 감정 출력
+            // 캡처하기                     // s3 버킷 이름 /   파일 이름    "_"+id+     / user_id / channelName / time
+            captureScreen("together", roomCode+"_"+time+".jpg", id, roomCode, time.toString())
 
-        try {
-            outputStream = FileOutputStream(fileScreenshot)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.use {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                outputStream?.flush()
-                // outputStream.close()
-            }
-            // if(bitmap == null) { return null }
-            // Log.d("TogetherActivity", "캡처본 없음")
-            // return mPath
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
+            val map = HashMap<String, String>()
+            map.put("id", id)
+            map.put("roomCode", roomCode)
+            map.put("time", time.toString())
+            val call = retrofitInterface.executeWatchTogetherImageCapture(map)
+            call!!.enqueue(object : Callback<WatchTogether?> {
+                override fun onResponse(call: Call<WatchTogether?>, response: Response<WatchTogether?>) {
+                    if (response.code() == 200) {
+                        val result = response.body() // 감정 배열
+                        Log.w("TogetherActivity", "감정 배열 받고 출력")
+
+                        shareEmotions(result!!.emotion_count_array, time) // 감정 출력
+                    }
+                    else if (response.code() == 400) {
+                        Toast.makeText(this@TogetherActivity, "실시간 캡처 오류",
+                            Toast.LENGTH_LONG).show()
+                    }
+                }
+                override fun onFailure(call: Call<WatchTogether?>, t: Throwable) {
+                    Toast.makeText(this@TogetherActivity, t.message,
+                        Toast.LENGTH_LONG).show()
+                }
+            })
+            time += 10 // 10초씩 더해주기
         }
+    }
+    // 화면 캡처 > 이미지 파일 > s3버킷 전달
+    private fun captureScreen(s3Bucket_FolderName: String, fileName: String, user_id: String, channelName: String, time: String) {
+        val timeStamp : String = SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.KOREA).format(Date())
+
+        mRtcEngine?.takeSnapshot(channelName, 0,
+            "/storage/emulated/0/Android/data/com.example.harumub_front/files/Pictures/$timeStamp.jpg"
+        )
+        Log.w("TogetherActivity", "$timeStamp - 사용자 비디오 캡처 완료")
+        Thread.sleep(10000) // 10초 쉬어주기
+
+        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES) // File?
+        var outFile = File(storageDir, "$timeStamp.jpg")
+        var curPath = storageDir?.absolutePath // 외부 저장소 접근
+        var fileUri = FileProvider.getUriForFile(this, "com.example.harumub_front", outFile)
+
+        if (outFile != null) {
+            uploadWithTransferUtilty(s3Bucket_FolderName, fileName, outFile) // file
+        }
+    }
+    // 감정 출력
+    private fun shareEmotions(emotion_count_array: List<Emotion>, second: Int) {
+        // 감정 이모티콘 출력 - 서버에서 받아온 감정 배열
+        val emotions = emotion_count_array // 리스트 중 첫번째 배열 - 감정 배열은 시간대별 하나만 전달받음
+        val counts = intArrayOf( // 감정별 최종 횟수(정수값) 배열
+            emotions[0].HAPPY, emotions[1].SAD, emotions[2].ANGRY, emotions[3].CONFUSED,
+            emotions[4].DISGUSTED, emotions[5].SURPRISED, emotions[6].FEAR
+        )
+        val emojis = intArrayOf( // 감정 이미지 Int 배열
+            R.drawable.happy, R.drawable.sad, R.drawable.angry,
+            R.drawable.confused, R.drawable.disgusted, R.drawable.surprised,
+            R.drawable.fear, R.drawable.calm
+        )
+        var check = 0
+        for (i in 0..6) { // 감정 배열 값 찾기
+            if (counts[i] < 1) continue
+            else if(counts[i] == 1) {
+                for (j in 0..6) { // 이미지 찾기
+                    if (i==j) {
+                        if(check == 0) {
+                            emoji1.setImageResource(emojis[j])
+                            check = 1
+                        }
+                        else if(check == 1) {
+                            emoji2.setImageResource(emojis[j])
+                            check = 2
+                        }
+                    }
+                }
+            }
+            else if (counts[i] == 2) {
+                for (j in 0..6) { // 이미지 찾기
+                    if (i==j) {
+                        if(check == 0) {
+                            emoji1.setImageResource(emojis[j])
+                            emoji2.setImageResource(emojis[j])
+                            check = 2
+                        }
+                    }
+                }
+            }
+        }
+        Log.w("TogetherActivity", "$second 초: 감정 출력 완료")
     }
 
     // 권한 부여 설정
     private fun checkSelfPermission(permission: String, requestCode: Int): Boolean {
         Log.i(LOG_TAG, "checkSelfPermission $permission $requestCode")
-        if (ContextCompat.checkSelfPermission(this,
-                permission) != PackageManager.PERMISSION_GRANTED) {
-
+        if (ContextCompat.checkSelfPermission(this, permission)
+            != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                 arrayOf(permission),
                 requestCode)
@@ -265,8 +308,7 @@ class TogetherActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults) // 원래는 X
         Log.i(LOG_TAG, "onRequestPermissionsResult " + grantResults[0] + " " + requestCode)
 
@@ -281,8 +323,7 @@ class TogetherActivity : AppCompatActivity() {
             }
             PERMISSION_REQ_ID_CAMERA -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // initAgoraEngineAndJoinChannel()
-                    initAgoraEngineAndJoinChannel(roomCode, roomToken) // "SeowonChannel"
+                    initAgoraEngineAndJoinChannel(roomCode, roomToken)
                 } else {
                     showLongToast("No permission for " + Manifest.permission.CAMERA)
                     finish()
@@ -320,6 +361,8 @@ class TogetherActivity : AppCompatActivity() {
         val surfaceView = container.getChildAt(0) as SurfaceView
         surfaceView.setZOrderMediaOverlay(!iv.isSelected)
         surfaceView.visibility = if (iv.isSelected) View.GONE else View.VISIBLE
+
+        Log.w("TogetherActivity", "내 비디오 화면 on/off 버튼 클릭")
     }
     // 음소거 버튼
     fun onLocalAudioMuteClicked(view: View) {
@@ -333,44 +376,66 @@ class TogetherActivity : AppCompatActivity() {
         }
 
         mRtcEngine!!.muteLocalAudioStream(iv.isSelected)
+        Log.w("TogetherActivity", "음소거 버튼 클릭")
     }
     // 카메라 방향 전환 버튼
     fun onSwitchCameraClicked(view: View) {
         mRtcEngine!!.switchCamera()
+        Log.w("TogetherActivity", "카메라 방향 전환")
     }
     // 통화 종료 버튼
     fun onEndCallClicked(view: View) {
         finish()
 
-        // 입장 페이지로 다시 돌아가기
-        val intent = Intent(applicationContext, EnterActivity::class.java)
-        intent.putExtra("user_id", id)
-        intent.putExtra("user_id", id)
-        intent.putExtra("reco1_titleArray", reco1_titleArray)
-        intent.putExtra("reco1_posterArray", reco1_posterArray)
-        intent.putExtra("reco2_1_userId", reco2_1_userId)
-        intent.putExtra("reco2_2_userId", reco2_2_userId)
-        intent.putExtra("reco2_3_userId", reco2_3_userId)
-        intent.putExtra("reco2_4_userId", reco2_4_userId)
-        intent.putExtra("reco2_5_userId", reco2_5_userId)
-        intent.putExtra("reco2_1_title", reco2_1_title)
-        intent.putExtra("reco2_2_title", reco2_2_title)
-        intent.putExtra("reco2_3_title", reco2_3_title)
-        intent.putExtra("reco2_4_title", reco2_4_title)
-        intent.putExtra("reco2_5_title", reco2_5_title)
-        intent.putExtra("reco2_1_poster", reco2_1_poster)
-        intent.putExtra("reco2_2_poster", reco2_2_poster)
-        intent.putExtra("reco2_3_poster", reco2_3_poster)
-        intent.putExtra("reco2_4_poster", reco2_4_poster)
-        intent.putExtra("reco2_5_poster", reco2_5_poster)
-        intent.putExtra("reco3_titleArray", reco3_titleArray)
-        intent.putExtra("reco3_posterArray", reco3_posterArray)
-        intent.putExtra("reco4_year", reco4_year)
-        intent.putExtra("reco4_titleArray", reco4_titleArray)
-        intent.putExtra("reco4_posterArray", reco4_posterArray)
-        intent.putExtra("reco6_titleArray", reco6_titleArray)
-        intent.putExtra("reco6_posterArray", reco6_posterArray)
-        startActivity(intent)
+        val map = HashMap<String, String>()
+        map.put("id", id)
+        map.put("roomCode", roomCode)
+        val call = retrofitInterface.executeWatchTogetherEnd(map)
+        call!!.enqueue(object : Callback<Void?> {
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                if (response.code() == 200) {
+                    Log.w("TogetherActivity", "Room & Room Code 삭제")
+                    isChannelActivate = false
+
+                    // 입장 페이지로 다시 돌아가기
+                    val intent = Intent(applicationContext, EnterActivity::class.java)
+                    intent.putExtra("user_id", id)
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+                    startActivity(intent)
+                }
+                else if (response.code() == 400) {
+                    Toast.makeText(this@TogetherActivity, "실시간 캡처 오류",
+                        Toast.LENGTH_LONG).show()
+                }
+            }
+            override fun onFailure(call: Call<Void?>, t: Throwable) {
+                Toast.makeText(this@TogetherActivity, t.message,
+                    Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     // 1:1 >> 하나의 상대방(원격 사용자) 비디오만 출력
@@ -389,10 +454,14 @@ class TogetherActivity : AppCompatActivity() {
         surfaceView.tag = uid // for mark purpose
         val tipMsg = findViewById<TextView>(R.id.quick_tips_when_use_agora_sdk) // optional UI
         tipMsg.visibility = View.GONE
+
+        Log.w("TogetherActivity", "상대의 비디오 출력")
     }
     // 채널을 떠날 때
     private fun leaveChannel() {
         mRtcEngine!!.leaveChannel()
+        Log.w("TogetherActivity", "채널을 떠남")
+        isChannelActivate = false
     }
     // 상대방이 채널을 떠났을 때
     private fun onRemoteUserLeft() {
@@ -401,6 +470,9 @@ class TogetherActivity : AppCompatActivity() {
 
         val tipMsg = findViewById<TextView>(R.id.quick_tips_when_use_agora_sdk) // optional UI
         tipMsg.visibility = View.VISIBLE
+
+        Log.w("TogetherActivity", "상대방이 채널을 떠남")
+        isChannelActivate = false
     }
     // 상대방의 비디오가 꺼졌을 때
     private fun onRemoteUserVideoMuted(uid: Int, muted: Boolean) {
@@ -412,6 +484,7 @@ class TogetherActivity : AppCompatActivity() {
         if (tag != null && tag as Int == uid) {
             surfaceView.visibility = if (muted) View.GONE else View.VISIBLE
         }
+        Log.w("TogetherActivity", "상대방 비디오 꺼짐")
     }
     // static -> companion object : 클래스 내부에 정의된 singleton value
     companion object {
@@ -434,5 +507,42 @@ class TogetherActivity : AppCompatActivity() {
                     PERMISSION_STORAGE, REQUEST_EXTERNAL_STORAGE)
             }
         }
+    }
+    // S3 Bucket Upload
+    fun uploadWithTransferUtilty(s3Bucket_FolderName: String?, fileName: String?, file: File?) {
+        val awsCredentials: AWSCredentials =
+            BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
+        val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
+        val transferUtility =
+            TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
+        TransferNetworkLossHandler.getInstance(this.applicationContext)
+        val uploadObserver =
+            transferUtility.upload("allonsybucket1/$s3Bucket_FolderName", fileName, file) // (bucket name, file 이름, file 객체)
+        uploadObserver.setTransferListener(object : TransferListener {
+            override fun onStateChanged(s3_id: Int, state: TransferState) {
+                if (state === TransferState.COMPLETED) {
+                    // Handle a completed upload
+                    Log.d("S3 Bucket ", "Upload Completed!")
+
+                    // S3 Bucket에 file 업로드 후 Emulator에서 삭제
+                    if (file != null) {
+                        file.delete()
+                        Log.d("Emulator : ", "파일 삭제")
+                    }
+                    else {
+                        Log.d("Emulator : ", "삭제할 파일이 없습니다.")
+                    }
+                }
+            }
+
+            override fun onProgressChanged(id: Int, current: Long, total: Long) {
+                val done = (current.toDouble() / total * 100.0).toInt()
+                Log.d("TogetherActivity", "UPLOAD - - ID: \$id, percent done = \$done")
+            }
+
+            override fun onError(id: Int, ex: java.lang.Exception) {
+                Log.d("TogetherActivity", "UPLOAD ERROR - - ID: \$id - - EX:$ex")
+            }
+        })
     }
 }

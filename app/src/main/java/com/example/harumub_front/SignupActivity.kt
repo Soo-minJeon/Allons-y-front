@@ -19,7 +19,7 @@ import java.util.regex.Pattern
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
