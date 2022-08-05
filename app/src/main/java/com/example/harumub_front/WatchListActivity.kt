@@ -67,9 +67,6 @@ class WatchListActivity : AppCompatActivity()
     lateinit var reco4_titleArray : ArrayList<String>
     lateinit var reco4_posterArray : ArrayList<String>
 
-//    lateinit var reco5_titleArray : ArrayList<String>
-//    lateinit var reco5_posterArray : ArrayList<String>
-
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
 
@@ -107,9 +104,6 @@ class WatchListActivity : AppCompatActivity()
         reco4_year = intent.getStringExtra("reco4_year").toString()
         reco4_titleArray = intent.getSerializableExtra("reco4_titleArray") as java.util.ArrayList<String>
         reco4_posterArray = intent.getSerializableExtra("reco4_posterArray") as java.util.ArrayList<String>
-
-//        reco5_titleArray = intent.getSerializableExtra("reco5_titleArray") as java.util.ArrayList<String>
-//        reco5_posterArray = intent.getSerializableExtra("reco5_posterArray") as java.util.ArrayList<String>
 
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as java.util.ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as java.util.ArrayList<String>
@@ -182,7 +176,7 @@ class WatchListActivity : AppCompatActivity()
                         reco2_1_title, reco2_2_title, reco2_3_title, reco2_4_title, reco2_5_title,
                         reco2_1_poster, reco2_2_poster, reco2_3_poster, reco2_4_poster, reco2_5_poster,
                         reco3_titleArray, reco3_posterArray, reco4_year, reco4_titleArray, reco4_posterArray,
-                        reco6_titleArray, reco6_posterArray) //reco5_titleArray, reco5_posterArray,
+                        reco6_titleArray, reco6_posterArray)
                     recyclerView.adapter = adapter
 
                     //Toast.makeText(this@WatchListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()
@@ -196,8 +190,8 @@ class WatchListActivity : AppCompatActivity()
             }
         })
 
-
- /*       main_this = findViewById(R.id.main_drawer)
+  /*
+        main_this = findViewById(R.id.main_drawer)
         drawer_button = findViewById(R.id.drawer_button) // 드로어 열기(메뉴버튼)
         drawer_view = findViewById(R.id.drawer_view) // 드로어
         val drawerHeader = drawer_view.getHeaderView(0) // 드로어 헤더
@@ -242,9 +236,6 @@ class WatchListActivity : AppCompatActivity()
             intent.putExtra("reco4_year", reco4_year)
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
 
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -293,16 +284,15 @@ class WatchListActivity : AppCompatActivity()
             intent.putExtra("reco4_titleArray", reco4_titleArray)
             intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//            intent.putExtra("reco5_titleArray", reco5_titleArray)
-//            intent.putExtra("reco5_posterArray", reco5_posterArray)
-
             intent.putExtra("reco6_titleArray", reco6_titleArray)
             intent.putExtra("reco6_posterArray", reco6_posterArray)
 
             startActivity(intent)
-        }*/
+        }
+  */
     }
-/*
+
+  /*
     override fun onNavigationItemSelected(item: MenuItem): Boolean {// 네비게이션 메뉴 아이템 클릭 시 수행
         when(item.itemId){ // 드로어 메뉴 눌렸을 시 수행. 수정 필요
             R.id.drawer_UserRecord -> {
@@ -340,9 +330,6 @@ class WatchListActivity : AppCompatActivity()
                     intent.putExtra("reco4_year", reco4_year)
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -386,9 +373,6 @@ class WatchListActivity : AppCompatActivity()
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
 
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
-
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
 
@@ -425,9 +409,6 @@ class WatchListActivity : AppCompatActivity()
                     intent.putExtra("reco4_year", reco4_year)
                     intent.putExtra("reco4_titleArray", reco4_titleArray)
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
-
-//                    intent.putExtra("reco5_titleArray", reco5_titleArray)
-//                    intent.putExtra("reco5_posterArray", reco5_posterArray)
 
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
@@ -473,5 +454,6 @@ class WatchListActivity : AppCompatActivity()
         }
         main_this.closeDrawers() // 네비게이션 뷰 닫기
         return false
-    }*/
+    }
+  */
 }
