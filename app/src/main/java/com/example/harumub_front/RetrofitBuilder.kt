@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitBuilder {
-    var api: RetrofitInteface
+    var api: RetrofitInterface
 
     init {
         val okHttpClient = OkHttpClient.Builder()
@@ -21,6 +21,6 @@ object RetrofitBuilder {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        api = retrofit.create(RetrofitInteface::class.java)
+        api = retrofit.create(RetrofitInterface::class.java)
     }
 }

@@ -18,7 +18,7 @@ import java.util.HashMap
 
 class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedListener {
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     lateinit var main_this : androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawer_button : ImageButton

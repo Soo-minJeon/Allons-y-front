@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.github.ybq.android.spinkit.sprite.Sprite
 import com.github.ybq.android.spinkit.style.CubeGrid
-import kotlinx.android.synthetic.main.fragment_addreview.*
+import kotlinx.android.synthetic.main.activity_add_review.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +28,7 @@ class AddreviewActivity : AppCompatActivity() {
     private lateinit var progressDialog : ProgressDialog    // 로딩 다이얼로그
 
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     private lateinit var myTitle: TextView
     private lateinit var myGenres: TextView
@@ -76,7 +76,7 @@ class AddreviewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_addreview)
+        setContentView(R.layout.activity_add_review)
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
 
@@ -118,8 +118,8 @@ class AddreviewActivity : AppCompatActivity() {
 
         // 혼자보기 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("movie_title")) {
-            Log.d("AddReviewActivity", "받아온 id : $id , movie title : $movie_title")
-            Log.d("AddReviewActivity", "받아온 genres : $genres , poster : $poster")
+            Log.d("AddReviewActivity", "받아온 id : $id , movie title : $movie_title" +
+                    "\n받아온 genres : $genres , poster : $poster")
         } else {
             Log.e("AddReviewActivity", "가져온 데이터 없음")
         }

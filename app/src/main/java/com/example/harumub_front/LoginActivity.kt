@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var progressDialog : ProgressDialog1    // 로딩 다이얼로그
     private lateinit var okHttpClient: OkHttpClient
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
                         val reco6_posterArray = reco6.posterArray // 추천 6의 추천 영화 포스터 링크 리스트
 
                         // 메인2로 이동
-                        var intent = Intent(applicationContext, MainActivity2::class.java)
+                        var intent = Intent(applicationContext, MainActivity::class.java)
                         intent.putExtra("user_id", result.id)
                         intent.putExtra("user_name", result.name)
 

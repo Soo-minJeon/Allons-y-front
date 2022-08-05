@@ -40,7 +40,7 @@ import kotlin.properties.Delegates
 
 class ResultActivity_ticket_back : AppCompatActivity() {
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface: RetrofitInteface
+    private lateinit var retrofitInterface: RetrofitInterface
 
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 제목, 별점 평가, 한줄평
     lateinit var id : String

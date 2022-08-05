@@ -77,12 +77,7 @@ dependencies {
     // Glide - 이미지 로딩 라이브러리
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
-    // 같이보기 용이니까 실행시 오류나면 주석처리 가능
-    // 1:1
-    implementation 'io.agora.rtc:full-sdk:2.4.1'
-    // Agora UI Kit (jitpack)
-//    implementation 'com.github.AgoraIO-Community.Android-UIKit:final:v4.0.1' // minSdk = 24 ?
-    // Agora Rtc SDK for Video Call - 3.0.0.2 / 3.3.2
-    // https://mvnrepository.com/artifact/io.agora.rtc/full-sdk
-//    implementation 'io.agora.rtc:full-sdk:3.7.0.1'
+    // 같이보기 sdk 최신 버전
+    implementation 'io.agora.rtc:full-sdk:3.7.0.2'
+
 }

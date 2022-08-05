@@ -3,18 +3,12 @@ package com.example.harumub_front
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_search.view.*
 import java.net.URL
 
 class RecommendAdapter2(var id: String, var userIdList: ArrayList<String>, var titlesList: ArrayList<ArrayList<String>>, var postersList: ArrayList<ArrayList<String>>,

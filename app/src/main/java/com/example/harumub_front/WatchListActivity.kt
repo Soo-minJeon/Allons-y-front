@@ -11,8 +11,7 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main2.*
-import kotlinx.android.synthetic.main.activity_main2.recyclerView
+//import kotlinx.android.synthetic.main.activity_main.recyclerView
 import kotlinx.android.synthetic.main.activity_my_movie_list.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,7 +31,7 @@ class WatchListActivity : AppCompatActivity()
 //    lateinit var drawer_view : NavigationView
 
     private lateinit var retrofitBuilder: RetrofitBuilder
-    private lateinit var retrofitInterface : RetrofitInteface
+    private lateinit var retrofitInterface : RetrofitInterface
 
     // 현재 로그인하고 있는 사용자 아이디
 //    private val id = intent.getStringExtra("user_id")
