@@ -123,40 +123,6 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
 
-        // 현재 로그인하고 있는 사용자 아이디 (수정 필요) --수민 작성
-        var userid = ""
-        var result : List<WatchListResult>
-        var titles : Array<String> = emptyArray()
-        var posters : Array<String> = emptyArray()
-
-        var map = HashMap<String, String>()
-        map.put("id", userid)
-
-        var call = retrofitInterface.executeWatchList(map)
-/*
-        call!!.enqueue(object : Callback<List<WatchListResult?>>{
-            override fun onResponse( call: Call<List<WatchListResult?>>, response: Response<List<WatchListResult?>>) {
-                if(response.code() == 200){
-                    result = response.body() as List<WatchListResult>
-
-                    for (i in 0..result.size!! -1 ){
-                        // title 과 Poster url 은 배열에 저장. -> 리사이클러뷰에 넣어야 함 -- 수민 작성
-                        titles[i] = result.get(i).title
-                        posters[i] = result.get(i).poster
-                    }
-
-                    Toast.makeText(this@UserMovieListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()
-                }
-                else if (response.code() == 410){
-                    Toast.makeText(this@UserMovieListActivity, "get movie list error", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<List<WatchListResult?>>, t: Throwable) {
-                Toast.makeText(this@UserMovieListActivity, t.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-*/
 
         main_this = findViewById(R.id.main_drawer)
         drawer_button = findViewById(R.id.drawer_button) // 드로어 열기(메뉴버튼)
@@ -391,19 +357,15 @@ class UserMovieListActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)
                     call!!.enqueue(object : Callback<Void?> {
                         override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                             if (response.code() == 200) {
-                                val result = response.body()
-
                                 var intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
 
-                                Toast.makeText(this@UserMovieListActivity, "로그아웃합니다..",
-                                    Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@UserMovieListActivity, "로그아웃합니다..", Toast.LENGTH_LONG).show()
                                 startActivity(intent)
                             }
                         }

@@ -156,36 +156,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerHeader = drawer_view.getHeaderView(0) // 드로어 헤더
         recent_button = findViewById(R.id.recent) // 최근 감상기록 버튼
 
-        // 이것들도 필요하지 않은 거 같지만, 혹시나 해서 남겨둠 >> 확인 후 삭제 바람
-        var result : List<Recommend2Result>
-        var userIds : Array<String> = emptyArray()
-        var titles : Array<String> = emptyArray()
-        var posters : Array<String> = emptyArray()
-
-/*
-        // 추천 1, 들어가면 토스트 메시지로 추천 영화 10개 전달되는 것 확인되게 코드 작성해둠
-        val map1 = HashMap<String, String>()
-        map1.put("id", id!!)
-
-        val call1 = retrofitInterface.executeRecommend1(map1)
-        call1!!.enqueue(object : Callback<List<String>?> {
-            override fun onResponse(call: Call<List<String>?>, response: Response<List<String>?>) {
-                if (response.code() == 200) {
-                    val result = response.body()
-
-                    Toast.makeText(this@MainActivity, "추천 영화 목록 : "+result, Toast.LENGTH_LONG).show()
-                }
-                else if (response.code() == 400) {
-                    Toast.makeText(this@MainActivity, "정의되지 않음", Toast.LENGTH_LONG).show()
-                }
-            }
-            override fun onFailure(call: Call<List<String>?>, t: Throwable) {
-                Toast.makeText(this@MainActivity, t.message,
-                    Toast.LENGTH_LONG).show()
-            }
-        })
-*/
-
         // 드로어 버튼 클릭 -> 드로어 메뉴 열기
         drawer_button.setOnClickListener{
             main_this.openDrawer(GravityCompat.START) // START = left, END : right (드로어가 나오는 방향지정)
@@ -404,19 +374,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)
                     call!!.enqueue(object : Callback<Void?> {
                         override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                             if (response.code() == 200) {
-                                val result = response.body()
-
                                 val intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
 
-                                Toast.makeText(this@MainActivity, "로그아웃합니다..",
-                                    Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@MainActivity, "로그아웃합니다..", Toast.LENGTH_LONG).show()
                                 startActivity(intent)
                             }
                         }
@@ -431,5 +397,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         main_this.closeDrawers() // 네비게이션 뷰 닫기
         return false
     }
-
 }

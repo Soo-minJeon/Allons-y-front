@@ -442,7 +442,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)
@@ -451,8 +450,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             if (response.code() == 200) {
                                 val intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
 
-                                Toast.makeText(this@EnterActivity, "로그아웃합니다..",
-                                    Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@EnterActivity, "로그아웃합니다..", Toast.LENGTH_LONG).show()
                                 startActivity(intent)
                             }
                         }

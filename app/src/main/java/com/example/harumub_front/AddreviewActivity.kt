@@ -153,15 +153,7 @@ class AddreviewActivity : AppCompatActivity() {
 
         // 포스터
         myPoster = findViewById<ImageView>(R.id.poster)
-        
-/*
-        var result = "https://image.tmdb.org/t/p/w500"
-        var image_task : URLtoBitmapTask = URLtoBitmapTask().apply {
-            url = URL(result + poster)
-        }
-        var bitmap : Bitmap = image_task.execute().get()
-        myPoster.setImageBitmap(bitmap)
-*/
+
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w500" + poster) // 불러올 이미지 url
             .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
@@ -194,7 +186,6 @@ class AddreviewActivity : AppCompatActivity() {
             map.put("rating", ratingBar.rating.toString())
             map.put("comment", user_comment)
 
-            // val call = retrofitInterface.executeSceneAnalyze(map)
             val call = retrofitInterface.executeAddReview(map)
             call!!.enqueue(object : Callback<Void?> {
                 override fun onResponse(call: Call<Void?>, response: Response<Void?>) {

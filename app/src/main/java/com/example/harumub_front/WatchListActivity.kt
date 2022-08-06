@@ -11,7 +11,6 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
-//import kotlinx.android.synthetic.main.activity_main.recyclerView
 import kotlinx.android.synthetic.main.activity_my_movie_list.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,7 +33,6 @@ class WatchListActivity : AppCompatActivity()
     private lateinit var retrofitInterface : RetrofitInterface
 
     // 현재 로그인하고 있는 사용자 아이디
-//    private val id = intent.getStringExtra("user_id")
     lateinit var id : String
 
     // 추천 정보
@@ -72,7 +70,6 @@ class WatchListActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_movie_list)
-        //Toast.makeText(this@WatchListActivity, "여기까진 됨", Toast.LENGTH_SHORT).show()
 
         id = intent.getStringExtra("user_id").toString()
 
@@ -117,13 +114,6 @@ class WatchListActivity : AppCompatActivity()
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
 
-        // 현재 로그인하고 있는 사용자 아이디 (수정 필요) --수민 작성
-        // var userid = ""
-//        var result : List<WatchListResult>
-//        var titles : Array<String> = emptyArray()
-//        var posters : Array<String> = emptyArray()
-//        var titles : ArrayList<String> = arrayListOf()
-//        var posters : ArrayList<String> = arrayListOf()
         var result : WatchListResult
         var titleArray : ArrayList<String>
         var posterArray : ArrayList<String>
@@ -131,33 +121,8 @@ class WatchListActivity : AppCompatActivity()
         var map = HashMap<String, String>()
         map.put("id", id!!)
 
-        //Toast.makeText(this@WatchListActivity, "여기까진 됨2", Toast.LENGTH_SHORT).show()
         var call = retrofitInterface.executeWatchList(map)
 
-        //Toast.makeText(this@WatchListActivity, "여기까진 됨3", Toast.LENGTH_SHORT).show()
-/*
-        call!!.enqueue(object : Callback<List<WatchListResult?>>{
-            override fun onResponse( call: Call<List<WatchListResult?>>, response: Response<List<WatchListResult?>>) {
-                if(response.code() == 200){
-                    result = response.body() as List<WatchListResult>
-
-                    for (i in 0..result.size!! -1 ){
-                        // title 과 Poster url 은 배열에 저장. -> 리사이클러뷰에 넣어야 함 -- 수민 작성
-                        titles[i] = result.get(i).title
-                        posters[i] = result.get(i).poster
-                    }
-
-                    Toast.makeText(this@WatchListActivity, "get movie list successfully", Toast.LENGTH_SHORT).show()
-                }
-                else if (response.code() == 400){
-                    Toast.makeText(this@WatchListActivity, "get movie list error", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<List<WatchListResult?>>, t: Throwable) {
-                Toast.makeText(this@WatchListActivity, t.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-*/
         call!!.enqueue(object : Callback<WatchListResult?>{
             override fun onResponse(call: Call<WatchListResult?>, response: Response<WatchListResult?>) {
                 if(response.code() == 200){
@@ -169,7 +134,6 @@ class WatchListActivity : AppCompatActivity()
                     // 나의 감상기록 RecyclerView와 WatchListAdapter 연결
                     layoutManager = GridLayoutManager(this@WatchListActivity, 3, GridLayoutManager.VERTICAL, false)
                     recyclerView.layoutManager = layoutManager
-//                    adapter = WatchListAdapter(id, titleArray, posterArray)
                     adapter = WatchListAdapter(id, titleArray, posterArray, reco1_titleArray, reco1_posterArray,
                         reco2_1_userId, reco2_2_userId, reco2_3_userId, reco2_4_userId, reco2_5_userId,
                         reco2_1_title, reco2_2_title, reco2_3_title, reco2_4_title, reco2_5_title,
@@ -241,14 +205,6 @@ class WatchListActivity : AppCompatActivity()
 
             startActivity(intent)
         }
-
-/*
-        // 나의 감상기록 RecyclerView와 RecommendAdapter1 연결
-        layoutManager = GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false)
-        recyclerView.layoutManager = layoutManager
-        adapter = RecommendAdapter1()
-        recyclerView.adapter = adapter
-*/
 
         // 메인으로 돌아가는 버튼
         list2main.setOnClickListener{
@@ -427,19 +383,15 @@ class WatchListActivity : AppCompatActivity()
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)
                     call!!.enqueue(object : Callback<Void?> {
                         override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                             if (response.code() == 200) {
-                                val result = response.body()
-
                                 var intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
 
-                                Toast.makeText(this@WatchListActivity, "로그아웃합니다..",
-                                    Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@WatchListActivity, "로그아웃합니다..", Toast.LENGTH_LONG).show()
                                 startActivity(intent)
                             }
                         }
