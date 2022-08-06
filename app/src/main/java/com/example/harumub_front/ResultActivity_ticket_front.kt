@@ -79,7 +79,7 @@ class ResultActivity_ticket_front : AppCompatActivity() {
     lateinit var result_remake_title : String
     lateinit var result_remake_poster : String
 
-    // ResultActivity_ticket_back에 전달해줄 배경 색
+    // ResultActivity_ticket_back에 전달해 줄 배경색
     lateinit var result_background_color : Number
 
     override fun onCreate(savedInstanceState: Bundle?) {

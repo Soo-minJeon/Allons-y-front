@@ -35,15 +35,6 @@ class WatchListAdapter(var id: String, var titles: ArrayList<String>, var poster
 
     // 순서에 따라 배열에 데이터 삽입
     override fun onBindViewHolder(holder: WatchListAdapter.ViewHolder, position: Int) {
-/*
-        var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
-//            url = URL("https://image.tmdb.org/t/p/w500" + posters[position])
-            url = URL("https://image.tmdb.org/t/p/w500" + "/xoqr4dMbRJnzuhsWDF3XNHQwJ9x.jpg")
-        }
-
-        var bitmap: Bitmap = image_task.execute().get()
-        holder.movieImage.setImageBitmap(bitmap)
-*/
         Glide.with(holder.itemView.context)
             .load("https://image.tmdb.org/t/p/w500" + posters[position]) // 불러올 이미지 url
             .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지

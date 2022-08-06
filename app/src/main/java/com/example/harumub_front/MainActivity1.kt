@@ -26,8 +26,6 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
     lateinit var drawer_view : NavigationView
     lateinit var btnRecord : Button
 
-//    private val id = intent.getStringExtra("user_id")
-//    private val name = intent.getStringExtra("user_name")
     lateinit var id : String
     lateinit var name : String
 
@@ -73,7 +71,7 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
         btnRecord = findViewById(R.id.btnRecord)
         btnRecord.setOnClickListener { // 감상하기 버튼 클릭 시 영화 검색 페이지로 이동
             val intent = Intent(this, SearchActivity::class.java) // 영화 검색 페이지
-//            val intent = Intent(this, MainActivity2::class.java) // 메인 2 페이지
+
             intent.putExtra("user_id", id)
             startActivity(intent)
         }
@@ -123,15 +121,12 @@ class MainActivity1 : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
             }
             R.id.drawer_Logout -> {
                 with(supportFragmentManager.beginTransaction()) {
-                    //Toast.makeText(applicationContext, "로그아웃합니다..", Toast.LENGTH_SHORT).show()
                     val map = HashMap<String, String>()
 
                     val call = retrofitInterface.executeLogout(map)
                     call!!.enqueue(object : Callback<Void?> {
                         override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                             if (response.code() == 200) {
-                                val result = response.body()
-
                                 var intent = Intent(applicationContext, LoginActivity::class.java) // 두번째 인자에 이동할 액티비티
 
                                 Toast.makeText(this@MainActivity1, "로그아웃합니다..", Toast.LENGTH_LONG).show()

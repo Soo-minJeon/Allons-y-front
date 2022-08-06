@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -249,25 +248,6 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                     myConPer.text = result_concentration + "%"
                     myHlTime.text = result_highlight_time + "s(초)"
 
-                    // 영화 포스터 출력 - 웹에서 url로 가져오기
-//                    var posterUrl = result_poster
-/*
-                    var result_url = "https://image.tmdb.org/t/p/w500"
-                    var image_task: URLtoBitmapTask = URLtoBitmapTask().apply {
-                        url = URL(result_url + posterUrl)
-                    }
-                    var bitmap: Bitmap = image_task.execute().get()
-                    myPoster.setImageBitmap(bitmap)
-*/
-/*
-                    Glide.with(applicationContext)
-                        .load("https://image.tmdb.org/t/p/w500" + posterUrl) // 불러올 이미지 url
-                        .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
-                        .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
-                        .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
-                        .into(myPoster) // 이미지를 넣을 뷰
-*/
-
                     // 입력했던 별점, 한줄평 값으로 초기화
                     myRating.rating = result_rating
                     myComment.text = result_comment
@@ -388,15 +368,10 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                     myChart.invalidate() // 차트 갱신
 
 
-//                    var highlight_movie_title = movie_title.replace(" ", "") // 영화 제목 공백 제거
                     // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
                     var highlightUrl = id + "_" + movie_title + "_" + result_highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
-//                    var highlightUrl = id + "_" + highlight_movie_title + "_" + result.highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
-    //                downloadWithTransferUtility("Highlight", highlightUrl) // bucket folder name(Emotion/Eye), file name
 
                     var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
-//                    var path = "/data/data/com.example.harumub_front/img" // path 설정
-//                    var downloadFile = File(path + "/" + highlightUrl) // 설정한 path로 다운로드 파일 생성
                     downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
 
                     if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
@@ -566,75 +541,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         }
     }
 
-/*
-    // s3 버킷에서 이미지 파일 다운로드 구현
-    fun downloadWithTransferUtility(s3Bucket_FolderName: String?, fileName: String?) {
-        // Cognito 샘플 코드. CredentialsProvider 객체 생성
-        val credentialsProvider = CognitoCachingCredentialsProvider(
-            applicationContext,
-            "자격 증명 풀 ID", // 자격 증명 풀 ID
-            Regions.AP_NORTHEAST_2 // Region
-        )
-//        val awsCredentials: AWSCredentials = BasicAWSCredentials("access_Key", "secret_Key") // IAM User의 (accessKey, secretKey)
-//        val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.US_EAST_1))
-        TransferNetworkLossHandler.getInstance(applicationContext) // 반드시 호출해야 한다.
-
-        // TransferUtility 객체 생성
-        val transferUtility = TransferUtility.builder()
-            .context(applicationContext)
-            .defaultBucket(s3Bucket_FolderName) // 디폴트 버킷 이름.
-            .s3Client(AmazonS3Client(credentialsProvider, Region.getRegion(Regions.AP_NORTHEAST_2)))
-            .build()
-
-        // 다운로드 실행
-        photoFile = File(filesDir.absolutePath + "/" + fileName)
-        val downloadObserver = transferUtility.download(fileName, photoFile)
-        // 첫 번째 파라미터: object = "SomeFile.mp4"
-        // 두 번째 파라미터: Local 경로 File 객체
-        // ex) .download("SomeFile.mp4", File(filesDir.absolutePath + "/SomeFile.mp4"))
-
-        downloadObserver.setTransferListener(object : TransferListener { // 다운로드 과정을 알 수 있도록 Listener 추가
-            override fun onStateChanged(id: Int, state: TransferState?) {
-                if (state == TransferState.COMPLETED) {
-                    Log.d("S3", "DOWNLOAD Completed!")
-
-                    // (1) URI로 이미지 출력하는 방법
-
-                    var filePath = "filesDir.absolutePath + \"/\" + fileName"   // 파일 실제 경로
-                    var uri = Uri.parse(filePath) // uri string
-                    myHighlight.setImageURI(uri)
-
-                    // S3 Bucket에서 다운 받은 file을 Emulator에서 삭제
-                    var file = File(filePath) // (pathname) 다운로드 된 이미지 파일 객체
-                    if (file != null) {
-                        file.delete()
-                        Log.d("Emulator : ", "파일 삭제")
-                    } else {
-                        Log.d("Emulator : ", "삭제할 파일이 없습니다.")
-                    }
-
-                    // (2) Bitmap 으로 이미지 출력?
-                    // (1), (2)번 중 선택해서 수정 부탁
-                   photoBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
-                }
-            }
-
-            override fun onProgressChanged(id: Int, current: Long, total: Long) {
-                try {
-                    val done = (((current.toDouble() / total) * 100.0).toInt()) // as Int
-                    Log.d("S3", "DOWNLOAD - - ID: $id, percent done = $done")
-                }
-                catch (e: Exception) {
-                    Log.d("S3", "Trouble calculating progress percent", e)
-                }
-            }
-            override fun onError(id: Int, ex: Exception) {
-                Log.d("S3", "DOWNLOAD ERROR - - ID: $id - - EX: ${ex.message.toString()}")
-            }
-        })
-    }
-*/
-
+    // S3 Bucket Download
     fun downloadWithTransferUtility(fileName: String?, file: File?) {
         val awsCredentials: AWSCredentials = BasicAWSCredentials(getString(R.string.AWS_ACCESS_KEY), getString(R.string.AWS_SECRET_KEY)) // IAM User의 (accessKey, secretKey)
         val s3Client = AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2))
