@@ -73,6 +73,8 @@ class ResultActivity_ticket_front : AppCompatActivity() {
     lateinit var result_genres : String
     lateinit var result_concentration : String
     lateinit var result_highlight_time :String
+    lateinit var result_emotion_count_array : ArrayList<Emotion>
+    lateinit var result_highlight_array : ArrayList<Highlight>
     lateinit var result_rating : Number
     lateinit var result_comment : String
     var result_isRemaked by Delegates.notNull<Boolean>()
@@ -96,6 +98,8 @@ class ResultActivity_ticket_front : AppCompatActivity() {
         result_genres = ""
         result_concentration = ""
         result_highlight_time = ""
+        result_emotion_count_array = arrayListOf()
+        result_highlight_array = arrayListOf()
         result_rating = 0
         result_comment = ""
         result_background_color = 0
@@ -153,9 +157,8 @@ class ResultActivity_ticket_front : AppCompatActivity() {
         var myBackground = findViewById<RelativeLayout>(R.id.background)
         myTitle = findViewById(R.id.title)
 
-        // ResultActivity_ticket_back.kt로 이동
+        // ticket 전체 부분
         totalTicket = findViewById(R.id.total_ticket)
-        totalTicket.setOnClickListener(ticketClick())
 
         // 사용자 감상 목록으로 이동하는 버튼
         var btnList = findViewById<ImageButton>(R.id.back2list)
@@ -187,6 +190,8 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                     result_genres = result.genres
                     result_concentration = result.concentration
                     result_highlight_time = result.highlight_time
+                    result_emotion_count_array = result.emotion_count_array
+                    result_highlight_array = result.highlight_array
                     result_rating = result.rating
                     result_comment = result.comment
                     result_isRemaked = result.remake
@@ -241,6 +246,8 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                             }
                         }) // 이미지를 넣을 뷰
 
+                    // ResultActivity_ticket_back.kt로 이동
+                    totalTicket.setOnClickListener(ticketClick())
                 }
                 else if (response.code() == 400) {
                     //Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
@@ -341,6 +348,8 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                 intent.putExtra("genres", result_genres)
                 intent.putExtra("concentration", result_concentration)
                 intent.putExtra("highlight_time", result_highlight_time)
+                intent.putExtra("emotion_count_array", result_emotion_count_array)
+                intent.putExtra("highlight_array", result_highlight_array)
                 intent.putExtra("rating", result_rating)
                 intent.putExtra("comment", result_comment)
                 intent.putExtra("remake", result_isRemaked)
