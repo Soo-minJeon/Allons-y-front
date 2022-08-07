@@ -92,6 +92,8 @@ class ResultActivity_ticket_back : AppCompatActivity() {
     lateinit var result_genres : String
     lateinit var result_concentration : String
     lateinit var result_highlight_time :String
+    lateinit var result_emotion_count_array : ArrayList<Emotion>
+    lateinit var result_highlight_array : ArrayList<Highlight>
     var result_rating by Delegates.notNull<Float>()
     lateinit var result_comment : String
     var result_isRemaked by Delegates.notNull<Boolean>()
@@ -149,6 +151,8 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         result_genres = intent.getStringExtra("genres").toString()
         result_concentration = intent.getStringExtra("concentration").toString()
         result_highlight_time = intent.getStringExtra("highlight_time").toString()
+        result_emotion_count_array = intent.getSerializableExtra("emotion_count_array") as ArrayList<Emotion>
+        result_highlight_array = intent.getSerializableExtra("highlight_array") as ArrayList<Highlight>
         result_rating = intent.getFloatExtra("rating", 0.0f)!!.toFloat()
         result_comment = intent.getStringExtra("comment").toString()
         result_isRemaked = intent.getBooleanExtra("remake", false)
@@ -200,211 +204,191 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         var btnList = findViewById<ImageButton>(R.id.back2list)
 
 
-        var map = HashMap<String, String>()
-        map.put("id", id)
-        map.put("movieTitle", movie_title)
+        // ResultActivity_ticket_front.kt로부터 받아온 intent 데이터 확인
+        Log.d("감상 영화 정보 : ", "제목 : " + result_title
+                + " 장르 : " + result_genres + " 집중 : " + result_concentration
+                + " 하이라이트 시간 : " + result_highlight_time
+                + " 별점 : " + result_rating + " 한줄평 : " + result_comment
+                + " 감상 날짜 : " + result_date
+                + " 리메이크 여부 : " + result_isRemaked + " 리메이크 작품 : " + result_remake_title
+                + " 리메이크 포스터 : " + result_remake_poster)
 
-        val call = retrofitInterface.executeWatchResult(map)
-        call!!.enqueue(object : Callback<WatchResult?> {
-            override fun onResponse(call: Call<WatchResult?>, response: Response<WatchResult?>) {
-                if (response.code() == 200) {
-                    //Toast.makeText(this@ResultActivity, "결과 출력 성공", Toast.LENGTH_SHORT).show()
+        // 감상했던 영화 정보 불러오기 - 제목
+        myTitle.text = result_title
 
-                    val result = response.body()
-                    Log.d("감상 영화 정보 : ", "제목 : " + result_title
-                        + " 장르 : " + result_genres + " 집중 : " + result_concentration
-                        + " 하이라이트 시간 : " + result_highlight_time
-                        + " 별점 : " + result_rating + " 한줄평 : " + result_comment
-                        + " 감상 날짜 : " + result_date
-                        + " 리메이크 여부 : " + result_isRemaked + " 리메이크 작품 : " + result_remake_title
-                        + " 리메이크 포스터 : " + result_remake_poster)
+        // 영화 장르 - String으로 받아옴 >> 문자열 자르기
+        var genres = result_genres
+        genres = genres
+            .replace("[","")
+            .replace("]", "")
+            .replace("'", "")
+            .replace(" ","")
+        println("부호,공백 > 제거 : $genres") // Action,Fantasy,Family
 
-                    // 감상했던 영화 정보 불러오기 - 제목
-                    myTitle.text = result_title
+        val arrGenres = genres.split(',') // 반점 기준 단어 분리
+        var total = ""
+        val arrSize = arrGenres.size
+        println("장르 총 개수: $arrSize")
+        for(i in 0 until arrSize) { // i: 0 ~ (size-1)
+            if (i == (arrSize-1)) { // 마지막이면 반점 추가 X
+                total += arrGenres[i]
+            } else {
+                total = total + arrGenres[i] + ", "
+            }
+            println("장르: $total")
+        }
+        myGenres.text = total
 
-                    // 영화 장르 - String으로 받아옴 >> 문자열 자르기
-                    var genres = result_genres
-                    genres = genres
-                        .replace("[","")
-                        .replace("]", "")
-                        .replace("'", "")
-                        .replace(" ","")
-                    println("부호,공백 > 제거 : $genres") // Action,Fantasy,Family
+        myConPer.text = result_concentration + "%"
+        myHlTime.text = result_highlight_time + "s(초)"
 
-                    val arrGenres = genres.split(',') // 반점 기준 단어 분리
-                    var total = ""
-                    val arrSize = arrGenres.size
-                    println("장르 총 개수: $arrSize")
-                    for(i in 0 until arrSize) { // i: 0 ~ (size-1)
-                        if (i == (arrSize-1)) { // 마지막이면 반점 추가 X
-                            total += arrGenres[i]
-                        } else {
-                            total = total + arrGenres[i] + ", "
-                        }
-                        println("장르: $total")
-                    }
-                    myGenres.text = total
-
-                    myConPer.text = result_concentration + "%"
-                    myHlTime.text = result_highlight_time + "s(초)"
-
-                    // 입력했던 별점, 한줄평 값으로 초기화
-                    myRating.rating = result_rating
-                    myComment.text = result_comment
+        // 입력했던 별점, 한줄평 값으로 초기화
+        myRating.rating = result_rating
+        myComment.text = result_comment
 
 
-                    // 감정 이모티콘 출력 - 서버에서 받아온 감정 배열
-                    val emotions = result!!.emotion_count_array // 리스트 중 첫번째 배열 - 감정 배열은 최종 횟수인 하나만 전달받음
-                    val counts = intArrayOf( // 감정별 최종 횟수(정수값) 배열
-                        emotions[0].HAPPY, emotions[1].SAD, emotions[2].ANGRY, emotions[3].CONFUSED,
-                        emotions[4].DISGUSTED, emotions[5].SURPRISED, emotions[6].FEAR
-                    )
-                    val emotionIndex = arrayOf( // 감정 종류 String 배열
-                        "HAPPY", "SAD", "ANGRY", "CONFUSED", "DISGUSTED", "SURPRISED", "FEAR"
-                    )
-                    val emoji = intArrayOf( // 감정 이미지 Int 배열
-                        R.drawable.happy, R.drawable.sad, R.drawable.angry,
-                        R.drawable.confused, R.drawable.disgusted, R.drawable.surprised,
-                        R.drawable.fear, R.drawable.calm
-                    )
-                    // 맵 생성
-                    val emotionMap = mapOf( // 맵 생성
-                        "HAPPY" to counts[0], "SAD" to counts[1], "ANGRY" to counts[2],
-                        "CONFUSED" to counts[3], "DISGUSTED" to counts[4],
-                        "SURPRISED" to counts[5], "FEAR" to counts[6]
-                    )
-                    // 맵 -> 리스트 -> 내림차순 정렬 -> 맵
-                    val mapSorted = emotionMap.toList().sortedByDescending { it.second }.toMap()
+        // 감정 이모티콘 출력 - 서버에서 받아온 감정 배열
+        val emotions = result_emotion_count_array // 리스트 중 첫번째 배열 - 감정 배열은 최종 횟수인 하나만 전달받음
+        val counts = intArrayOf( // 감정별 최종 횟수(정수값) 배열
+            emotions[0].HAPPY, emotions[1].SAD, emotions[2].ANGRY, emotions[3].CONFUSED,
+            emotions[4].DISGUSTED, emotions[5].SURPRISED, emotions[6].FEAR
+        )
+        val emotionIndex = arrayOf( // 감정 종류 String 배열
+            "HAPPY", "SAD", "ANGRY", "CONFUSED", "DISGUSTED", "SURPRISED", "FEAR"
+        )
+        val emoji = intArrayOf( // 감정 이미지 Int 배열
+            R.drawable.happy, R.drawable.sad, R.drawable.angry,
+            R.drawable.confused, R.drawable.disgusted, R.drawable.surprised,
+            R.drawable.fear, R.drawable.calm
+        )
+        // 맵 생성
+        val emotionMap = mapOf( // 맵 생성
+            "HAPPY" to counts[0], "SAD" to counts[1], "ANGRY" to counts[2],
+            "CONFUSED" to counts[3], "DISGUSTED" to counts[4],
+            "SURPRISED" to counts[5], "FEAR" to counts[6]
+        )
+        // 맵 -> 리스트 -> 내림차순 정렬 -> 맵
+        val mapSorted = emotionMap.toList().sortedByDescending { it.second }.toMap()
 
-                    // 감정 상위값 순서대로 키값 배열
-                    val top3 = Array(7, {" "})
-                    var m = 0
-                    mapSorted.forEach { (key, value) ->
-                        // println("key: "+ key + ", value: "+ value)
-                        if(value != 0) {
-                            top3[m] = key
-                            m += 1
-                        }
-                    }
-                    for(i in 0..2) {
-                        for (j in 0..6) {
-                            if (i == 0) {
-                                if(top3[i] == emotionIndex[j]) emotion1.setImageResource(emoji[j])
-                                else if(top3[i] == " ") emotion1.setImageResource(emoji[7]) // value=0: calm
-                            }
-                            else if (i == 1) {
-                                if(top3[i] == emotionIndex[j]) emotion2.setImageResource(emoji[j])
-                                else if(top3[i] == " ") emotion2.setImageResource(emoji[7]) // value=0: calm
-                            }
-                            else if (i == 2) {
-                                if(top3[i] == emotionIndex[j]) emotion3.setImageResource(emoji[j])
-                                else if(top3[i] == " ") emotion3.setImageResource(emoji[7]) // value=0: calm
-                            }
-                        }
-                    }
-
-
-                    // 감정 그래프 출력
-                    val chart = ArrayList<Entry>() // 감정 차트 배열 > 새 데이터 좌표값 추가 가능
-
-                    // Legend는 차트의 범례 (사용방법 등의 참고사항 설명)
-                    val legend = myChart.legend
-                    legend.setDrawInside(false)
-
-                    // X축 (아래) - 선 유무, 사이즈, 색상, 축 위치 설정
-                    val time = myChart.xAxis
-                    time.setDrawAxisLine(false)
-                    time.setDrawGridLines(false)
-                    time.position = XAxis.XAxisPosition.BOTTOM // x축 데이터(time) 표시 위치
-                    time.granularity = 1f   // 데이터 하나당 입자/원소값?
-                    time.textSize = 2f
-                    time.textColor = Color.rgb(118, 118, 118)
-                    time.spaceMin = 0.1f // Chart 맨 왼쪽 간격 띄우기
-                    time.spaceMax = 0.1f // Chart 맨 오른쪽 간격 띄우기
-
-                    // Y축 (왼쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
-                    val yLeft = myChart.axisLeft
-                    yLeft.textSize = 14f
-                    yLeft.textColor = Color.rgb(163, 163, 163)
-                    yLeft.setDrawAxisLine(false)
-                    yLeft.axisLineWidth = 2f
-                    yLeft.axisMinimum = 0f // 최솟값
-                    yLeft.axisMaximum = 1.1f // 최댓값
-                    yLeft.granularity = 0f // 데이터 하나당 입자/원소값?
-
-                    // Y축 (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
-                    val yRight = myChart.axisRight
-                    yRight.setDrawLabels(false) // label 삭제
-                    yRight.textColor = Color.rgb(163, 163, 163)
-                    yRight.setDrawAxisLine(false)
-                    yRight.axisLineWidth = 2f
-                    yRight.axisMinimum = 0f // 최솟값
-                    yRight.axisMaximum = 1.1f // 최댓값
-                    yRight.granularity = 0f // 데이터 하나당 입자/원소값?
-
-                    // 서버에서 받아온 감정 배열 값 넣기 - calm 차이 해당하는 값 배열들이 전부 온 것
-                    val size = result.highlight_array.size
-                    val h_time = Array(size, {0F})
-                    val h_diff = Array(size, {0F})
-
-                    // for 문으로 값 배열에 넣기
-                    for (i in 0 until size) {
-                        h_time[i] = result.highlight_array[i].time.toFloat()    // 해당 시간 (0~러닝타임) - string > float
-                        h_diff[i] = result.highlight_array[i].emotion_diff      // 해당 감정폭 값 (0~1) - float
-
-                        chart.add(Entry(h_time[i], h_diff[i]))  // (x, y) 값 Float형으로 입력! (x: 시간, y: 감정값)
-                    }
-
-                    // 좌표값들이 담긴 엔트리 차트 배열에 대한 데이터셋 생성
-                    val lineDataSet = LineDataSet(chart, "감정폭")
-                    lineDataSet.setColor(Color.parseColor("#264713"))
-                    lineDataSet.lineWidth = 4f
-                    lineDataSet.setDrawCircles(false)
-
-                    // 차트데이터 생성
-                    val chartData = LineData()
-                    chartData.addDataSet(lineDataSet) // 데이터셋을 차트데이터 안에 넣기
-                    myChart.data = chartData // 선 그래프에 차트데이터 표시하기
-                    myChart.invalidate() // 차트 갱신
-
-
-                    // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
-                    var highlightUrl = id + "_" + movie_title + "_" + result_highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
-
-                    var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
-                    downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
-
-                    if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
-                        remakeLayout.setVisibility(View.VISIBLE) // 리메이크 작품 레이아웃 보이도록 설정
-
-                        remakeTitle.text = result_remake_title
-                        Glide.with(applicationContext)
-                            .load("https://image.tmdb.org/t/p/w500" + result_remake_poster) // 불러올 이미지 url
-                            .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
-                            .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
-                            .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
-                            .into(remakePoster) // 이미지를 넣을 뷰
-                    }
-                    else { // 리메이크 작품이 없을 경우
-                        remakeLayout.setVisibility(View.GONE) // 리메이크 작품 레이아웃 아예 없는 것처럼 설정  // View.INVISIBLE : 레이아웃 공간은 있지만 보이지 않도록 설정
-
-                        var value = 50
-                        var displayMetrics = resources.displayMetrics
-                        var dp = Math.round(value * displayMetrics.density) // 단위 dp로 변환
-
-                        myHighlightLayoutParams.bottomMargin = dp // 하이라이트 이미지 layout_marginBottom 설정
-                        myHighlight.layoutParams = myHighlightLayoutParams
-                    }
+        // 감정 상위값 순서대로 키값 배열
+        val top3 = Array(7, {" "})
+        var m = 0
+        mapSorted.forEach { (key, value) ->
+            // println("key: "+ key + ", value: "+ value)
+            if(value != 0) {
+                top3[m] = key
+                m += 1
+            }
+        }
+        for(i in 0..2) {
+            for (j in 0..6) {
+                if (i == 0) {
+                    if(top3[i] == emotionIndex[j]) emotion1.setImageResource(emoji[j])
+                    else if(top3[i] == " ") emotion1.setImageResource(emoji[7]) // value=0: calm
                 }
-                else if (response.code() == 400) {
-                    //Toast.makeText(this@ResultActivity, "오류 발생", Toast.LENGTH_LONG).show()
+                else if (i == 1) {
+                    if(top3[i] == emotionIndex[j]) emotion2.setImageResource(emoji[j])
+                    else if(top3[i] == " ") emotion2.setImageResource(emoji[7]) // value=0: calm
+                }
+                else if (i == 2) {
+                    if(top3[i] == emotionIndex[j]) emotion3.setImageResource(emoji[j])
+                    else if(top3[i] == " ") emotion3.setImageResource(emoji[7]) // value=0: calm
                 }
             }
+        }
 
-            override fun onFailure(call: Call<WatchResult?>, t: Throwable) {
-                //Toast.makeText(this@ResultActivity, t.message, Toast.LENGTH_LONG).show()
-            }
-        })
+
+        // 감정 그래프 출력
+        val chart = ArrayList<Entry>() // 감정 차트 배열 > 새 데이터 좌표값 추가 가능
+
+        // Legend는 차트의 범례 (사용방법 등의 참고사항 설명)
+        val legend = myChart.legend
+        legend.setDrawInside(false)
+
+        // X축 (아래) - 선 유무, 사이즈, 색상, 축 위치 설정
+        val time = myChart.xAxis
+        time.setDrawAxisLine(false)
+        time.setDrawGridLines(false)
+        time.position = XAxis.XAxisPosition.BOTTOM // x축 데이터(time) 표시 위치
+        time.granularity = 1f   // 데이터 하나당 입자/원소값?
+        time.textSize = 2f
+        time.textColor = Color.rgb(118, 118, 118)
+        time.spaceMin = 0.1f // Chart 맨 왼쪽 간격 띄우기
+        time.spaceMax = 0.1f // Chart 맨 오른쪽 간격 띄우기
+
+        // Y축 (왼쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
+        val yLeft = myChart.axisLeft
+        yLeft.textSize = 14f
+        yLeft.textColor = Color.rgb(163, 163, 163)
+        yLeft.setDrawAxisLine(false)
+        yLeft.axisLineWidth = 2f
+        yLeft.axisMinimum = 0f // 최솟값
+        yLeft.axisMaximum = 1.1f // 최댓값
+        yLeft.granularity = 0f // 데이터 하나당 입자/원소값?
+
+        // Y축 (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
+        val yRight = myChart.axisRight
+        yRight.setDrawLabels(false) // label 삭제
+        yRight.textColor = Color.rgb(163, 163, 163)
+        yRight.setDrawAxisLine(false)
+        yRight.axisLineWidth = 2f
+        yRight.axisMinimum = 0f // 최솟값
+        yRight.axisMaximum = 1.1f // 최댓값
+        yRight.granularity = 0f // 데이터 하나당 입자/원소값?
+
+        // 서버에서 받아온 감정 배열 값 넣기 - calm 차이 해당하는 값 배열들이 전부 온 것
+        val size = result_highlight_array.size
+        val h_time = Array(size, {0F})
+        val h_diff = Array(size, {0F})
+
+        // for 문으로 값 배열에 넣기
+        for (i in 0 until size) {
+            h_time[i] = result_highlight_array[i].time.toFloat()    // 해당 시간 (0~러닝타임) - string > float
+            h_diff[i] = result_highlight_array[i].emotion_diff      // 해당 감정폭 값 (0~1) - float
+
+            chart.add(Entry(h_time[i], h_diff[i]))  // (x, y) 값 Float형으로 입력! (x: 시간, y: 감정값)
+        }
+
+        // 좌표값들이 담긴 엔트리 차트 배열에 대한 데이터셋 생성
+        val lineDataSet = LineDataSet(chart, "감정폭")
+        lineDataSet.setColor(Color.parseColor("#264713"))
+        lineDataSet.lineWidth = 4f
+        lineDataSet.setDrawCircles(false)
+
+        // 차트데이터 생성
+        val chartData = LineData()
+        chartData.addDataSet(lineDataSet) // 데이터셋을 차트데이터 안에 넣기
+        myChart.data = chartData // 선 그래프에 차트데이터 표시하기
+        myChart.invalidate() // 차트 갱신
+
+
+        // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
+        var highlightUrl = id + "_" + movie_title + "_" + result_highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
+
+        var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
+        downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
+
+        if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
+            remakeLayout.setVisibility(View.VISIBLE) // 리메이크 작품 레이아웃 보이도록 설정
+
+            remakeTitle.text = result_remake_title
+            Glide.with(applicationContext)
+                .load("https://image.tmdb.org/t/p/w500" + result_remake_poster) // 불러올 이미지 url
+                .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+                .into(remakePoster) // 이미지를 넣을 뷰
+        }
+        else { // 리메이크 작품이 없을 경우
+            remakeLayout.setVisibility(View.GONE) // 리메이크 작품 레이아웃 아예 없는 것처럼 설정  // View.INVISIBLE : 레이아웃 공간은 있지만 보이지 않도록 설정
+
+            var value = 50
+            var displayMetrics = resources.displayMetrics
+            var dp = Math.round(value * displayMetrics.density) // 단위 dp로 변환
+
+            myHighlightLayoutParams.bottomMargin = dp // 하이라이트 이미지 layout_marginBottom 설정
+            myHighlight.layoutParams = myHighlightLayoutParams
+        }
 
 /*
         // 메인으로 돌아가는 버튼
