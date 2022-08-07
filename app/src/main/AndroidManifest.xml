@@ -40,7 +40,7 @@
         <activity android:name=".AddreviewActivity"/>
         <activity android:name=".ResultActivity_ticket_front"/>
         <activity android:name=".ResultActivity_ticket_back"/>
-        <activity android:name=".MainActivity2"/>
+<!--        <activity android:name=".MainActivity2"/>-->
         <activity android:name=".UserMovieListActivity"/>
         <activity android:name=".SplashActivity" android:exported="true">
             <intent-filter>
@@ -51,7 +51,8 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" android:exported="true" />
-        <activity android:name=".SignupActivity" android:exported="true" />
+        <activity android:name=".SignupActivity_auth" android:exported="true"/>
+        <activity android:name=".SignupActivity_fav" android:exported="true"/>
         <activity android:name=".MainActivity1" android:exported="true" />
         <activity
             android:name=".TogetherActivity"

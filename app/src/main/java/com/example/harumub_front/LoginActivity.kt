@@ -11,7 +11,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.github.ybq.android.spinkit.sprite.Sprite
@@ -22,7 +21,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.HashMap
-import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var progressDialog : ProgressDialog1    // 로딩 다이얼로그
@@ -175,7 +173,7 @@ class LoginActivity : AppCompatActivity() {
         // 양방향 액티비티 (회원가입 <-> 로그인)
         // 회원가입 버튼 클릭 - 회원가입 페이지로 이동
         btnSignup.setOnClickListener {
-            var intent2 = Intent(applicationContext, SignupActivity::class.java)
+            var intent2 = Intent(applicationContext, SignupActivity_auth::class.java)
             startActivity(intent2)
         }
     }

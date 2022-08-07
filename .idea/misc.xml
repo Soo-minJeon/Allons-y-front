@@ -48,9 +48,13 @@
         <entry key="..\:/Allons-y/HProject/Allons-y-front/app/src/main/res/menu/drawer_menu.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/drawable-v24/background_ellipse1.xml" value="0.141" />
         <entry key="app/src/main/res/drawable-v24/background_ellipse2.xml" value="0.141" />
+        <entry key="app/src/main/res/drawable-v24/background_ellipse3.xml" value="0.124" />
+        <entry key="app/src/main/res/drawable-v24/signup_box.xml" value="0.124" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.223731884057971" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.10739614994934144" />
         <entry key="app/src/main/res/layout/activity_my_movie_list.xml" value="0.18931159420289856" />
+        <entry key="app/src/main/res/layout/activity_signup_auth.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/activity_signup_fav.xml" value="0.2502532928064843" />
         <entry key="app/src/main/res/layout/fragment_result.xml" value="0.18931159420289856" />
         <entry key="app/src/main/res/layout/fragment_result_ticket_back.xml" value="0.271286231884058" />
         <entry key="app/src/main/res/layout/fragment_user_movie_list.xml" value="0.10739614994934144" />
