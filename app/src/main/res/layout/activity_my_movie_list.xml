@@ -8,11 +8,20 @@
     android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageButton
+        android:id="@+id/back2main"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_previous" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:text="감상목록"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -23,8 +32,10 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_margin="7dp"
-        android:layout_centerInParent="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="7dp"
         android:foregroundGravity="center_horizontal"
         android:textAlignment="center" />
 
