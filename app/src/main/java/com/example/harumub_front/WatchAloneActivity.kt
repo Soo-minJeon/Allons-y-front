@@ -2,9 +2,13 @@ package com.example.harumub_front
 
 import android.Manifest
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +18,9 @@ import android.os.Message
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
+import android.view.Window
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -29,6 +35,8 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.CubeGrid
 import kotlinx.android.synthetic.main.activity_watch_alone.*
 import java.io.File
 import java.lang.Thread.sleep
@@ -43,6 +51,8 @@ import java.util.HashMap
 import kotlin.properties.Delegates
 
 class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
+    private lateinit var progressDialog : ProgressDialog2
+
     private var retrofitBuilder = RetrofitBuilder
     private var retrofitInterface = retrofitBuilder.api
 
@@ -148,6 +158,10 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             Log.e("WatchAloneActivity", "가져온 데이터 없음")
         }
 
+        // 로딩창 선언
+        progressDialog = ProgressDialog2(this)
+        progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // 백그라운드를 투명하게
+
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
@@ -235,6 +249,10 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
         // 감상종료 버튼 클릭
         watch_end.setOnClickListener {
+            // 로딩창 실행
+            // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
+            progressDialog.show() // 로딩화면 보여주기
+
 //            val intent = Intent(applicationContext, AddreviewActivity::class.java)
 //            startActivity(intent)
 
@@ -259,6 +277,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //                        cameraHandler.sendEmptyMessage(WATCH_END)
 //                        mediaPlayer.release()
 //                        Log.d("감상 : ", "종료되었습니다.")
+
+                        // 서버에서 영화 감상 종료 신호(응답)를 받으면 로딩창 종료
+                        progressDialog.dismiss()
 
                         val result = response.body()
 
@@ -1012,5 +1033,18 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                 builder.show()
             }
         }
+    }
+}
+
+class ProgressDialog2(context: Context?) : Dialog(context!!) {
+    init {
+        // 다이얼 로그 제목을 안보이게 설정
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        setContentView(R.layout.dialog_spinkit)
+
+        // 라이브러리 로딩 이미지 사용 - CubeGrid
+        val progressBar = findViewById<View>(R.id.spin_kit) as ProgressBar
+        val cubeGrid: Sprite = CubeGrid()
+        progressBar.indeterminateDrawable = cubeGrid
     }
 }
