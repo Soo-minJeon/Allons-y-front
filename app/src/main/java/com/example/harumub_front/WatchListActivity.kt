@@ -205,10 +205,10 @@ class WatchListActivity : AppCompatActivity()
 
             startActivity(intent)
         }
-
+*/
         // 메인으로 돌아가는 버튼
-        list2main.setOnClickListener{
-            val intent = Intent(this, MainActivity2::class.java)
+        back2main.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("user_id", id)
 
             intent.putExtra("reco1_titleArray", reco1_titleArray)
@@ -244,7 +244,7 @@ class WatchListActivity : AppCompatActivity()
 
             startActivity(intent)
         }
-  */
+
     }
 
   /*
