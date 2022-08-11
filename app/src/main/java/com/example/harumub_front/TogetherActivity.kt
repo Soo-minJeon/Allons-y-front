@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.view.SurfaceView
 import android.view.View
@@ -87,9 +89,14 @@ class TogetherActivity : AppCompatActivity() {
         }
     }
 
-    private var isChannelActivate = false
-    lateinit var emoji1 : ImageView
-    lateinit var emoji2 : ImageView
+    private lateinit var emoji1 : ImageView
+    private lateinit var emoji2 : ImageView
+    private lateinit var emoji3 : ImageView
+    private lateinit var emoji4 : ImageView
+
+    private var isChannelActivated = false
+    lateinit var captureThread : CaptureThread
+    lateinit var captureHandler : CaptureHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,6 +134,10 @@ class TogetherActivity : AppCompatActivity() {
         reco6_titleArray = intent.getSerializableExtra("reco6_titleArray") as ArrayList<String>
         reco6_posterArray = intent.getSerializableExtra("reco6_posterArray") as ArrayList<String>
 
+        emoji1 = findViewById<ImageView>(R.id.emoji1)
+        emoji2 = findViewById<ImageView>(R.id.emoji2)
+        emoji3 = findViewById<ImageView>(R.id.emoji3)
+        emoji4 = findViewById<ImageView>(R.id.emoji4)
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
         if (intent.hasExtra("user_id") && intent.hasExtra("roomCode") && intent.hasExtra("roomToken")) {
@@ -136,12 +147,21 @@ class TogetherActivity : AppCompatActivity() {
         } else {
             Log.e("TogetherActivity", "가져온 데이터 없음")
         }
+
+        captureThread = CaptureThread()
+        captureHandler = CaptureHandler()
+
         // 카메라, 오디오 권한 부여 후 엔진 초기화 및 채널 참가
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO, PERMISSION_REQ_ID_RECORD_AUDIO)
             && checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_REQ_ID_CAMERA)) {
             Log.e("TogetherActivity", "권한 부여 완료")
             initAgoraEngineAndJoinChannel(roomCode, roomToken)
-        } else Log.e("TogetherActivity", "권한 부여 실패")
+        } else {
+            Log.e("TogetherActivity", "권한 부여 실패")
+        }
+
+        // 채널에 들어왔으면 스레드 시작
+        if(isChannelActivated) captureThread.start()
     }
     // 엔진 초기화 및 채널 참가 과정
     private fun initAgoraEngineAndJoinChannel(roomCode: String, roomToken: String) {
@@ -191,108 +211,151 @@ class TogetherActivity : AppCompatActivity() {
     }
     // #4
     private fun joinChannel(roomCode: String, roomToken: String) {
-        mRtcEngine!!.joinChannel(roomToken, roomCode, null, 0) // uid 명시X > 자동 생성
+        //mRtcEngine!!.joinChannel(roomToken, roomCode, null, 0) // uid 명시X > 자동 생성
+        mRtcEngine!!.joinChannel(roomToken, "test", null, 0) // uid 명시X > 자동 생성
 
         Log.e("TogetherActivity", "채널 참가 완료")
         verifyStoragePermission(this) // 캡처 관련 권한 설정
+        isChannelActivated = true
+    }
 
-        isChannelActivate = true
+    inner class CaptureThread : Thread() {
         var time = 0
+        var isThreadActivated = true
 
-        // captureScreen("together", roomCode+"_"+time+".jpg", id, roomCode, time.toString())
+        var id = intent.getStringExtra("user_id").toString()
+        var roomCode = intent.getStringExtra("roomCode").toString()
 
-        while(isChannelActivate) { // 채널이 생성되고 활성화되어 있는 동안 계속 캡처 및 감정 출력
-            // 캡처하기                     // s3 버킷 이름 /   파일 이름    "_"+id+     / user_id / channelName / time
-            captureScreen("together", roomCode+"_"+time+".jpg", id, roomCode, time.toString())
+        fun endThread() { // 스레드 종료
+            isThreadActivated = false
+            isChannelActivated = false
+        }
 
-            val map = HashMap<String, String>()
-            map.put("id", id)
-            map.put("roomCode", roomCode)
-            map.put("time", time.toString())
-            val call = retrofitInterface.executeWatchTogetherImageCapture(map)
-            call!!.enqueue(object : Callback<WatchTogether?> {
-                override fun onResponse(call: Call<WatchTogether?>, response: Response<WatchTogether?>) {
-                    if (response.code() == 200) {
-                        val result = response.body() // 감정 배열
-                        Log.w("TogetherActivity", "감정 배열 받고 출력")
+        override fun run() {
+            super.run()
+            Log.w("TogetherActivity", "Thread 시작 - 캡처 대기")
+            sleep(5000) // 페이지가 모두 로딩되기까지 충분히 기다리기
 
-                        shareEmotions(result!!.emotion_count_array, time) // 감정 출력
-                    }
-                    else if (response.code() == 400) {
-                        Toast.makeText(this@TogetherActivity, "실시간 캡처 오류",
-                            Toast.LENGTH_LONG).show()
-                    }
-                }
-                override fun onFailure(call: Call<WatchTogether?>, t: Throwable) {
-                    Toast.makeText(this@TogetherActivity, t.message,
-                        Toast.LENGTH_LONG).show()
-                }
-            })
-            time += 10 // 10초씩 더해주기
+            while(isThreadActivated) {
+                val message: Message = Message.obtain()
+                message.what = SHARE_START
+                captureHandler.sendMessage(message)
+
+                // 캡처하기
+                captureScreen("together", roomCode+"_"+time+".jpg", roomCode, time) // roomCode+"_"+id+"_"+time+".jpg", id, roomCode, time
+
+                time += 10
+            }
         }
     }
+
+    inner class CaptureHandler : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+
+            when (msg.what) {
+                SHARE_START -> {
+
+                }
+                SHARE_END -> {
+                    captureThread.endThread()
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
     // 화면 캡처 > 이미지 파일 > s3버킷 전달
-    private fun captureScreen(s3Bucket_FolderName: String, fileName: String, user_id: String, channelName: String, time: String) {
+    private fun captureScreen(s3Bucket_FolderName: String, fileName: String, channelName: String, time: Int) { // , user_id: String, channelName: String, time: Int
         val timeStamp : String = SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.KOREA).format(Date())
 
+        // 캡처하기
         mRtcEngine?.takeSnapshot(channelName, 0,
-            "/storage/emulated/0/Android/data/com.example.harumub_front/files/Pictures/$timeStamp.jpg"
+            "/storage/emulated/0/Android/data/com.example.harumub_front/files/Pictures/$fileName" // $timeStamp.jpg
         )
-        Log.w("TogetherActivity", "$timeStamp - 사용자 비디오 캡처 완료")
-        Thread.sleep(10000) // 10초 쉬어주기
+        Log.w("TogetherActivity", "$timeStamp : $fileName - 사용자 비디오 캡처 완료")
+        Thread.sleep(4000) // 저장하는 시간
 
-        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES) // File?
-        var outFile = File(storageDir, "$timeStamp.jpg")
-        var curPath = storageDir?.absolutePath // 외부 저장소 접근
-        var fileUri = FileProvider.getUriForFile(this, "com.example.harumub_front", outFile)
+        // s3 버킷에 올리기
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val outFile = File(storageDir, fileName)
+        uploadWithTransferUtilty(s3Bucket_FolderName, fileName, outFile)
 
-        if (outFile != null) {
-            uploadWithTransferUtilty(s3Bucket_FolderName, fileName, outFile) // file
-        }
+        // 실시간 라우터 - 감정 출력
+        val map = HashMap<String, String>()
+        //map.put("id", id)
+        map.put("roomCode", roomCode)
+        //map.put("time", (time - 10).toString())
+        map.put("time", time.toString())
+        val call = retrofitInterface.executeWatchTogetherImageCapture(map)
+        call!!.enqueue(object : Callback<WatchTogether?> {
+            override fun onResponse(
+                call: Call<WatchTogether?>,
+                response: Response<WatchTogether?>
+            ) {
+                if (response.code() == 200) {
+                    val result = response.body() // 감정 배열
+                    var emotion_str = result!!.emotion_array // ['HAPPY', 'SAD']
+                    emotion_str = emotion_str
+                        .replace("[","")
+                        .replace("]", "")
+                        .replace("'", "")
+                        .replace(" ","")
+                    val emotion_array = emotion_str.split(",") // [HAPPY, SAD]
+                    val size = emotion_array.size
+                    Log.w("TogetherActivity", "감정 결과 - $time 초: $emotion_array" +
+                            "\n감정 총 $size 개 받아왔습니다.")
+
+                    shareEmotions(emotion_array, size, time)
+                } else if (response.code() == 400) {
+                    Toast.makeText(
+                        this@TogetherActivity, "실시간 캡처/분석 오류",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<WatchTogether?>, t: Throwable) {
+                Toast.makeText(
+                    this@TogetherActivity, t.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+        Thread.sleep(5000) // 캡처시 사진이 저장될 시간 + 버킷 올리는 시간 총 4~5초
     }
+
     // 감정 출력
-    private fun shareEmotions(emotion_count_array: List<Emotion>, second: Int) {
-        // 감정 이모티콘 출력 - 서버에서 받아온 감정 배열
-        val emotions = emotion_count_array // 리스트 중 첫번째 배열 - 감정 배열은 시간대별 하나만 전달받음
-        val counts = intArrayOf( // 감정별 최종 횟수(정수값) 배열
-            emotions[0].HAPPY, emotions[1].SAD, emotions[2].ANGRY, emotions[3].CONFUSED,
-            emotions[4].DISGUSTED, emotions[5].SURPRISED, emotions[6].FEAR
-        )
+    private fun shareEmotions(emotion_array: List<String>, size: Int, time: Int) {
         val emojis = intArrayOf( // 감정 이미지 Int 배열
             R.drawable.happy, R.drawable.sad, R.drawable.angry,
             R.drawable.confused, R.drawable.disgusted, R.drawable.surprised,
             R.drawable.fear, R.drawable.calm
         )
-        var check = 0
-        for (i in 0..6) { // 감정 배열 값 찾기
-            if (counts[i] < 1) continue
-            else if(counts[i] == 1) {
-                for (j in 0..6) { // 이미지 찾기
-                    if (i==j) {
-                        if(check == 0) {
-                            emoji1.setImageResource(emojis[j])
-                            check = 1
-                        }
-                        else if(check == 1) {
-                            emoji2.setImageResource(emojis[j])
-                            check = 2
-                        }
-                    }
-                }
-            }
-            else if (counts[i] == 2) {
-                for (j in 0..6) { // 이미지 찾기
-                    if (i==j) {
-                        if(check == 0) {
-                            emoji1.setImageResource(emojis[j])
-                            emoji2.setImageResource(emojis[j])
-                            check = 2
+        val emotionIndex = arrayOf( // 감정 종류 String 배열
+            "HAPPY", "SAD", "ANGRY", "CONFUSED", "DISGUSTED", "SURPRISED", "FEAR", "CALM"
+        )
+        runOnUiThread {
+            for (i in 0 until size) { // 0 ~ size-1
+                for(j in 0..7) {
+                    if (emotion_array[i] == emotionIndex[j]) {
+                        if (i == 0) emoji1.setImageResource(emojis[j])
+                        if (size > 1) {
+                            if (i==1) emoji2.setImageResource(emojis[j])
+                            if (size > 2) {
+                                if (i==2) emoji3.setImageResource(emojis[j])
+                                if (size > 3) {
+                                    if (i==3) emoji4.setImageResource(emojis[j])
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        Log.w("TogetherActivity", "$second 초: 감정 출력 완료")
+        Log.w("TogetherActivity", "$time 초: 감정 출력 완료")
     }
 
     // 권한 부여 설정
@@ -323,7 +386,8 @@ class TogetherActivity : AppCompatActivity() {
             }
             PERMISSION_REQ_ID_CAMERA -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initAgoraEngineAndJoinChannel(roomCode, roomToken)
+                    //initAgoraEngineAndJoinChannel(roomCode, roomToken)
+                    initAgoraEngineAndJoinChannel("test", roomToken)
                 } else {
                     showLongToast("No permission for " + Manifest.permission.CAMERA)
                     finish()
@@ -337,10 +401,11 @@ class TogetherActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        captureHandler.sendEmptyMessage(SHARE_END) // thread 종료!
+        Log.w("TogetherActivity", "onDestroy() SHARE_END 메세지 전달 > thread 종료")
+
         super.onDestroy()
-
         leaveChannel() // 채널 떠나기
-
         RtcEngine.destroy()
         mRtcEngine = null
     }
@@ -385,7 +450,11 @@ class TogetherActivity : AppCompatActivity() {
     }
     // 통화 종료 버튼
     fun onEndCallClicked(view: View) {
+        captureHandler.sendEmptyMessage(SHARE_END) // thread 종료!
+        Log.w("TogetherActivity", "종료 버튼 > SHARE_END 메세지 전달 > thread 종료")
+
         finish()
+        Log.w("TogetherActivity", "통화 종료!")
 
         val map = HashMap<String, String>()
         map.put("id", id)
@@ -395,7 +464,6 @@ class TogetherActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                 if (response.code() == 200) {
                     Log.w("TogetherActivity", "Room & Room Code 삭제")
-                    isChannelActivate = false
 
                     // 입장 페이지로 다시 돌아가기
                     val intent = Intent(applicationContext, EnterActivity::class.java)
@@ -459,9 +527,12 @@ class TogetherActivity : AppCompatActivity() {
     }
     // 채널을 떠날 때
     private fun leaveChannel() {
+        captureHandler.sendEmptyMessage(SHARE_END) // isThreadActivated = false
+        Log.w("TogetherActivity", "leaveChannel() SHARE_END 메세지 전달 > thread 종료")
+
         mRtcEngine!!.leaveChannel()
         Log.w("TogetherActivity", "채널을 떠남")
-        isChannelActivate = false
+        isChannelActivated = false
     }
     // 상대방이 채널을 떠났을 때
     private fun onRemoteUserLeft() {
@@ -472,7 +543,6 @@ class TogetherActivity : AppCompatActivity() {
         tipMsg.visibility = View.VISIBLE
 
         Log.w("TogetherActivity", "상대방이 채널을 떠남")
-        isChannelActivate = false
     }
     // 상대방의 비디오가 꺼졌을 때
     private fun onRemoteUserVideoMuted(uid: Int, muted: Boolean) {
@@ -488,6 +558,9 @@ class TogetherActivity : AppCompatActivity() {
     }
     // static -> companion object : 클래스 내부에 정의된 singleton value
     companion object {
+        private const val SHARE_START = 0
+        private const val SHARE_END = 1
+
         private val LOG_TAG = TogetherActivity::class.java.simpleName
         private const val PERMISSION_REQ_ID_RECORD_AUDIO = 22
         private const val PERMISSION_REQ_ID_CAMERA = PERMISSION_REQ_ID_RECORD_AUDIO + 1
@@ -516,33 +589,37 @@ class TogetherActivity : AppCompatActivity() {
         val transferUtility =
             TransferUtility.builder().s3Client(s3Client).context(this.applicationContext).build()
         TransferNetworkLossHandler.getInstance(this.applicationContext)
-        val uploadObserver =
-            transferUtility.upload("allonsybucket1/$s3Bucket_FolderName", fileName, file) // (bucket name, file 이름, file 객체)
-        uploadObserver.setTransferListener(object : TransferListener {
-            override fun onStateChanged(s3_id: Int, state: TransferState) {
-                if (state === TransferState.COMPLETED) {
-                    // Handle a completed upload
-                    Log.d("S3 Bucket ", "Upload Completed!")
 
-                    // S3 Bucket에 file 업로드 후 Emulator에서 삭제
-                    if (file != null) {
-                        file.delete()
-                        Log.d("Emulator : ", "파일 삭제")
+        if (file != null) {
+            if (file.exists()) { // 파일 객체가 실제로 존재하면 버킷에 올리기
+                val uploadObserver =
+                    transferUtility.upload("allonsybucket1/$s3Bucket_FolderName", fileName, file) // (bucket name, file 이름, file 객체)
+                uploadObserver.setTransferListener(object : TransferListener {
+                    override fun onStateChanged(s3_id: Int, state: TransferState) {
+                        if (state === TransferState.COMPLETED) {
+                            // Handle a completed upload
+                            Log.d("Together_S3 Bucket", "Upload Completed!")
+                            Log.w("Together_S3 Bucket", "$fileName >> 버킷에 업로드 완료!")
+
+                            // S3 Bucket에 file 업로드 후 Emulator에서 삭제
+                            file.delete()
+                            Log.w("Together_Emulator", "파일 삭제 완료")
+                        }
                     }
-                    else {
-                        Log.d("Emulator : ", "삭제할 파일이 없습니다.")
+
+                    override fun onProgressChanged(id: Int, current: Long, total: Long) {
+                        val done = (current.toDouble() / total * 100.0).toInt()
+                        Log.d("TogetherActivity", "UPLOAD - - ID: $id, percent done = $done")
                     }
-                }
-            }
 
-            override fun onProgressChanged(id: Int, current: Long, total: Long) {
-                val done = (current.toDouble() / total * 100.0).toInt()
-                Log.d("TogetherActivity", "UPLOAD - - ID: \$id, percent done = \$done")
+                    override fun onError(id: Int, ex: java.lang.Exception) {
+                        Log.d("TogetherActivity", "UPLOAD ERROR - - ID: $id - - EX:$ex")
+                    }
+                })
             }
-
-            override fun onError(id: Int, ex: java.lang.Exception) {
-                Log.d("TogetherActivity", "UPLOAD ERROR - - ID: \$id - - EX:$ex")
+            else {
+                Log.e("Together_Emulator", "업로드할 파일이 없습니다.")
             }
-        })
+        }
     }
 }

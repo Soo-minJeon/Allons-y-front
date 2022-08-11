@@ -201,7 +201,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             //intent.putExtra("roomToken", result.roomToken)
                             intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
                             intent.putExtra("role", "publisher")
-                            intent.putExtra("user_id", id)
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -257,8 +256,8 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // 확인 버튼 클릭 - 같이 보기 페이지로 이동
             dig.setPositiveButton("확인") { dialog, which ->
                 //Toast.makeText(this@EnterActivity, "확인 누름", Toast.LENGTH_LONG).show()
-                var codeEdit = dialogView.findViewById<EditText>(R.id.code_edittext)
-                var getroomCode = codeEdit.text.toString()
+                val codeEdit = dialogView.findViewById<EditText>(R.id.code_edittext)
+                val getroomCode = codeEdit.text.toString()
 
                 val map = HashMap<String, String>()
                 map.put("id", id)
@@ -277,7 +276,8 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", getroomCode)
-                            intent.putExtra("roomToken", result?.roomToken)
+                            //intent.putExtra("roomToken", result?.roomToken)
+                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
                             intent.putExtra("role", "subscriber")
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
