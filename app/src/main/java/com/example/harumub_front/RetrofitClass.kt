@@ -52,7 +52,7 @@ data class MakeRoomResult(var roomCode: String, var roomToken: String)
 data class EnterRoomResult(var roomToken: String)
 
 // 같이보기 - 실시간 감정
-data class WatchTogether(var emotion_count_array : List<Emotion>)
+data class WatchTogether(var emotion_array: String)
 
 // 영화 검색 페이지 - 전체 영화 목록
 data class SearchData(var title : ArrayList<String>, var poster : ArrayList<String>,

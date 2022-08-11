@@ -71,7 +71,7 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.13.5'
     implementation 'com.amazonaws:aws-android-sdk-cognito:2.13.5'
     implementation 'com.amazonaws:aws-android-sdk-s3:2.13.5'
-    implementation "androidx.core:core-ktx:+"
+    //implementation "androidx.core:core-ktx:+" // update error
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Glide - 이미지 로딩 라이브러리
