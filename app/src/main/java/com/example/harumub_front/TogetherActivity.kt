@@ -520,8 +520,8 @@ class TogetherActivity : AppCompatActivity() {
         mRtcEngine!!.setupRemoteVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid))
 
         surfaceView.tag = uid // for mark purpose
-        val tipMsg = findViewById<TextView>(R.id.quick_tips_when_use_agora_sdk) // optional UI
-        tipMsg.visibility = View.GONE
+        val defaultRV = findViewById<ImageView>(R.id.default_remote_view) // optional UI
+        defaultRV.visibility = View.GONE
 
         Log.w("TogetherActivity", "상대의 비디오 출력")
     }
@@ -539,8 +539,8 @@ class TogetherActivity : AppCompatActivity() {
         val container = findViewById<FrameLayout>(R.id.remote_video_view_container)
         container.removeAllViews()
 
-        val tipMsg = findViewById<TextView>(R.id.quick_tips_when_use_agora_sdk) // optional UI
-        tipMsg.visibility = View.VISIBLE
+        val defaultRV = findViewById<ImageView>(R.id.default_remote_view) // optional UI
+        defaultRV.visibility = View.VISIBLE
 
         Log.w("TogetherActivity", "상대방이 채널을 떠남")
     }
