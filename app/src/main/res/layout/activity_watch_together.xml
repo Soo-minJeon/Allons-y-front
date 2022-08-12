@@ -37,7 +37,7 @@
             android:background="#555555" />
 
         <ImageView
-            android:id="@+id/quick_tips_when_use_agora_sdk"
+            android:id="@+id/default_remote_view"
             android:layout_width="160dp"
             android:layout_height="200dp"
             android:layout_centerInParent="true"
