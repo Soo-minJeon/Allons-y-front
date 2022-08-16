@@ -354,6 +354,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         lineDataSet.setColor(Color.parseColor("#264713"))
         lineDataSet.lineWidth = 4f
         lineDataSet.setDrawCircles(false)
+        lineDataSet.setDrawValues(false) // 값 표시 X
 
         // 차트데이터 생성
         val chartData = LineData()
@@ -363,9 +364,9 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
 
         // 하이라이트 이미지 - s3 버킷에서 에뮬레이터 내 다운로드 => 이미지 출력 => 기기 내 파일 삭제
-        var highlightUrl = id + "_" + movie_title + "_" + result_highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
+        val highlightUrl = id + "_" + movie_title + "_" + result_highlight_time + ".jpg" // Bucket 내 하이라이트 이미지 이름
 
-        var downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
+        val downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
         downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
 
         if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
@@ -382,9 +383,9 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         else { // 리메이크 작품이 없을 경우
             remakeLayout.setVisibility(View.GONE) // 리메이크 작품 레이아웃 아예 없는 것처럼 설정  // View.INVISIBLE : 레이아웃 공간은 있지만 보이지 않도록 설정
 
-            var value = 50
-            var displayMetrics = resources.displayMetrics
-            var dp = Math.round(value * displayMetrics.density) // 단위 dp로 변환
+            val value = 50
+            val displayMetrics = resources.displayMetrics
+            val dp = Math.round(value * displayMetrics.density) // 단위 dp로 변환
 
             myHighlightLayoutParams.bottomMargin = dp // 하이라이트 이미지 layout_marginBottom 설정
             myHighlight.layoutParams = myHighlightLayoutParams
@@ -437,7 +438,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
         // 리스트 목록으로 이동하는 버튼
         btnList.setOnClickListener {
-            var intent = Intent(
+            val intent = Intent(
                 applicationContext,
                 WatchListActivity::class.java
             ) // 두번째 인자에 이동할 액티비티
