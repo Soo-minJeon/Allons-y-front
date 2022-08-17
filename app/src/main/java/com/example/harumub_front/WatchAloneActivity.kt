@@ -1,6 +1,7 @@
 package com.example.harumub_front
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -16,10 +17,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.util.Log
-import android.view.SurfaceHolder
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.camera.core.*
@@ -71,6 +71,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
     private lateinit var mediaPlayer: MediaPlayer
     private var isPlayed by Delegates.notNull<Boolean>()
 
+    lateinit var play_pause_inflater : LayoutInflater
+    lateinit var play_pause_imageView : ImageView
+
     // 현재 로그인하고 있는 사용자 아이디, 선택한 영화 아이디
     lateinit var id : String
     lateinit var movie_title : String
@@ -115,6 +118,14 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_watch_alone)
 
+        // 혼자보기 페이지 화면 위에 play_pause_layout Overlay
+        play_pause_inflater = LayoutInflater.from(baseContext)
+        var viewControl = play_pause_inflater.inflate(R.layout.play_pause_layout, null)
+        var layoutParamsControl = ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT)
+        addContentView(viewControl, layoutParamsControl)
+
+        play_pause_imageView = findViewById(R.id.play_pause_imageView)
+
         id = intent.getStringExtra("user_id").toString()
         movie_title = intent.getStringExtra("movie_title").toString()
         running_time = intent.getIntExtra("running_time", 0)
@@ -158,6 +169,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             Log.e("WatchAloneActivity", "가져온 데이터 없음")
         }
 
+        val fadeOut = ObjectAnimator.ofFloat(play_pause_imageView, "alpha", 1f, 0f)
+        fadeOut.duration = 500
+
         // 로딩창 선언
         progressDialog = ProgressDialog2(this)
         progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // 백그라운드를 투명하게
@@ -181,6 +195,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
         // 감상시작 버튼 클릭
         // 감상시작 버튼 누르면 -> 노드에 map 전송
         watch_start.setOnClickListener {
+            play_pause_imageView.setImageResource(R.drawable.play)
+            fadeOut.start()
+
             var map = HashMap<String, String>()
             map.put("id", id)
             map.put("movieTitle", movie_title)
@@ -249,6 +266,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
         // 감상종료 버튼 클릭
         watch_end.setOnClickListener {
+            play_pause_imageView.setImageResource(R.drawable.pause)
+            fadeOut.start()
+
             // 로딩창 실행
             // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
             progressDialog.show() // 로딩화면 보여주기
