@@ -1,12 +1,15 @@
 package com.example.harumub_front
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.URLSpan
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -15,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_signup_fav.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.HashMap
+
 
 class SignupActivity_fav : AppCompatActivity() {
     private lateinit var retrofitBuilder: RetrofitBuilder
@@ -30,6 +33,15 @@ class SignupActivity_fav : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup_fav)
+
+        var flag = false // 개인정보 동의했는지 확인(기본값 : false, 동의 누르면 true로 바뀜)
+
+        // 개인정보 동의 텍스트(링크처럼 보이도록)
+        var ssb = SpannableStringBuilder()
+        ssb.append(personal_check_text.getText())
+        ssb.setSpan(URLSpan("#"), 0, ssb.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        personal_check_text.setText(ssb, TextView.BufferType.SPANNABLE)
+
 
         retrofitBuilder = RetrofitBuilder
         retrofitInterface = retrofitBuilder.api
@@ -150,61 +162,83 @@ class SignupActivity_fav : AppCompatActivity() {
             }
         }
 
+        personal_check_text.setOnClickListener {
 
+            // 알림창 다이얼로그 띄우기
+            val dig = AlertDialog.Builder(this@SignupActivity_fav)
+            val dialogView =
+                View.inflate(this@SignupActivity_fav, R.layout.dialog_personalcheck, null)
+            dig.setView(dialogView)
+            dig.setPositiveButton("확인"){dialog, which ->}
+            dig.show()
+        }
+        personal_check.setOnClickListener {
+            if (personal_check.isChecked) {
+                flag = true
+            }else if (!personal_check.isChecked){
+                flag = false
+            }
+        }
 
         // 하단 JOIN 버튼 클릭 - 회원 가입 정보 연동 및 액티비티 종료 ->로그인 페이지 호출
         btnJoin.setOnClickListener {
-            // 사용자가 입력한 값들을 String으로 받아오기
-            val like_movie1 = j_like_movie1.text.toString()
-            val like_movie2 = j_like_movie2.text.toString()
-            val like_movie3 = j_like_movie3.text.toString()
+            if (flag){
+                // 사용자가 입력한 값들을 String으로 받아오기
+                val like_movie1 = j_like_movie1.text.toString()
+                val like_movie2 = j_like_movie2.text.toString()
+                val like_movie3 = j_like_movie3.text.toString()
 
-            // 유저가 항목을 다 채우지 않았을 경우
-            if(id.isEmpty() || pw.isEmpty() || name.isEmpty() || email.isEmpty() || like_movie1.isEmpty() || like_movie2.isEmpty() || like_movie3.isEmpty() || genre.isNullOrBlank()) {
-                Toast.makeText(this, "입력란을 모두 작성바랍니다.", Toast.LENGTH_SHORT).show()
+                // 유저가 항목을 다 채우지 않았을 경우
+                if(id.isEmpty() || pw.isEmpty() || name.isEmpty() || email.isEmpty() || like_movie1.isEmpty() || like_movie2.isEmpty() || like_movie3.isEmpty() || genre.isNullOrBlank()) {
+                    Toast.makeText(this, "입력란을 모두 작성바랍니다.", Toast.LENGTH_SHORT).show()
 
 /*
                 if(genre.isNullOrBlank()) {
                     Toast.makeText(this@SignupActivity, "선호하는 장르를 선택해 주세요.", Toast.LENGTH_SHORT).show()
                 }
 */
-            }
+                }
 
-            if (codeAuth == "true") {
-                // 회원정보 retrofit 연동
-                val map = HashMap<String, String>()
-                map.put("id", id)
-                map.put("password", pw)
-                map.put("name", name)
-                map.put("favorite", like_movie1 + "," + like_movie2 + "," + like_movie3)
-                map.put("genre", genre!!)
+                if (codeAuth == "true") {
+                    // 회원정보 retrofit 연동
+                    val map = HashMap<String, String>()
+                    map.put("id", id)
+                    map.put("password", pw)
+                    map.put("name", name)
+                    map.put("favorite", like_movie1 + "," + like_movie2 + "," + like_movie3)
+                    map.put("genre", genre!!)
 
-                val call = retrofitInterface.executeSignup(map)
+                    val call = retrofitInterface.executeSignup(map)
 
-                call!!.enqueue(object : Callback<Void?> {
-                    override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                        if (response.code() == 200) {
-                            Toast.makeText(
-                                this@SignupActivity_fav,
-                                "회원가입이 완료되었습니다.", Toast.LENGTH_LONG
-                            ).show()
-                            val intent = Intent(applicationContext, LoginActivity::class.java)
-                            startActivity(intent)
-                        } else if (response.code() == 400) {
-                            Toast.makeText(
-                                this@SignupActivity_fav, "이미 가입된 정보입니다.",
-                                Toast.LENGTH_LONG
-                            ).show()
+                    call!!.enqueue(object : Callback<Void?> {
+                        override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                            if (response.code() == 200) {
+                                Toast.makeText(
+                                    this@SignupActivity_fav,
+                                    "회원가입이 완료되었습니다.", Toast.LENGTH_LONG
+                                ).show()
+                                val intent = Intent(applicationContext, LoginActivity::class.java)
+                                startActivity(intent)
+                            } else if (response.code() == 400) {
+                                Toast.makeText(
+                                    this@SignupActivity_fav, "이미 가입된 정보입니다.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<Void?>, t: Throwable) {
-                        //Toast.makeText(this@SignupActivity, "회원가입에 실패했습니다.", Toast.LENGTH_LONG).show()
+                        override fun onFailure(call: Call<Void?>, t: Throwable) {
+                            //Toast.makeText(this@SignupActivity, "회원가입에 실패했습니다.", Toast.LENGTH_LONG).show()
 
-                        //Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_LONG).show()
-                        Log.d("회원가입 실패 : ", t.message.toString())
-                    }
-                })
+                            //Toast.makeText(this@SignupActivity, t.message, Toast.LENGTH_LONG).show()
+                            Log.d("회원가입 실패 : ", t.message.toString())
+                        }
+                    })
+                }
+            }
+            else {
+                // 개인정보 동의하지 않았을 경우
+                Toast.makeText(this, "개인정보 이용에 동의해주세요", Toast.LENGTH_SHORT).show()
             }
         }
     }
