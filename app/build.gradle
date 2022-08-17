@@ -80,4 +80,6 @@ dependencies {
     // 같이보기 sdk 최신 버전
     implementation 'io.agora.rtc:full-sdk:3.7.0.2'
 
+    // roundview
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }

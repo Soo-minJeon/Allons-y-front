@@ -49,7 +49,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/TransparentStatusTheme" />
         <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".SignupActivity_auth" android:exported="true"/>
         <activity android:name=".SignupActivity_fav" android:exported="true"/>

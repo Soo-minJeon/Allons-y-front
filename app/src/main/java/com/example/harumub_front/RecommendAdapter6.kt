@@ -18,7 +18,7 @@ class RecommendAdapter6(var titles: ArrayList<String>, var posters: ArrayList<St
         viewType: Int
     ): RecommendAdapter6.ViewHolder {
         // RecyclerView에 들어갈 아이템의 레이아웃 설정
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.topten_cardview, parent, false)
         return ViewHolder(v)
     }
 
@@ -31,7 +31,7 @@ class RecommendAdapter6(var titles: ArrayList<String>, var posters: ArrayList<St
             .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
             .into(holder.movieImage) // 이미지를 넣을 뷰
 
-        holder.movieTitle.text = titles[position]
+        //holder.movieTitle.text = titles[position]
     }
 
     override fun getItemCount(): Int {
@@ -40,11 +40,11 @@ class RecommendAdapter6(var titles: ArrayList<String>, var posters: ArrayList<St
 
     inner class ViewHolder(movieView: View): RecyclerView.ViewHolder(movieView) {
         var movieImage: ImageView
-        var movieTitle: TextView
+        //var movieTitle: TextView
 
         init {
             movieImage = movieView.findViewById(R.id.movie_image) // 영화 이미지 버튼
-            movieTitle = movieView.findViewById(R.id.movie_title) // 영화 제목
+            //movieTitle = movieView.findViewById(R.id.movie_title) // 영화 제목
         }
     }
 }

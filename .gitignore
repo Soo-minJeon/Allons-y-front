@@ -187,3 +187,29 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,kotlin,androidstudio
+
+# 별 영향 없는 맥 환경 파일로 추측 (수정하지 않았는데 update 돼서 add 시 충돌 발생해서 포함)
+.gradle/7.2/executionHistory/executionHistory.bin
+.gradle/7.2/executionHistory/executionHistory.lock
+.gradle/7.2/fileHashes/fileHashes.bin
+.gradle/7.2/fileHashes/fileHashes.lock
+.gradle/7.2/fileHashes/resourceHashesCache.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/checksums/checksums.lock
+.gradle/checksums/md5-checksums.bin
+.gradle/checksums/sha1-checksums.bin
+.idea/misc.xml
+.idea/modules/app/harumub_front.app.iml
+.gradle/checksums/checksums.lock
+.gradle/checksums/md5-checksums.bin
+.gradle/checksums/sha1-checksums.bin
+.idea/misc.xml
+.idea/modules/app/harumub_front.app.iml
+.gradle/7.2/executionHistory/executionHistory.bin
+.gradle/7.2/executionHistory/executionHistory.lock
+.gradle/7.2/fileHashes/fileHashes.bin
+.gradle/7.2/fileHashes/fileHashes.lock
+.gradle/7.2/fileHashes/resourceHashesCache.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
