@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_search.view.imageView
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
 import kotlin.properties.Delegates
 

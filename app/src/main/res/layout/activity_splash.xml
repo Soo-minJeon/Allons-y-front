@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#264713">
+    android:background="@drawable/splash">
 
     <LinearLayout
-        android:layout_width="750px"
-        android:layout_height="750px"
+        android:layout_width="630px"
+        android:layout_height="630px"
         android:layout_gravity="center"
         android:background="@drawable/film"
         android:orientation="vertical">
@@ -19,11 +19,11 @@
             android:shadowColor="#4D000000"
             android:shadowDy="17.0"
             android:shadowRadius="1.0"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="90dp"
             android:text="하루뭅"
             android:textAlignment="center"
             android:textColor="#FFFEF3"
-            android:textSize="60dp"
+            android:textSize="50dp"
             android:fontFamily="@font/dohyun" />
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:text="하루에 하나씩 영화기록"
             android:textAlignment="center"
             android:textColor="#FFFEF3"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
     </LinearLayout>
 
 </LinearLayout>

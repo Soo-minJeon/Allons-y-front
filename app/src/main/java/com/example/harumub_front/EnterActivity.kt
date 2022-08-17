@@ -9,10 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -63,6 +60,9 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var reco4_posterArray : ArrayList<String>
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
+
+    lateinit var noBtn : Button
+    lateinit var yesBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -253,8 +253,11 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val dialogView = View.inflate(this, R.layout.dialog_entercode, null)
             dig.setView(dialogView)
 
+            noBtn = dialogView.findViewById<Button>(R.id.noBtn)
+            yesBtn = dialogView.findViewById<Button>(R.id.yesBtn)
+
             // 확인 버튼 클릭 - 같이 보기 페이지로 이동
-            dig.setPositiveButton("확인") { dialog, which ->
+            yesBtn.setOnClickListener {
                 //Toast.makeText(this@EnterActivity, "확인 누름", Toast.LENGTH_LONG).show()
                 val codeEdit = dialogView.findViewById<EditText>(R.id.code_edittext)
                 val getroomCode = codeEdit.text.toString()
@@ -319,7 +322,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 })
             } // 취소 버튼 클릭 시 취소되었다는 토스트 메세지를 보여 줌
-            dig.setNegativeButton("취소") { dialog, which ->
+            noBtn.setOnClickListener {
                 //Toast.makeText(this, "취소되었습니다.", Toast.LENGTH_LONG).show()
             }
             dig.show()

@@ -4,39 +4,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/login_background">
+    android:background="@drawable/login">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="80dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="30dp">
+
+        <RelativeLayout
             android:gravity="center_horizontal"
-            android:padding="5dp"
-            android:shadowColor="#4D000000"
-            android:shadowDy="10.0"
-            android:shadowRadius="1.0"
-            android:text="Welcome"
-            android:textAlignment="center"
-            android:textColor="#264713"
-            android:textSize="20dp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:shadowColor="#4D000000"
-            android:shadowDy="10.0"
-            android:shadowRadius="1.0"
-            android:text="하루뭅"
-            android:textAlignment="center"
-            android:textColor="#264713"
-            android:textSize="60dp"
-            android:fontFamily="@font/dohyun" />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+            <ImageView
+                android:id="@+id/filmImg"
+                android:gravity="center"
+                android:layout_width="170dp"
+                android:layout_height="200dp"
+                android:src="@drawable/film" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_alignLeft="@id/filmImg"
+                android:layout_alignTop="@id/filmImg"
+                android:layout_alignRight="@id/filmImg"
+                android:layout_alignBottom="@id/filmImg"
+                android:padding="5dp"
+                android:shadowColor="#4D000000"
+                android:shadowDy="10.0"
+                android:shadowRadius="1.0"
+                android:text="Welcome"
+                android:layout_marginTop="40dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/filmImg"
+                android:layout_alignTop="@id/filmImg"
+                android:layout_alignRight="@id/filmImg"
+                android:layout_alignBottom="@id/filmImg"
+                android:fontFamily="@font/dohyun"
+                android:gravity="center"
+                android:shadowColor="#4D000000"
+                android:shadowDy="10.0"
+                android:shadowRadius="1.0"
+                android:text="하루뭅"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="50dp" />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -76,8 +99,8 @@
             android:layout_height="45dp"
             android:layout_margin="5dp"
             android:text="LOGIN"
-            android:fontFamily="@font/jua"
-            android:textSize="20dp"
+            android:textSize="16dp"
+            android:fontFamily="@font/abeezeerecular"
             android:textColor="#FFFEF3"
             android:background="@drawable/b_rectangle"
             />
@@ -87,8 +110,8 @@
             android:layout_height="45dp"
             android:layout_margin="5dp"
             android:text="SIGN UP"
-            android:fontFamily="@font/jua"
-            android:textSize="20dp"
+            android:fontFamily="@font/abeezeerecular"
+            android:textSize="16dp"
             android:textColor="#FFFEF3"
             android:background="@drawable/b_rectangle"
             />
