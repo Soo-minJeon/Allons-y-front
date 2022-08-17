@@ -220,7 +220,7 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                     myGenres.text = arrGenres[0]
 
                     // 영화 포스터 출력 - 웹에서 url로 가져오기
-                    var posterUrl = result_poster
+                    val posterUrl = result_poster
 
                     Glide.with(applicationContext)
                         .asBitmap()
@@ -233,7 +233,7 @@ class ResultActivity_ticket_front : AppCompatActivity() {
                                 transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
                             ) { // 포스터 평균색에 맞춰 뒷배경 색 변경
                                 myPoster.setImageBitmap(resource)
-                                var myPalette:Palette = Palette.from(resource).generate()
+                                val myPalette:Palette = Palette.from(resource).generate()
                                 val dominantSwatch: Palette.Swatch = myPalette!!.getDominantSwatch()!!
                                 myBackground.setBackgroundColor(dominantSwatch.rgb)
                                 Log.e("rgb", dominantSwatch.rgb.toString())
