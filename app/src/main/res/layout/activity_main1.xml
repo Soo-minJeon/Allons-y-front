@@ -107,7 +107,7 @@
             android:id="@+id/drawer_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#264713"
+            android:background="#BF264713"
             android:layout_gravity="start"
             app:itemTextColor="#ffffff"
             app:itemIconSize="12dp"

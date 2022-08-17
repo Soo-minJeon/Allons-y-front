@@ -32,35 +32,47 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Harumub_front">
 
-        <activity android:name=".WatchListActivity"/>
+        <activity android:name=".WatchListActivity"
+            android:theme="@style/TransparentStatusTheme" />
         <activity
             android:name=".WatchAloneActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape"/>
         <activity android:name=".AddreviewActivity"/>
-        <activity android:name=".ResultActivity_ticket_front"/>
-        <activity android:name=".ResultActivity_ticket_back"/>
+        <activity android:name=".ResultActivity_ticket_front"
+            android:theme="@style/TransparentStatusTheme" />
+        <activity android:name=".ResultActivity_ticket_back"
+            android:theme="@style/TransparentStatusTheme" />
 <!--        <activity android:name=".MainActivity2"/>-->
-        <activity android:name=".UserMovieListActivity"/>
-        <activity android:name=".SplashActivity" android:exported="true">
+        <activity android:name=".UserMovieListActivity"
+            android:theme="@style/TransparentStatusTheme" />
+        <activity android:name=".SplashActivity" android:exported="true"
+            android:theme="@style/TransparentStatusTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchActivity"
+            android:theme="@style/TransparentStatusTheme" />
         <activity android:name=".MainActivity"
             android:theme="@style/TransparentStatusTheme" />
-        <activity android:name=".LoginActivity" android:exported="true" />
-        <activity android:name=".SignupActivity_auth" android:exported="true"/>
-        <activity android:name=".SignupActivity_fav" android:exported="true"/>
-        <activity android:name=".MainActivity1" android:exported="true" />
+        <activity android:name=".LoginActivity" android:exported="true"
+            android:theme="@style/TransparentStatusTheme"  />
+        <activity android:name=".SignupActivity_auth" android:exported="true"
+            android:theme="@style/TransparentStatusTheme" />
+        <activity android:name=".SignupActivity_fav" android:exported="true"
+            android:theme="@style/TransparentStatusTheme" />
+        <activity android:name=".MainActivity1" android:exported="true"
+            android:theme="@style/TransparentStatusTheme" />
         <activity
             android:name=".TogetherActivity"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/FullScreenVideoTheme" />
-        <activity android:name=".EnterActivity" />
-        <activity android:name=".HelpActivity" />
+        <activity android:name=".EnterActivity"
+            android:theme="@style/TransparentStatusTheme" />
+        <activity android:name=".HelpActivity"
+            android:theme="@style/TransparentStatusTheme" />
 
         <!-- S3 Bucket -->
         <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" android:enabled="true"/>

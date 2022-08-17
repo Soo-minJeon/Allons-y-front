@@ -4,26 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="#264713">
+    android:background="@drawable/dialog_round_bg">
 
     <TextView
         android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:padding="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="초대 코드 발급"
-        android:fontFamily="@font/jua"
-        android:textSize="28dp"
-        android:textColor="#FFFFFF"/>
+        android:text="초대코드 발급"
+        android:textSize="23dp"
+        android:textColor="@color/black"/>
 
     <TextView
         android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="확인 버튼 클릭시 초대코드가 자동으로 복사됩니다."
-        android:fontFamily="@font/jua"
-        android:textSize="17sp"
-        android:textColor="#EEEEEE" />
+        android:fontFamily="@font/abeezeerecular"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:id="@+id/myEnterCode"
@@ -34,7 +34,6 @@
         android:padding="15dp"
         android:text="My Entercode"
         android:textSize="20sp"
-        android:fontFamily="@font/jua"
-        android:textColor="#264713" />
+        android:fontFamily="@font/abeezeerecular" />
 
 </LinearLayout>
