@@ -63,7 +63,12 @@
         <entry key="..\:/Allons-y/HProject/Allons-y-front/app/src/main/res/menu/drawer_menu.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/drawable-v24/background_ellipse1.xml" value="0.141" />
         <entry key="app/src/main/res/drawable-v24/background_ellipse2.xml" value="0.141" />
+        <entry key="app/src/main/res/drawable-v24/primary_btn_yellow.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/shadow_bottom.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable-v24/shadow_top.xml" value="0.164" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.223731884057971" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2240971883138021" />
+        <entry key="app/src/main/res/layout/activity_main1.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.10739614994934144" />
         <entry key="app/src/main/res/layout/activity_my_movie_list.xml" value="0.18931159420289856" />
         <entry key="app/src/main/res/layout/fragment_result.xml" value="0.18931159420289856" />
@@ -71,6 +76,7 @@
         <entry key="app/src/main/res/layout/fragment_user_movie_list.xml" value="0.10739614994934144" />
         <entry key="app/src/main/res/layout/movie_collection_layout.xml" value="0.23333333333333334" />
         <entry key="app/src/main/res/layout/movie_layout.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/topten_cardview.xml" value="0.17708333333333334" />
       </map>
     </option>
   </component>
