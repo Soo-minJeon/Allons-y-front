@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.github.ybq.android.spinkit.sprite.Sprite
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface : RetrofitInterface
 
+    lateinit var message : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -68,10 +70,18 @@ class LoginActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<LoginResult?>, response: Response<LoginResult?>) {
                     if (response.code() == 200) {
                         val result = response.body()
-                        val builder1 = AlertDialog.Builder(this@LoginActivity)
-                        builder1.setTitle("로그인 성공")
-                        builder1.setMessage(result!!.name + "님 환영합니다!")
-                        builder1.show()
+//                        val builder1 = AlertDialog.Builder(this@LoginActivity)
+//                        builder1.setTitle("로그인 성공")
+//                        builder1.setMessage(result!!.name + "님 환영합니다!")
+//                        builder1.show()
+
+                        val dig = android.app.AlertDialog.Builder(this@LoginActivity)
+                        val dialogView =
+                            View.inflate(this@LoginActivity, R.layout.dialog_login_success, null)
+                        message = dialogView.findViewById(R.id.nameLogin)
+                        message.text = result!!.name+"님 하루뭅에 오신 걸 환영합니다."
+                        dig.setView(dialogView)
+                        dig.show()
 
                         val reco1 = result.reco1 // 추천 1
                         val reco1_titleArray = reco1.titleArray // 추천 1의 추천 영화 제목 리스트
