@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/movie_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/black">
+
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_height="450dp"
+        android:background="@color/black">
+
+        <ImageView
+            android:id="@+id/movie_image"
+            android:layout_width="400dp"
+            android:layout_height="450dp"
+            android:gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/strangethings" />
+
+        <View
+            android:layout_width="400dp"
+            android:layout_height="105dp"
+            android:background="@drawable/shadow_top"
+            android:scaleType="fitStart" />
+
+        <View
+            android:layout_width="500dp"
+            android:layout_height="105dp"
+            android:layout_alignBottom="@id/movie_image"
+            android:background="@drawable/shadow_bottom"
+            android:scaleType="fitEnd" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
