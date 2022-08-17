@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#ff365723">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보 수집 ‧ 이용 ‧ 제공 동의서"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="본인은 본 서비스에 가입함에 따라 [개인정보 보호법] 제15조 및 제17조에 따라 아래의 내용으로 개인정보를 수집, 이용 및 제공하는데 동의합니다.\n\n
+□ 개인정보의 수집 및 이용에 관한 사항\n
+- 수집하는 개인정보 항목 : 성명, 이메일, 영화 선호 정보, 영화 감상 모습 등과 그 外 콘텐츠 추천에 필요한 내용
+일체\n
+- 개인정보의 이용 목적 : 수집된 개인정보를 사업장 신규 채용 서류 심사 및 인사서
+류로 활용하며, 목적 외의 용도로는 사용하지 않습니다.\n\n
+□ 개인정보의 보관 및 이용 기간\n
+- 귀하의 개인정보를 다음과 같이 보관하며, 수집, 이용 및 제공목적이 달성된 경우
+[개인정보 보호법] 제21조에 따라 처리합니다."
+                android:textSize="17sp"
+                android:textColor="#ffffff" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>
