@@ -149,6 +149,7 @@
                             android:id="@+id/like_movie1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:padding="5dp"
                             android:background="@drawable/signup_box"
                             android:textColor="#264713" />
 
@@ -166,6 +167,7 @@
                             android:id="@+id/like_movie2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:padding="5dp"
                             android:background="@drawable/signup_box"
                             android:textColor="#264713" />
 
@@ -183,6 +185,7 @@
                             android:id="@+id/like_movie3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:padding="5dp"
                             android:background="@drawable/signup_box"
                             android:textColor="#264713" />
 
