@@ -34,11 +34,12 @@
 
         <activity android:name=".WatchListActivity"
             android:theme="@style/TransparentStatusTheme" />
-        <activity
-            android:name=".WatchAloneActivity"
+        <activity android:name=".WatchAloneActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".AddreviewActivity"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/TransparentStatusTheme"/>
+        <activity android:name=".AddreviewActivity"
+            android:theme="@style/TransparentStatusTheme"/>
         <activity android:name=".ResultActivity_ticket_front"
             android:theme="@style/TransparentStatusTheme" />
         <activity android:name=".ResultActivity_ticket_back"

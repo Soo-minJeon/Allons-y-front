@@ -8,10 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.github.ybq.android.spinkit.sprite.Sprite
@@ -170,8 +167,9 @@ class LoginActivity : AppCompatActivity() {
                     else if (response.code() == 400) {
                         //Toast.makeText(this@LoginActivity, "정의되지 않은 사용자", Toast.LENGTH_LONG).show()
                     }
-                    else if (response.code() == 404) {
-                        //Toast.makeText(this@LoginActivity, "404 오류", Toast.LENGTH_LONG).show()
+                    else if (response.code() == 404) { // 로그인 실패 시 - 토스트 메시지, 애니메이션 종료
+                        Toast.makeText(this@LoginActivity, "로그인 정보를 확인해주세요", Toast.LENGTH_SHORT).show()
+                        progressDialog.dismiss()
                     }
                 }
                 override fun onFailure(call: Call<LoginResult?>, t: Throwable) {

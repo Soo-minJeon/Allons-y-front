@@ -199,7 +199,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", result.roomCode)
                             //intent.putExtra("roomToken", result.roomToken)
-                            //intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
                             intent.putExtra("role", "publisher")
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
@@ -280,7 +280,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", getroomCode)
                             //intent.putExtra("roomToken", result?.roomToken)
-                            //intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
                             intent.putExtra("role", "subscriber")
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
