@@ -82,6 +82,9 @@ class ResultActivity_ticket_back : AppCompatActivity() {
     lateinit var myTitle : TextView
     private lateinit var myHighlight: ImageView
 
+    lateinit var remakeTitle : TextView
+    lateinit var remakePoster : ImageView
+
     lateinit var photoFile: File
     lateinit var photoBitmap: Bitmap
 
@@ -189,11 +192,6 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
         var myChart = findViewById<LineChart>(R.id.chart)
         myHighlight = findViewById<ImageView>(R.id.img_highlight)
-        val myHighlightLayoutParams = myHighlight.layoutParams as ViewGroup.MarginLayoutParams
-
-        var remakeLayout = findViewById<LinearLayout>(R.id.remake_movie_layout)
-        var remakeTitle = findViewById<TextView>(R.id.remake_movie_title)
-        var remakePoster = findViewById<ImageView>(R.id.remake_movie_poster)
 
         totalTicket = findViewById(R.id.total_ticket)
         totalTicket.setOnClickListener(ticketClick())
@@ -369,28 +367,6 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         val downloadFile = File(filesDir.absolutePath + "/" + highlightUrl) // pathname: getString(R.string.PATH)
         downloadWithTransferUtility(highlightUrl, downloadFile) // 하이라이트 이미지 설정을 downloadWithTransferUtility(fileName, file)에서 실행
 
-        if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
-            remakeLayout.setVisibility(View.VISIBLE) // 리메이크 작품 레이아웃 보이도록 설정
-
-            remakeTitle.text = result_remake_title
-            Glide.with(applicationContext)
-                .load("https://image.tmdb.org/t/p/w500" + result_remake_poster) // 불러올 이미지 url
-                .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
-                .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
-                .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
-                .into(remakePoster) // 이미지를 넣을 뷰
-        }
-        else { // 리메이크 작품이 없을 경우
-            remakeLayout.setVisibility(View.GONE) // 리메이크 작품 레이아웃 아예 없는 것처럼 설정  // View.INVISIBLE : 레이아웃 공간은 있지만 보이지 않도록 설정
-
-            val value = 50
-            val displayMetrics = resources.displayMetrics
-            val dp = Math.round(value * displayMetrics.density) // 단위 dp로 변환
-
-            myHighlightLayoutParams.bottomMargin = dp // 하이라이트 이미지 layout_marginBottom 설정
-            myHighlight.layoutParams = myHighlightLayoutParams
-        }
-
 /*
         // 메인으로 돌아가는 버튼
         btnMain.setOnClickListener {
@@ -438,45 +414,107 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
         // 리스트 목록으로 이동하는 버튼
         btnList.setOnClickListener {
-            val intent = Intent(
-                applicationContext,
-                WatchListActivity::class.java
-            ) // 두번째 인자에 이동할 액티비티
+            if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
+                val dig = android.app.AlertDialog.Builder(this@ResultActivity_ticket_back)
+                val dialogView = View.inflate(this@ResultActivity_ticket_back, R.layout.dialog_remake_movie_recommend, null)
+                remakeTitle = dialogView.findViewById(R.id.dialog_remake_movie_title)
+                remakePoster = dialogView.findViewById(R.id.dialog_remake_movie_poster)
 
-            intent.putExtra("user_id", id)
+                remakeTitle.text = result_remake_title
+                Glide.with(applicationContext)
+                    .load("https://image.tmdb.org/t/p/w500" + result_remake_poster) // 불러올 이미지 url
+                    .placeholder(defaultImage) // 이미지 로딩 시작하기 전 표시할 이미지
+                    .error(defaultImage) // 로딩 에러 발생 시 표시할 이미지
+                    .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
+                    .into(remakePoster) // 이미지를 넣을 뷰
 
-            intent.putExtra("reco1_titleArray", reco1_titleArray)
-            intent.putExtra("reco1_posterArray", reco1_posterArray)
+                dig.setView(dialogView)
+                dig.setPositiveButton("확인") { dialog, which ->
+                    val intent = Intent(
+                        applicationContext,
+                        WatchListActivity::class.java
+                    ) // 두번째 인자에 이동할 액티비티
 
-            intent.putExtra("reco2_1_userId", reco2_1_userId)
-            intent.putExtra("reco2_2_userId", reco2_2_userId)
-            intent.putExtra("reco2_3_userId", reco2_3_userId)
-            intent.putExtra("reco2_4_userId", reco2_4_userId)
-            intent.putExtra("reco2_5_userId", reco2_5_userId)
+                    intent.putExtra("user_id", id)
 
-            intent.putExtra("reco2_1_title", reco2_1_title)
-            intent.putExtra("reco2_2_title", reco2_2_title)
-            intent.putExtra("reco2_3_title", reco2_3_title)
-            intent.putExtra("reco2_4_title", reco2_4_title)
-            intent.putExtra("reco2_5_title", reco2_5_title)
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
 
-            intent.putExtra("reco2_1_poster", reco2_1_poster)
-            intent.putExtra("reco2_2_poster", reco2_2_poster)
-            intent.putExtra("reco2_3_poster", reco2_3_poster)
-            intent.putExtra("reco2_4_poster", reco2_4_poster)
-            intent.putExtra("reco2_5_poster", reco2_5_poster)
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
 
-            intent.putExtra("reco3_titleArray", reco3_titleArray)
-            intent.putExtra("reco3_posterArray", reco3_posterArray)
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
 
-            intent.putExtra("reco4_year", reco4_year)
-            intent.putExtra("reco4_titleArray", reco4_titleArray)
-            intent.putExtra("reco4_posterArray", reco4_posterArray)
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
 
-            intent.putExtra("reco6_titleArray", reco6_titleArray)
-            intent.putExtra("reco6_posterArray", reco6_posterArray)
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
 
-            startActivityForResult(intent, 0)
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
+                    startActivityForResult(intent, 0)
+                }
+
+                dig.setCancelable(false) // 뒤로 가기 버튼과 영역 외 클릭 시 Dialog가 사라지지 않도록 한다.
+                dig.show()
+            }
+            else { // 리메이크 작품이 없을 경우
+                val intent = Intent(
+                    applicationContext,
+                    WatchListActivity::class.java
+                ) // 두번째 인자에 이동할 액티비티
+
+                intent.putExtra("user_id", id)
+
+                intent.putExtra("reco1_titleArray", reco1_titleArray)
+                intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                intent.putExtra("reco2_1_userId", reco2_1_userId)
+                intent.putExtra("reco2_2_userId", reco2_2_userId)
+                intent.putExtra("reco2_3_userId", reco2_3_userId)
+                intent.putExtra("reco2_4_userId", reco2_4_userId)
+                intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                intent.putExtra("reco2_1_title", reco2_1_title)
+                intent.putExtra("reco2_2_title", reco2_2_title)
+                intent.putExtra("reco2_3_title", reco2_3_title)
+                intent.putExtra("reco2_4_title", reco2_4_title)
+                intent.putExtra("reco2_5_title", reco2_5_title)
+
+                intent.putExtra("reco2_1_poster", reco2_1_poster)
+                intent.putExtra("reco2_2_poster", reco2_2_poster)
+                intent.putExtra("reco2_3_poster", reco2_3_poster)
+                intent.putExtra("reco2_4_poster", reco2_4_poster)
+                intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                intent.putExtra("reco3_titleArray", reco3_titleArray)
+                intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                intent.putExtra("reco4_year", reco4_year)
+                intent.putExtra("reco4_titleArray", reco4_titleArray)
+                intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                intent.putExtra("reco6_titleArray", reco6_titleArray)
+                intent.putExtra("reco6_posterArray", reco6_posterArray)
+
+                startActivityForResult(intent, 0)
+            }
         }
     }
 
