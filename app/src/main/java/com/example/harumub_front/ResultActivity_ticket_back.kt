@@ -76,7 +76,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
     lateinit var reco6_titleArray : ArrayList<String>
     lateinit var reco6_posterArray : ArrayList<String>
-    
+
 
     lateinit var totalTicket : LinearLayout
     lateinit var myTitle : TextView
@@ -374,7 +374,7 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                 applicationContext,
                 MainActivity2::class.java
             ) // 두번째 인자에 이동할 액티비티
-            
+
             intent.putExtra("user_id", id)
 
             intent.putExtra("reco1_titleArray", reco1_titleArray)
