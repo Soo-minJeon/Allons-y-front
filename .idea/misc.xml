@@ -80,13 +80,13 @@
         <entry key="app/src/main/res/layout/dialog_entercode_copy.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/dialog_login_success.xml" value="0.335" />
         <entry key="app/src/main/res/layout/dialog_personalcheck.xml" value="0.24010416666666667" />
-        <entry key="app/src/main/res/layout/dialog_sleep.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/dialog_sleep.xml" value="0.4025853474934896" />
         <entry key="app/src/main/res/layout/fragment_result.xml" value="0.18931159420289856" />
         <entry key="app/src/main/res/layout/fragment_result_ticket_back.xml" value="0.271286231884058" />
         <entry key="app/src/main/res/layout/fragment_result_ticket_front.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/fragment_user_movie_list.xml" value="0.10739614994934144" />
         <entry key="app/src/main/res/layout/movie_collection_layout.xml" value="0.23333333333333334" />
-        <entry key="app/src/main/res/layout/movie_layout.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/movie_layout.xml" value="0.7383000691731771" />
         <entry key="app/src/main/res/layout/recyclerview_row.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/topten_cardview.xml" value="0.17708333333333334" />
       </map>
