@@ -32,12 +32,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="아니오"/>
+            android:text="취소"/>
         <Button android:id="@+id/yesBtn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="네"/>
+            android:text="확인"/>
     </LinearLayout>
 </LinearLayout>

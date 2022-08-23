@@ -129,6 +129,7 @@
                                 android:padding="15dp">
 
                                 <TextView
+                                    android:id="@+id/main_UserRecord"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="15dp"
@@ -141,6 +142,7 @@
                                     android:textColor="#FDFBDA" />
 
                                 <TextView
+                                    android:id="@+id/main_Help"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="15dp"
@@ -163,7 +165,7 @@
                                 android:padding="15dp">
 
                                 <Button
-                                    android:id="@+id/primarybutt1"
+                                    android:id="@+id/main_WatchAlone"
                                     android:layout_width="155.5dp"
                                     android:layout_height="48dp"
                                     android:layout_marginEnd="20dp"
@@ -175,7 +177,7 @@
                                     android:textColor="#264713" />
 
                                 <Button
-                                    android:id="@+id/primarybutt2"
+                                    android:id="@+id/main_WatchTogether"
                                     android:layout_width="155.5dp"
                                     android:layout_height="48dp"
                                     android:background="@drawable/primary_btn_yellow"
