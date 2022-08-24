@@ -380,12 +380,20 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //        var running_time = 2 // 테스트 할 running_time으로 수정
         var running_time_sec = running_time * 60
 
+        val fadeOut = ObjectAnimator.ofFloat(play_pause_imageView, "alpha", 1f, 0f)
+
+        // 로딩창 선언
+        var progressDialog = ProgressDialog2(this@WatchAloneActivity)
+
         fun endThread() {
             ended = true
         }
 
         override fun run() {
             super.run()
+
+            fadeOut.duration = 500
+            progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // 백그라운드를 투명하게
 
             Log.d("WatchAlone Thread - ", "Running Time : " + running_time)
 
@@ -430,6 +438,15 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                         ended = true
                         Log.d("Running Time : ", "자동으로 종료되었습니다.")
 
+                        runOnUiThread {
+                            play_pause_imageView.setImageResource(R.drawable.pause)
+                            fadeOut.start()
+
+                            // 로딩창 실행
+                            // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
+                            progressDialog.show() // 로딩화면 보여주기
+                        }
+
                         // 감상 리뷰 작성 페이지로 이동
   //                      val intent = Intent(applicationContext, AddreviewActivity::class.java)
 //                        intent.putExtra("user_id", id)
@@ -455,6 +472,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //                                    cameraHandler.sendEmptyMessage(WATCH_END)
 //                                    mediaPlayer.release()
 //                                    Log.d("감상 : ", "종료되었습니다.")
+
+                                    // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료
+                                    progressDialog.dismiss()
 
                                     val result = response.body()
 
@@ -516,6 +536,15 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                     ended = true
                     Log.d("Running Time : ", "자동으로 종료되었습니다.")
 
+                    runOnUiThread {
+                        play_pause_imageView.setImageResource(R.drawable.pause)
+                        fadeOut.start()
+
+                        // 로딩창 실행
+                        // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
+                        progressDialog.show() // 로딩화면 보여주기
+                    }
+
                     // 감상 리뷰 작성 페이지로 이동
   //                  val intent = Intent(applicationContext, AddreviewActivity::class.java)
 //                    intent.putExtra("user_id", id)
@@ -541,6 +570,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //                                cameraHandler.sendEmptyMessage(WATCH_END)
 //                                mediaPlayer.release()
 //                                Log.d("감상 : ", "종료되었습니다.")
+
+                                // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료
+                                progressDialog.dismiss()
 
                                 val result = response.body()
 
@@ -936,6 +968,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             mediaPlayer.prepare()
 
             Log.d("MediaPlayer : ", bucketUrl + videoName + " 재생")
+            Log.d("Play movie_title : ", movie_title)
         }
         catch (e: Exception) {
             Log.e("Exception : ", e.toString())
