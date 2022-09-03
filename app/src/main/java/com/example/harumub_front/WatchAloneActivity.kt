@@ -960,7 +960,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
         var bucketUrl = s3Client.getResourceUrl("allonsyvideotestbucket", null).toString()
         var videoName : String? = "avengers.mp4"
-//        var videoName : String? = movie_title
+//        var videoName : String? = movie_title + ".mp4" // 영화 검색 페이지에서 선택한 영화 재생
 
         try {
             mediaPlayer.setDataSource(bucketUrl + videoName)
