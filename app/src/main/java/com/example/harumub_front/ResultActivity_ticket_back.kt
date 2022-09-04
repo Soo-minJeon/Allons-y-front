@@ -1,15 +1,19 @@
 package com.example.harumub_front
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AlertDialogLayout
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -415,7 +419,8 @@ class ResultActivity_ticket_back : AppCompatActivity() {
         // 리스트 목록으로 이동하는 버튼
         btnList.setOnClickListener {
             if (result_isRemaked == true) { // 리메이크 작품이 있을 경우
-                val dig = android.app.AlertDialog.Builder(this@ResultActivity_ticket_back)
+//                val dig = android.app.AlertDialog.Builder(this@ResultActivity_ticket_back)
+                val dig = android.app.Dialog(this@ResultActivity_ticket_back)
                 val dialogView = View.inflate(this@ResultActivity_ticket_back, R.layout.dialog_remake_movie_recommend, null)
                 remakeTitle = dialogView.findViewById(R.id.dialog_remake_movie_title)
                 remakePoster = dialogView.findViewById(R.id.dialog_remake_movie_poster)
@@ -428,8 +433,11 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                     .fallback(defaultImage) // 로드할 url이 비어있을(null 등) 경우 표시할 이미지
                     .into(remakePoster) // 이미지를 넣을 뷰
 
-                dig.setView(dialogView)
-                dig.setPositiveButton("확인") { dialog, which ->
+//                dig.setView(dialogView)
+                dig.setContentView(dialogView)
+                dig.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                val positive = dig.findViewById<Button>(R.id.btn_detail_positive)
+                positive.setOnClickListener {
                     val intent = Intent(
                         applicationContext,
                         WatchListActivity::class.java
@@ -470,7 +478,47 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
                     startActivityForResult(intent, 0)
                 }
+                /*dig.setPositiveButton("확인") { dialog, which ->
+                    val intent = Intent(
+                        applicationContext,
+                        WatchListActivity::class.java
+                    ) // 두번째 인자에 이동할 액티비티
 
+                    intent.putExtra("user_id", id)
+
+                    intent.putExtra("reco1_titleArray", reco1_titleArray)
+                    intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+                    intent.putExtra("reco2_1_userId", reco2_1_userId)
+                    intent.putExtra("reco2_2_userId", reco2_2_userId)
+                    intent.putExtra("reco2_3_userId", reco2_3_userId)
+                    intent.putExtra("reco2_4_userId", reco2_4_userId)
+                    intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+                    intent.putExtra("reco2_1_title", reco2_1_title)
+                    intent.putExtra("reco2_2_title", reco2_2_title)
+                    intent.putExtra("reco2_3_title", reco2_3_title)
+                    intent.putExtra("reco2_4_title", reco2_4_title)
+                    intent.putExtra("reco2_5_title", reco2_5_title)
+
+                    intent.putExtra("reco2_1_poster", reco2_1_poster)
+                    intent.putExtra("reco2_2_poster", reco2_2_poster)
+                    intent.putExtra("reco2_3_poster", reco2_3_poster)
+                    intent.putExtra("reco2_4_poster", reco2_4_poster)
+                    intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+                    intent.putExtra("reco3_titleArray", reco3_titleArray)
+                    intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
+
+                    startActivityForResult(intent, 0)
+                }*/
                 dig.setCancelable(false) // 뒤로 가기 버튼과 영역 외 클릭 시 Dialog가 사라지지 않도록 한다.
                 dig.show()
             }
