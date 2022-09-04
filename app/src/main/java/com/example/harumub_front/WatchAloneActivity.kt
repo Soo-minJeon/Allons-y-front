@@ -114,6 +114,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
     var map_Capture = HashMap<String, String>()
     var call_Capture  = retrofitInterface.executeWatchImageCaptureEyetrack(map_Capture)
 
+    var map_SceneAnalyze = HashMap<String, String>()
+    var call_SceneAnalyze = retrofitInterface.executeSceneAnalyze(map_SceneAnalyze)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_watch_alone)
@@ -285,6 +288,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             map.put("movieTitle", movie_title)
             map.put("signal", "end")
 
+            map_SceneAnalyze.put("id", id)
+            map_SceneAnalyze.put("movieTitle", movie_title)
+
             var call = retrofitInterface.executeWatchAloneEnd(map)
 
 //            call!!.enqueue(object : Callback<Void?> {
@@ -297,6 +303,16 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //                        cameraHandler.sendEmptyMessage(WATCH_END)
 //                        mediaPlayer.release()
 //                        Log.d("감상 : ", "종료되었습니다.")
+
+                        call_SceneAnalyze!!.enqueue(object : Callback<Void?> {
+                            override fun onResponse(call: Call<Void?>, SceneAnalyze_response: Response<Void?>) {
+
+                            }
+
+                            override fun onFailure(call: Call<Void?>, t: Throwable) {
+                                //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                            }
+                        })
 
                         // 서버에서 영화 감상 종료 신호(응답)를 받으면 로딩창 종료
                         progressDialog.dismiss()
@@ -462,6 +478,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                         map.put("movieTitle", movie_title!!)
                         map.put("signal", "end")
 
+                        map_SceneAnalyze.put("id", id)
+                        map_SceneAnalyze.put("movieTitle", movie_title)
+
                         var call = retrofitInterface.executeWatchAloneEnd(map)
 
                         call!!.enqueue(object : Callback<WatchAloneMovie?> {
@@ -472,6 +491,16 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //                                    cameraHandler.sendEmptyMessage(WATCH_END)
 //                                    mediaPlayer.release()
 //                                    Log.d("감상 : ", "종료되었습니다.")
+
+                                    call_SceneAnalyze!!.enqueue(object : Callback<Void?> {
+                                        override fun onResponse(call: Call<Void?>, SceneAnalyze_response: Response<Void?>) {
+
+                                        }
+
+                                        override fun onFailure(call: Call<Void?>, t: Throwable) {
+                                            //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                                        }
+                                    })
 
                                     // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료
                                     progressDialog.dismiss()
@@ -560,6 +589,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                     map.put("movieTitle", movie_title!!)
                     map.put("signal", "end")
 
+                    map_SceneAnalyze.put("id", id)
+                    map_SceneAnalyze.put("movieTitle", movie_title)
+
                     var call = retrofitInterface.executeWatchAloneEnd(map)
 
                     call!!.enqueue(object : Callback<WatchAloneMovie?> {
@@ -570,6 +602,16 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //                                cameraHandler.sendEmptyMessage(WATCH_END)
 //                                mediaPlayer.release()
 //                                Log.d("감상 : ", "종료되었습니다.")
+
+                                call_SceneAnalyze!!.enqueue(object : Callback<Void?> {
+                                    override fun onResponse(call: Call<Void?>, SceneAnalyze_response: Response<Void?>) {
+
+                                    }
+
+                                    override fun onFailure(call: Call<Void?>, t: Throwable) {
+                                        //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                                    }
+                                })
 
                                 // 서버에서 감상 결과를 불러오는 데 성공한 신호(응답)를 받으면 로딩창 종료
                                 progressDialog.dismiss()
@@ -960,7 +1002,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
         var bucketUrl = s3Client.getResourceUrl("allonsyvideotestbucket", null).toString()
         var videoName : String? = "avengers.mp4"
-//        var videoName : String? = movie_title
+//        var videoName : String? = movie_title + ".mp4" // 영화 검색 페이지에서 선택한 영화 재생
 
         try {
             mediaPlayer.setDataSource(bucketUrl + videoName)
