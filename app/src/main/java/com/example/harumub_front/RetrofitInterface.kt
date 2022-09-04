@@ -29,6 +29,10 @@ interface RetrofitInterface {
     @POST("/watchAloneEnd")
     fun executeWatchAloneEnd(@Body map: HashMap<String, String>): Call<WatchAloneMovie?>?
 
+    // 혼자보기 - 장면 분석
+    @POST("/sceneAnalyze")
+    fun executeSceneAnalyze(@Body map: HashMap<String, String>): Call<Void?>?
+
     // 추가: 리뷰 작성 후 버튼 클릭시 데이터 전달
     @POST("addReview")
     fun executeAddReview(@Body map: HashMap<String, String>): Call<Void?>?
