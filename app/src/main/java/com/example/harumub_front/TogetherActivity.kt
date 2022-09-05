@@ -211,7 +211,6 @@ class TogetherActivity : AppCompatActivity() {
     }
     // #4
     private fun joinChannel(roomCode: String, roomToken: String) {
-        //mRtcEngine!!.joinChannel(roomToken, roomCode, null, 0) // uid 명시X > 자동 생성
         mRtcEngine!!.joinChannel(roomToken, "test", null, 0) // uid 명시X > 자동 생성
 
         Log.e("TogetherActivity", "채널 참가 완료")
@@ -285,7 +284,7 @@ class TogetherActivity : AppCompatActivity() {
 
         // 실시간 라우터 - 감정 출력
         val map = HashMap<String, String>()
-        //map.put("id", id)
+        map.put("id", id)
         map.put("roomCode", roomCode)
         //map.put("time", (time - 10).toString())
         map.put("time", time.toString())
@@ -310,18 +309,21 @@ class TogetherActivity : AppCompatActivity() {
 
                     shareEmotions(emotion_array, size, time)
                 } else if (response.code() == 400) {
-                    Toast.makeText(
-                        this@TogetherActivity, "실시간 캡처/분석 오류",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Log.e("TogetherActivity", "실시간 캡처/분석 오류")
+//                    Toast.makeText(
+//                        this@TogetherActivity, "실시간 캡처/분석 오류",
+//                        Toast.LENGTH_LONG
+//                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<WatchTogether?>, t: Throwable) {
-                Toast.makeText(
-                    this@TogetherActivity, t.message,
-                    Toast.LENGTH_LONG
-                ).show()
+                Log.e("TogetherActivity", t.message!!)
+
+//                Toast.makeText(
+//                    this@TogetherActivity, t.message,
+//                    Toast.LENGTH_LONG
+//                ).show()
             }
         })
         Thread.sleep(5000) // 캡처시 사진이 저장될 시간 + 버킷 올리는 시간 총 4~5초
@@ -495,13 +497,17 @@ class TogetherActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 else if (response.code() == 400) {
-                    Toast.makeText(this@TogetherActivity, "실시간 캡처 오류",
-                        Toast.LENGTH_LONG).show()
+                    Log.e("TogetherActivity", "Room 삭제 중 오류 발생")
+
+//                    Toast.makeText(this@TogetherActivity, "Room 삭제 중 오류",
+//                        Toast.LENGTH_LONG).show()
                 }
             }
             override fun onFailure(call: Call<Void?>, t: Throwable) {
-                Toast.makeText(this@TogetherActivity, t.message,
-                    Toast.LENGTH_LONG).show()
+                Log.e("TogetherActivity", t.message!!)
+
+//                Toast.makeText(this@TogetherActivity, t.message,
+//                    Toast.LENGTH_LONG).show()
             }
         })
     }
