@@ -122,7 +122,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         recent_button.setOnClickListener{
             val intent = Intent(this, WatchListActivity::class.java)
             intent.putExtra("user_id", id)
-            intent.putExtra("user_id", id)
 
             intent.putExtra("reco1_titleArray", reco1_titleArray)
             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -200,7 +199,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             intent.putExtra("roomCode", result.roomCode)
                             //intent.putExtra("roomToken", result.roomToken)
                             intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
-                            intent.putExtra("role", "publisher")
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -234,15 +232,18 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                         dig.show()
                     } else if (response.code() == 400) {
-                        Toast.makeText(this@EnterActivity, "정의되지 않음", Toast.LENGTH_LONG).show()
+                        Log.e("EnterActivity", "방 생성 중 오류 발생")
+                        //Toast.makeText(this@EnterActivity, "방 생성 중 오류 발생", Toast.LENGTH_LONG).show()
                     }
                 }
 
                 override fun onFailure(call: Call<MakeRoomResult?>, t: Throwable) {
-                    Toast.makeText(
-                        this@EnterActivity, t.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Log.e("EnterActivity", t.message!!)
+
+//                    Toast.makeText(
+//                        this@EnterActivity, t.message,
+//                        Toast.LENGTH_LONG
+//                    ).show()
                 }
             })
         }
@@ -281,7 +282,6 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             intent.putExtra("roomCode", getroomCode)
                             //intent.putExtra("roomToken", result?.roomToken)
                             intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
-                            intent.putExtra("role", "subscriber")
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -314,11 +314,14 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         else if (response.code() == 400) {
                             Toast.makeText(this@EnterActivity, "잘못된 방 코드 입니다.",
                                 Toast.LENGTH_LONG).show()
+
+                            Log.e("EnterActivity", "방 코드 존재X / 토큰이 유효하지 않음")
                         }
                     }
                     override fun onFailure(call: Call<EnterRoomResult?>, t: Throwable) {
-                        Toast.makeText(this@EnterActivity, t.message,
-                            Toast.LENGTH_LONG).show()
+                        Log.e("EnterActivity", t.message!!)
+//                        Toast.makeText(this@EnterActivity, t.message,
+//                            Toast.LENGTH_LONG).show()
                     }
                 })
             } // 취소 버튼 클릭 시 취소되었다는 토스트 메세지를 보여 줌
@@ -459,8 +462,9 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
 
                         override fun onFailure(call: Call<Void?>, t: Throwable) {
-                            Toast.makeText(this@EnterActivity, t.message,
-                                Toast.LENGTH_LONG).show()
+                            Log.e("EnterActivity", t.message!!)
+//                            Toast.makeText(this@EnterActivity, t.message,
+//                                Toast.LENGTH_LONG).show()
                         }
                     })
                 }

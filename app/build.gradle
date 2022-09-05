@@ -77,8 +77,11 @@ dependencies {
     // Glide - 이미지 로딩 라이브러리
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
-    // 같이보기 sdk 최신 버전
+    // 같이보기 agora sdk
     implementation 'io.agora.rtc:full-sdk:3.7.0.2'
+
+    // Logger Factory
+    implementation 'org.slf4j:slf4j-api:1.7.25'
 
     // roundview
     implementation 'com.makeramen:roundedimageview:2.3.0'
