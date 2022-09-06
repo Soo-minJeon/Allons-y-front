@@ -1,6 +1,5 @@
 package com.example.harumub_front
 
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,11 +8,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AlertDialogLayout
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
@@ -29,17 +26,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
 import java.io.File
-import java.io.Serializable
-import java.lang.NumberFormatException
-import java.util.ArrayList
-import java.util.HashMap
 import kotlin.properties.Delegates
+
 
 class ResultActivity_ticket_back : AppCompatActivity() {
     private lateinit var retrofitBuilder: RetrofitBuilder
@@ -435,7 +424,17 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
 //                dig.setView(dialogView)
                 dig.setContentView(dialogView)
-                dig.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                // 리메이크 작품 추천 다이얼로그 크기 설정
+                val displayMetrics = resources.displayMetrics
+                val lp = WindowManager.LayoutParams()
+                lp.copyFrom(dig.window?.attributes)
+                lp.width = Math.round(300 * displayMetrics.density) // 단위 dp로 변환  // 300dp
+                lp.height = Math.round(500 * displayMetrics.density) // 단위 dp로 변환  // 500dp
+                dig.window?.attributes = lp
+
+                dig.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
                 val positive = dig.findViewById<Button>(R.id.btn_detail_positive)
                 positive.setOnClickListener {
                     val intent = Intent(
@@ -478,7 +477,8 @@ class ResultActivity_ticket_back : AppCompatActivity() {
 
                     startActivityForResult(intent, 0)
                 }
-                /*dig.setPositiveButton("확인") { dialog, which ->
+              /*
+                dig.setPositiveButton("확인") { dialog, which ->
                     val intent = Intent(
                         applicationContext,
                         WatchListActivity::class.java
@@ -518,7 +518,8 @@ class ResultActivity_ticket_back : AppCompatActivity() {
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
 
                     startActivityForResult(intent, 0)
-                }*/
+                }
+              */
                 dig.setCancelable(false) // 뒤로 가기 버튼과 영역 외 클릭 시 Dialog가 사라지지 않도록 한다.
                 dig.show()
             }
