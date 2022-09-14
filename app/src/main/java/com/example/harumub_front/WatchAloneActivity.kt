@@ -276,6 +276,8 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
             progressDialog.show() // 로딩화면 보여주기
 
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
 //            val intent = Intent(applicationContext, AddreviewActivity::class.java)
 //            startActivity(intent)
 
@@ -461,6 +463,8 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                             // 로딩창 실행
                             // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
                             progressDialog.show() // 로딩화면 보여주기
+
+                            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                         }
 
                         // 감상 리뷰 작성 페이지로 이동
@@ -572,6 +576,8 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                         // 로딩창 실행
                         // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
                         progressDialog.show() // 로딩화면 보여주기
+
+                        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                     }
 
                     // 감상 리뷰 작성 페이지로 이동
