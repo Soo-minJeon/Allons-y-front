@@ -639,6 +639,11 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
                     intent.putExtra("reco2_5_poster", reco2_5_poster)
                     intent.putExtra("reco3_titleArray", reco3_titleArray)
                     intent.putExtra("reco3_posterArray", reco3_posterArray)
+                    intent.putExtra("reco4_year", reco4_year)
+                    intent.putExtra("reco4_titleArray", reco4_titleArray)
+                    intent.putExtra("reco4_posterArray", reco4_posterArray)
+                    intent.putExtra("reco6_titleArray", reco6_titleArray)
+                    intent.putExtra("reco6_posterArray", reco6_posterArray)
                     startActivity(intent)
                 }
                 else if (response.code() == 400) {
