@@ -67,6 +67,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
+    private lateinit var mSurfaceView: SurfaceView
     private lateinit var surfaceHolder: SurfaceHolder
     private lateinit var mediaPlayer: MediaPlayer
     private var isPlayed by Delegates.notNull<Boolean>()
@@ -192,6 +193,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
         isPlayed = false
         mediaPlayer = MediaPlayer()
+        mSurfaceView = findViewById(R.id.video_test_surfaceView)
         surfaceHolder = video_test_surfaceView.holder
         surfaceHolder.addCallback(this)
 
@@ -1014,6 +1016,18 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             mediaPlayer.setDataSource(bucketUrl + videoName)
             mediaPlayer.setDisplay(holder)
             mediaPlayer.prepare()
+
+            var videoWidth = mediaPlayer.videoWidth
+            var videoHeight = mediaPlayer.videoHeight
+
+            var screenWidth = view_linearLayout.measuredWidth
+
+            val surfaceViewLayout: ViewGroup.LayoutParams = mSurfaceView.layoutParams
+
+            surfaceViewLayout.width = screenWidth
+            surfaceViewLayout.height = (videoHeight.toFloat() / videoWidth.toFloat() * screenWidth.toFloat()).toInt()
+
+            mSurfaceView.layoutParams = surfaceViewLayout
 
             Log.d("MediaPlayer : ", bucketUrl + videoName + " 재생")
             Log.d("Play movie_title : ", movie_title)
