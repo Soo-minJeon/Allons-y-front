@@ -67,6 +67,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
+    private lateinit var mSurfaceView: SurfaceView
     private lateinit var surfaceHolder: SurfaceHolder
     private lateinit var mediaPlayer: MediaPlayer
     private var isPlayed by Delegates.notNull<Boolean>()
@@ -192,6 +193,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
         isPlayed = false
         mediaPlayer = MediaPlayer()
+        mSurfaceView = findViewById(R.id.video_test_surfaceView)
         surfaceHolder = video_test_surfaceView.holder
         surfaceHolder.addCallback(this)
 
@@ -985,7 +987,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
                         startActivity(intent)
 
-                        Log.d("text : ", "선택")
+                        Log.d("Dialog : ", "Sleep")
                     }
                     else if (response.code() == 400){
                         //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
@@ -1014,6 +1016,18 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             mediaPlayer.setDataSource(bucketUrl + videoName)
             mediaPlayer.setDisplay(holder)
             mediaPlayer.prepare()
+
+            var videoWidth = mediaPlayer.videoWidth
+            var videoHeight = mediaPlayer.videoHeight
+
+            var screenWidth = view_linearLayout.measuredWidth
+
+            val surfaceViewLayout: ViewGroup.LayoutParams = mSurfaceView.layoutParams
+
+            surfaceViewLayout.width = screenWidth
+            surfaceViewLayout.height = (videoHeight.toFloat() / videoWidth.toFloat() * screenWidth.toFloat()).toInt()
+
+            mSurfaceView.layoutParams = surfaceViewLayout
 
             Log.d("MediaPlayer : ", bucketUrl + videoName + " 재생")
             Log.d("Play movie_title : ", movie_title)
@@ -1046,6 +1060,8 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                 mediaPlayer.release()
                 Log.d("Home Button : ", "영화 재생 종료")
 
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
                 var intent = Intent(applicationContext, AddreviewActivity::class.java)
 
                 val builder = AlertDialog.Builder(this)
@@ -1053,6 +1069,10 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                     .setMessage("영화 감상이 종료됩니다.")
                     .setPositiveButton("확인",
                         DialogInterface.OnClickListener { dialog, which ->
+                            // 로딩창 실행
+                            // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
+                            progressDialog.show() // 로딩화면 보여주기
+
                             var map = HashMap<String, String>()
                             map.put("id", id)
                             map.put("movieTitle", movie_title)
@@ -1064,6 +1084,19 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                                 override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
                                     if(response.code() == 200){
                                         //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                                        call_SceneAnalyze!!.enqueue(object : Callback<Void?> {
+                                            override fun onResponse(call: Call<Void?>, SceneAnalyze_response: Response<Void?>) {
+
+                                            }
+
+                                            override fun onFailure(call: Call<Void?>, t: Throwable) {
+                                                //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                                            }
+                                        })
+
+                                        // 서버에서 영화 감상 종료 신호(응답)를 받으면 로딩창 종료
+                                        progressDialog.dismiss()
 
                                         val result = response.body()
 
@@ -1105,7 +1138,7 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
                                         startActivity(intent)
 
-                                        Log.d("text : ", "선택")
+                                        Log.d("Dialog : ", "Home")
                                     }
                                     else if (response.code() == 400){
                                         //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 실패", Toast.LENGTH_SHORT).show()
