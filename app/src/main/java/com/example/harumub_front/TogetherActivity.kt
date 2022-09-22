@@ -154,10 +154,10 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
         emoji4 = findViewById<ImageView>(R.id.emotion4)
 
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
-        if (intent.hasExtra("user_id") && intent.hasExtra("user_uid")
+        if (intent.hasExtra("user_id") //&& intent.hasExtra("user_uid")
             && intent.hasExtra("roomCode") && intent.hasExtra("roomToken")) {
             Log.e("TogetherActivity", "입장에서 받아온 id : $id , " +
-                    "\n사용자 uid: $myUid , " +
+                    //"\n사용자 uid: $myUid , " +
                     "\n방 코드: $roomCode , " +
                     "\n방 토큰: $roomToken")
         } else {

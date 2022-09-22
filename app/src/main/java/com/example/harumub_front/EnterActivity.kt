@@ -197,8 +197,10 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", result.roomCode)
-                            //intent.putExtra("roomToken", result.roomToken)
-                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+                            intent.putExtra("roomToken", result.roomToken)
+//                            intent.putExtra("roomCode", getString(R.string.CHANNELNAME))
+//                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)
