@@ -194,14 +194,14 @@ object VideoViewAdapterUtil {
         }
         val volume = user.mVolume
         if (volume > 0) {
-            myHolder.mIndicator.setImageResource(R.drawable.icon_speaker)
+            //myHolder.mIndicator.setImageResource(R.drawable.icon_speaker)
             myHolder.mIndicator.visibility = View.VISIBLE
         } else {
             myHolder.mIndicator.visibility = View.INVISIBLE
         }
         if (Constant.SHOW_VIDEO_INFO && user.videoInfoData != null) {
             val videoInfo = user.videoInfoData
-            myHolder.mMetaData.text = ViewUtil.composeVideoInfoString(context, videoInfo!!)
+            myHolder.mMetaData.text = " " //ViewUtil.composeVideoInfoString(context, videoInfo!!)
             myHolder.mVideoInfo.visibility = View.VISIBLE
         } else {
             myHolder.mVideoInfo.visibility = View.GONE
