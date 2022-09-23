@@ -47,7 +47,10 @@ abstract class BaseActivity : AppCompatActivity() {
 //                }
                 layout.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                initUIandEvent()
+                Log.d("BaseActivity", "init UI and Event () 실행")
+                //if (checkSelfPermissions()){
+                    initUIandEvent()
+                //}
             }
         })
     }
@@ -290,7 +293,7 @@ abstract class BaseActivity : AppCompatActivity() {
     fun afterJoinChannel(channel: String, uid: Int) {
         config().mChannel = channel
         enablePreProcessor()
-        Log.d("BaseActivity","joinChannel $channel $uid")
+        Log.d("BaseActivity","joinChannel - channel: $channel / uid: $uid")
         //log.debug("joinChannel $channel $uid")
     }
 

@@ -6,8 +6,10 @@
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/drawable/btn_mute.xml" value="0.229" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/drawable/group.xml" value="0.2445" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/drawable/ic_launcher_background.xml" value="0.224" />
+        <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/drawable/play.xml" value="0.1825" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/drawable/question_mark.xml" value="0.2445" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/drawable/rectangle.xml" value="0.2445" />
+        <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/drawable/searchview_round.xml" value="0.1825" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/activity_add_review.xml" value="0.25364583333333335" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/activity_enter.xml" value="0.2513586956521739" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/activity_help.xml" value="0.2028985507246377" />
@@ -27,6 +29,11 @@
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/fragment_user_movie_list.xml" value="0.161231884057971" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/movie_collection_layout.xml" value="0.25364583333333335" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/movie_layout.xml" value="0.25364583333333335" />
+        <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/recyclerview_row.xml" value="0.14447463768115942" />
+        <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/show_friend_item_layout.xml" value="0.14447463768115942" />
+        <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/small_video_view_dock.xml" value="0.14447463768115942" />
+        <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/user_control_mask.xml" value="0.14447463768115942" />
+        <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/video_enc_resolution_item.xml" value="0.16666666666666666" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/layout/video_view_container.xml" value="0.1" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/menu/menu_call.xml" value="0.1" />
         <entry key="..\:/1_Allonsy_Project/.Git/Allons-y-front/Allons-y-front/app/src/main/res/menu/menu_main.xml" value="0.1" />

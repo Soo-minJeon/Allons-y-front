@@ -28,11 +28,11 @@ object Constant {
     @JvmField
     var BEAUTY_EFFECT_ENABLED = true // Built-in face beautification
 
-    const val BEAUTY_EFFECT_DEFAULT_CONTRAST = 1
-    const val BEAUTY_EFFECT_DEFAULT_LIGHTNESS = .7f
-    const val BEAUTY_EFFECT_DEFAULT_SMOOTHNESS = .5f
+    const val BEAUTY_EFFECT_DEFAULT_CONTRAST = 1 // int
+    const val BEAUTY_EFFECT_DEFAULT_LIGHTNESS = .2f //.7f
+    const val BEAUTY_EFFECT_DEFAULT_SMOOTHNESS = .1f //.5f
     const val BEAUTY_EFFECT_DEFAULT_REDNESS = .1f
-    const val BEAUTY_EFFECT_DEFAULT_SHARPNESS = .3f // 3.7.1 추가
+    const val BEAUTY_EFFECT_DEFAULT_SHARPNESS = .2f //.3f // 3.7.1 추가
 
     val BEAUTY_OPTIONS = BeautyOptions(
         BEAUTY_EFFECT_DEFAULT_CONTRAST,
