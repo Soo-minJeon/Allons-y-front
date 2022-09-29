@@ -70,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
                     if (response.code() == 200) {
                         val result = response.body()
 
-                      /*
                         // 로그인 성공 다이얼로그
                         val builder1 = AlertDialog.Builder(this@LoginActivity)
                         builder1.setTitle("로그인 성공")
@@ -81,12 +80,11 @@ class LoginActivity : AppCompatActivity() {
                         val dialogView =
                             View.inflate(this@LoginActivity, R.layout.dialog_login_success, null)
                         message = dialogView.findViewById(R.id.nameLogin)
-                        message.text = result!!.name+"님 하루뭅에 오신 걸 환영합니다."
+                        message.text = result!!.name + "님 하루뭅에 오신 걸 환영합니다."
                         dig.setView(dialogView)
                         dig.show()
-                      */
 
-                        val reco1 = result!!.reco1 // 추천 1
+                        val reco1 = result.reco1 // 추천 1
                         val reco1_titleArray = reco1.titleArray // 추천 1의 추천 영화 제목 리스트
                         val reco1_posterArray = reco1.posterArray // 추천 1의 추천 영화 포스터 링크 리스트
 
@@ -168,7 +166,8 @@ class LoginActivity : AppCompatActivity() {
                         // 서버에서 성공한 신호(응답)를 받으면 로딩창 종료
                         progressDialog.dismiss()
 
-                        Toast.makeText(this@LoginActivity, result.name + "님, 환영합니다.", Toast.LENGTH_SHORT).show()
+                        // 로그인 성공 Toast Message
+                        // Toast.makeText(this@LoginActivity, result.name + "님, 환영합니다.", Toast.LENGTH_SHORT).show()
 
                         startActivityForResult(intent, 0)
                     }
@@ -188,7 +187,8 @@ class LoginActivity : AppCompatActivity() {
             })
             //*/
 
-            /*  // 추천 오류 실행용
+      /*
+            // 추천 오류 실행용
             val reco1_titleArray: ArrayList<String> = ArrayList<String>(10)
             for (i in 0..9) reco1_titleArray.add("Toy Story")
             var reco1_posterArray: ArrayList<String> = ArrayList<String>(10)
@@ -241,10 +241,10 @@ class LoginActivity : AppCompatActivity() {
 
             // 메인2로 이동
             var intent = Intent(applicationContext, MainActivity::class.java)
-//            intent.putExtra("user_id", result.id) //id
-//            intent.putExtra("user_name", result.name) //id
-            intent.putExtra("user_id", id)
-            intent.putExtra("user_name", id)
+//            intent.putExtra("user_id", result.id)
+//            intent.putExtra("user_name", result.name)
+            intent.putExtra("user_id", id) // id
+            intent.putExtra("user_name", id) // id
 
             intent.putExtra("reco1_titleArray", reco1_titleArray)
             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -280,11 +280,26 @@ class LoginActivity : AppCompatActivity() {
             // 서버에서 성공한 신호(응답)를 받으면 로딩창 종료
             progressDialog.dismiss()
 
+            // 로그인 성공 Toast Message
             //Toast.makeText(this@LoginActivity, result.name + "님, 환영합니다.", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this@LoginActivity, id + "님, 환영합니다.", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this@LoginActivity, id + "님, 환영합니다.", Toast.LENGTH_SHORT).show()
+
+            // 로그인 성공 다이얼로그
+            val builder1 = AlertDialog.Builder(this@LoginActivity)
+            builder1.setTitle("로그인 성공")
+            builder1.setMessage(id + "님 환영합니다!")
+            builder1.show()
+
+            val dig = android.app.AlertDialog.Builder(this@LoginActivity)
+            val dialogView =
+                View.inflate(this@LoginActivity, R.layout.dialog_login_success, null)
+            message = dialogView.findViewById(R.id.nameLogin)
+            message.text = id + "님 하루뭅에 오신 걸 환영합니다."
+            dig.setView(dialogView)
+            dig.show()
 
             startActivityForResult(intent, 0)
-        */
+      */
         }
 
         // 양방향 액티비티 (회원가입 <-> 로그인)
