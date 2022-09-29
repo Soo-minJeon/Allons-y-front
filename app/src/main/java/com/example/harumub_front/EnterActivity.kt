@@ -160,7 +160,7 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         createNewroom.setOnClickListener {
             val map = HashMap<String, String>()
             map.put("id", id) // map["id"] = id
-            map.put("role", "publisher")
+            //map.put("role", "publisher") // 필요없음
 
             val call = retrofitInterface.executeMakeRoom(map)
             call!!.enqueue(object : Callback<MakeRoomResult?> {
@@ -196,10 +196,13 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             // 호스트로 방 입장
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
-                            //intent.putExtra("roomCode", result.roomCode)
-                            //intent.putExtra("roomToken", result.roomToken)
-                            intent.putExtra("roomCode", getString(R.string.CHANNELNAME))
-                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+
+                            intent.putExtra("roomCode", result.roomCode)
+                            intent.putExtra("roomToken", result.roomToken)
+//                            intent.putExtra("roomCode", getString(R.string.CHANNELNAME))
+//                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+
+
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)
@@ -266,8 +269,8 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 val map = HashMap<String, String>()
                 map.put("id", id)
-                map.put("role", "subscriber")
                 map.put("roomCode", getroomCode)
+                //map.put("role", "publisher") // 필요없음
 
                 val call = retrofitInterface.executeEnterRoom(map)
                 call!!.enqueue(object : Callback<EnterRoomResult?> {
@@ -281,8 +284,8 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
                             intent.putExtra("roomCode", getroomCode)
-                            //intent.putExtra("roomToken", result?.roomToken)
-                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
+                            intent.putExtra("roomToken", result?.roomToken)
+                            //intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
                             intent.putExtra("reco1_posterArray", reco1_posterArray)

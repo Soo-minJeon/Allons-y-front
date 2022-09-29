@@ -927,6 +927,8 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
         mediaPlayer.release()
         Log.d("Sleep Dialog : ", "감상 종료되었습니다.")
 
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         dig.setView(dialogView)
         dig.setPositiveButton("확인") { dialog, which ->
 //            cameraHandler.sendEmptyMessage(WATCH_END)
@@ -934,6 +936,10 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
 //            mediaPlayer.release()
 
 //            finish()
+
+            // 로딩창 실행
+            // progressDialog.setCancelable(false) // 외부 클릭으로 다이얼로그 종료 X - 실행 위해 임시로 주석 처리
+            progressDialog.show() // 로딩화면 보여주기
 
             var map = HashMap<String, String>()
             map.put("id", id)
@@ -946,6 +952,19 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                 override fun onResponse(call: Call<WatchAloneMovie?>, response: Response<WatchAloneMovie?>) {
                     if(response.code() == 200){
                         //Toast.makeText(this@WatchAloneActivity, "감상종료 신호 보내기 성공", Toast.LENGTH_SHORT).show()
+
+                        call_SceneAnalyze!!.enqueue(object : Callback<Void?> {
+                            override fun onResponse(call: Call<Void?>, SceneAnalyze_response: Response<Void?>) {
+
+                            }
+
+                            override fun onFailure(call: Call<Void?>, t: Throwable) {
+                                //Toast.makeText(this@WatchAloneActivity, t.message, Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                        // 서버에서 영화 감상 종료 신호(응답)를 받으면 로딩창 종료
+                        progressDialog.dismiss()
 
                         val result = response.body()
 

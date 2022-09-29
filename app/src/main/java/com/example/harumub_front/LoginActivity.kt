@@ -62,15 +62,19 @@ class LoginActivity : AppCompatActivity() {
             map.put("id", id)
             map.put("password", pw)
 
+      ///*
             val call = retrofitInterface.executeLogin(map)
             call!!.enqueue(object : Callback<LoginResult?> {
                 override fun onResponse(call: Call<LoginResult?>, response: Response<LoginResult?>) {
                     if (response.code() == 200) {
                         val result = response.body()
-//                        val builder1 = AlertDialog.Builder(this@LoginActivity)
-//                        builder1.setTitle("로그인 성공")
-//                        builder1.setMessage(result!!.name + "님 환영합니다!")
-//                        builder1.show()
+
+                      /*
+                        // 로그인 성공 다이얼로그
+                        val builder1 = AlertDialog.Builder(this@LoginActivity)
+                        builder1.setTitle("로그인 성공")
+                        builder1.setMessage(result!!.name + "님 환영합니다!")
+                        builder1.show()
 
                         val dig = android.app.AlertDialog.Builder(this@LoginActivity)
                         val dialogView =
@@ -79,8 +83,9 @@ class LoginActivity : AppCompatActivity() {
                         message.text = result!!.name+"님 하루뭅에 오신 걸 환영합니다."
                         dig.setView(dialogView)
                         dig.show()
+                      */
 
-                        val reco1 = result.reco1 // 추천 1
+                        val reco1 = result!!.reco1 // 추천 1
                         val reco1_titleArray = reco1.titleArray // 추천 1의 추천 영화 제목 리스트
                         val reco1_posterArray = reco1.posterArray // 추천 1의 추천 영화 포스터 링크 리스트
 
@@ -162,6 +167,8 @@ class LoginActivity : AppCompatActivity() {
                         // 서버에서 성공한 신호(응답)를 받으면 로딩창 종료
                         progressDialog.dismiss()
 
+                        Toast.makeText(this@LoginActivity, result.name + "님, 환영합니다.", Toast.LENGTH_SHORT).show()
+
                         startActivityForResult(intent, 0)
                     }
                     else if (response.code() == 400) {
@@ -176,6 +183,102 @@ class LoginActivity : AppCompatActivity() {
                     //Toast.makeText(this@LoginActivity, t.message, Toast.LENGTH_LONG).show()
                 }
             })
+      //*/
+
+      /*
+            // 추천 오류 실행용
+            val reco1_titleArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco1_titleArray.add("Toy Story")
+            var reco1_posterArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco1_posterArray.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+
+            val reco2_1_userId = "1"
+            val reco2_2_userId = "2"
+            val reco2_3_userId = "3"
+            val reco2_4_userId = "4"
+            val reco2_5_userId = "5"
+
+            var reco2_1_title: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_1_title.add("Toy Story")
+            var reco2_2_title: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_2_title.add("Toy Story")
+            var reco2_3_title: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_3_title.add("Toy Story")
+            var reco2_4_title: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_4_title.add("Toy Story")
+            var reco2_5_title: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_5_title.add("Toy Story")
+            
+            var reco2_1_poster: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_1_poster.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+            var reco2_2_poster: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_2_poster.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+            var reco2_3_poster: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_3_poster.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+            var reco2_4_poster: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_4_poster.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+            var reco2_5_poster: ArrayList<String> = ArrayList<String>(5)
+            for (i in 0..4) reco2_5_poster.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+
+            var reco3_titleArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco3_titleArray.add("Toy Story")
+            var reco3_posterArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco3_posterArray.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+
+            var reco4_year: String = "1990"
+            var reco4_titleArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco4_titleArray.add("Toy Story")
+            var reco4_posterArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco4_posterArray.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+
+            var reco6_titleArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco6_titleArray.add("Toy Story")
+            var reco6_posterArray: ArrayList<String> = ArrayList<String>(10)
+            for (i in 0..9) reco6_posterArray.add("/t/p/w300_and_h450_bestv2/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg")
+
+            // 메인2로 이동
+            var intent = Intent(applicationContext, MainActivity::class.java)
+            intent.putExtra("user_id", result.id)
+            intent.putExtra("user_name", result.name)
+
+            intent.putExtra("reco1_titleArray", reco1_titleArray)
+            intent.putExtra("reco1_posterArray", reco1_posterArray)
+
+            intent.putExtra("reco2_1_userId", reco2_1_userId)
+            intent.putExtra("reco2_2_userId", reco2_2_userId)
+            intent.putExtra("reco2_3_userId", reco2_3_userId)
+            intent.putExtra("reco2_4_userId", reco2_4_userId)
+            intent.putExtra("reco2_5_userId", reco2_5_userId)
+
+            intent.putExtra("reco2_1_title", reco2_1_title)
+            intent.putExtra("reco2_2_title", reco2_2_title)
+            intent.putExtra("reco2_3_title", reco2_3_title)
+            intent.putExtra("reco2_4_title", reco2_4_title)
+            intent.putExtra("reco2_5_title", reco2_5_title)
+
+            intent.putExtra("reco2_1_poster", reco2_1_poster)
+            intent.putExtra("reco2_2_poster", reco2_2_poster)
+            intent.putExtra("reco2_3_poster", reco2_3_poster)
+            intent.putExtra("reco2_4_poster", reco2_4_poster)
+            intent.putExtra("reco2_5_poster", reco2_5_poster)
+
+            intent.putExtra("reco3_titleArray", reco3_titleArray)
+            intent.putExtra("reco3_posterArray", reco3_posterArray)
+
+            intent.putExtra("reco4_year", reco4_year)
+            intent.putExtra("reco4_titleArray", reco4_titleArray)
+            intent.putExtra("reco4_posterArray", reco4_posterArray)
+
+            intent.putExtra("reco6_titleArray", reco6_titleArray)
+            intent.putExtra("reco6_posterArray", reco6_posterArray)
+
+            // 서버에서 성공한 신호(응답)를 받으면 로딩창 종료
+            progressDialog.dismiss()
+
+            Toast.makeText(this@LoginActivity, result.name + "님, 환영합니다.", Toast.LENGTH_SHORT).show()
+
+            startActivityForResult(intent, 0)
+      */
         }
 
         // 양방향 액티비티 (회원가입 <-> 로그인)

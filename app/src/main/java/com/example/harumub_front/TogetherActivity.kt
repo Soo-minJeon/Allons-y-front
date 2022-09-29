@@ -51,6 +51,8 @@ import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.random.Random
+
 
 class TogetherActivity : BaseActivity(), DuringCallEventHandler {
     private lateinit var retrofitBuilder: RetrofitBuilder
@@ -106,6 +108,7 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
     private lateinit var emoji2 : ImageView
     private lateinit var emoji3 : ImageView
     private lateinit var emoji4 : ImageView
+    private lateinit var eQueue : ArrayDeque<String> // 감정 4개 담을 큐 배열
 
     lateinit var cameraThread : CameraThread
     lateinit var cameraHandler : CameraHandler
@@ -119,7 +122,7 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
         retrofitInterface = retrofitBuilder.api
 
         id = intent.getStringExtra("user_id").toString()
-        myUid = intent.getIntExtra("user_uid", 0)
+        myUid = 10100 + Random.nextInt(900)
         roomCode = intent.getStringExtra("roomCode").toString()
         roomToken = intent.getStringExtra("roomToken").toString()
 
@@ -153,8 +156,14 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
         emoji3 = findViewById<ImageView>(R.id.emotion3)
         emoji4 = findViewById<ImageView>(R.id.emotion4)
 
+        eQueue = ArrayDeque<String>(4) // 감정 4개 담을 큐 배열
+        for(i in 0 until 4){
+            eQueue.add("Calm") // ["Calm"]
+        } // ["Calm", "Calm", "Calm", "Calm"]
+        Log.w("TogetherActivity", "감정 박스 초기화: "+eQueue)
+
         // 메인 페이지에서 전달받은 인텐트 데이터 확인
-        if (intent.hasExtra("user_id") && intent.hasExtra("user_uid")
+        if (intent.hasExtra("user_id") //&& intent.hasExtra("user_uid")
             && intent.hasExtra("roomCode") && intent.hasExtra("roomToken")) {
             Log.e("TogetherActivity", "입장에서 받아온 id : $id , " +
                     "\n사용자 uid: $myUid , " +
@@ -222,7 +231,8 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
             afterJoinChannel(channelName, myUid) //config().mUid)
 
             isChannelActivated = true
-            Log.w("CallActivity", "ID: $id (UID: $myUid)님이 채널에 입장합니다. ")
+            Log.w("TogetherActivity", "ID: $id (UID: $myUid)님이 채널에 입장합니다. ")
+            Thread.sleep(3000)
 
             // 채널에 들어왔으면 스레드 시작
             if(isChannelActivated) cameraThread.start()
@@ -255,7 +265,7 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
                 cameraHandler.sendMessage(message)
 
                 // 캡처하기
-                captureScreen("together", roomCode+"_"+time+".jpg", roomCode, time) // roomCode+"_"+id+"_"+time+".jpg", id, roomCode, time
+                captureScreen("together", roomCode, time) //, id, roomCode, time
 
                 time += 10
             }
@@ -281,7 +291,8 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
     }
 
     // 화면 캡처 > 이미지 파일 > s3버킷 전달
-    private fun captureScreen(s3Bucket_FolderName: String, fileName: String, channelName: String, time: Int) { // , user_id: String, channelName: String, time: Int
+    private fun captureScreen(s3Bucket_FolderName: String, channelName: String, time: Int) { // , fileName: String, user_id: String, channelName: String, time: Int
+        val fileName = channelName + "_" + time + ".jpg" // 0 + ".jpg" // roomCode+"_"+id+"_"+time+".jpg"
         val timeStamp : String = SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.KOREA).format(Date())
 
         // 캡처하기
@@ -304,6 +315,7 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
         map.put("roomCode", roomCode)
         //map.put("time", (time - 10).toString())
         map.put("time", time.toString())
+
         val call = retrofitInterface.executeWatchTogetherImageCapture(map)
         call!!.enqueue(object : Callback<WatchTogether?> {
             override fun onResponse(
@@ -326,19 +338,13 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
                     shareEmotions(emotion_array, size, time)
                 } else if (response.code() == 400) {
                     Log.e("TogetherActivity", "실시간 캡처/분석 오류")
-//                    Toast.makeText(
-//                        this@TogetherActivity, "실시간 캡처/분석 오류",
-//                        Toast.LENGTH_LONG
-//                    ).show()
+//                    Toast.makeText(this@TogetherActivity, "실시간 캡처/분석 오류", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<WatchTogether?>, t: Throwable) {
                 Log.e("TogetherActivity", t.message!!)
-//                Toast.makeText(
-//                    this@TogetherActivity, t.message,
-//                    Toast.LENGTH_LONG
-//                ).show()
+//                Toast.makeText(this@TogetherActivity, t.message,Toast.LENGTH_LONG).show()
             }
         })
         Thread.sleep(5000) // 캡처시 사진이 저장될 시간 + 버킷 올리는 시간 총 4~5초
@@ -354,21 +360,22 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
         val emotionIndex = arrayOf( // 감정 종류 String 배열
             "HAPPY", "SAD", "ANGRY", "CONFUSED", "DISGUSTED", "SURPRISED", "FEAR", "CALM"
         )
-        runOnUiThread {
-            for (i in 0 until size) { // 0 ~ size-1
-                for(j in 0..7) {
-                    if (emotion_array[i] == emotionIndex[j]) {
-                        if (i == 0) emoji1.setImageResource(emojis[j])
-                        if (size > 1) {
-                            if (i==1) emoji2.setImageResource(emojis[j])
-                            if (size > 2) {
-                                if (i==2) emoji3.setImageResource(emojis[j])
-                                if (size > 3) {
-                                    if (i==3) emoji4.setImageResource(emojis[j])
-                                }
-                            }
-                        }
-                    }
+        //val eQueue = ArrayDeque<String>(4) // 감정 4개 담을 큐 배열
+        if(size != 0) {
+            for(i in 0 until size){
+                eQueue.removeFirst()
+                eQueue.add(emotion_array[i])
+            }
+        }
+        Log.d("TogetherActivity", "감정 박스: " + eQueue)
+
+        for (i in 0 until 4) {
+            for(j in 0..7) {
+                if (eQueue.elementAt(3-i) == emotionIndex[j]) { //emotion_array[i]
+                    if (i == 0) runOnUiThread { emoji1.setImageResource(emojis[j]) }
+                    else if (i == 1) runOnUiThread { emoji2.setImageResource(emojis[j]) }
+                    else if (i == 2) runOnUiThread { emoji3.setImageResource(emojis[j]) }
+                    else if (i == 3) runOnUiThread { emoji4.setImageResource(emojis[j]) }
                 }
             }
         }
