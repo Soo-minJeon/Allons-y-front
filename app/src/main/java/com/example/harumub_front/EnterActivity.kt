@@ -196,12 +196,10 @@ class EnterActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             // 호스트로 방 입장
                             val intent = Intent(applicationContext, TogetherActivity::class.java)
                             intent.putExtra("user_id", id)
-
                             intent.putExtra("roomCode", result.roomCode)
                             intent.putExtra("roomToken", result.roomToken)
 //                            intent.putExtra("roomCode", getString(R.string.CHANNELNAME))
 //                            intent.putExtra("roomToken", getString(R.string.RTC_TOKEN))
-
 
 
                             intent.putExtra("reco1_titleArray", reco1_titleArray)
