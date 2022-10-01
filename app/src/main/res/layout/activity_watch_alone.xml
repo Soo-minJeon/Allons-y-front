@@ -88,7 +88,7 @@
                 android:shadowDx="2.0"
                 android:shadowDy="2.0"
                 android:shadowRadius="2.0"
-                android:text="시작"
+                android:text="재생"
                 android:fontFamily="@font/poppins_semibold"
                 android:textAlignment="gravity"
                 android:textColor="@color/black"
