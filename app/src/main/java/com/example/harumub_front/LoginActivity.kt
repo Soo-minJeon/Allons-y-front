@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
             map.put("id", id)
             map.put("password", pw)
 
-            ///*
+      ///*
             val call = retrofitInterface.executeLogin(map)
             call!!.enqueue(object : Callback<LoginResult?> {
                 override fun onResponse(call: Call<LoginResult?>, response: Response<LoginResult?>) {
@@ -71,11 +71,6 @@ class LoginActivity : AppCompatActivity() {
                         val result = response.body()
 
                         // 로그인 성공 다이얼로그
-                        val builder1 = AlertDialog.Builder(this@LoginActivity)
-                        builder1.setTitle("로그인 성공")
-                        builder1.setMessage(result!!.name + "님 환영합니다!")
-                        builder1.show()
-
                         val dig = android.app.AlertDialog.Builder(this@LoginActivity)
                         val dialogView =
                             View.inflate(this@LoginActivity, R.layout.dialog_login_success, null)
@@ -185,7 +180,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("LoginActivity", t.message.toString())
                 }
             })
-            //*/
+      //*/
 
       /*
             // 추천 오류 실행용
