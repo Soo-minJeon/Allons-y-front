@@ -946,6 +946,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
             map.put("movieTitle", movie_title)
             map.put("signal", "end")
 
+            map_SceneAnalyze.put("id", id)
+            map_SceneAnalyze.put("movieTitle", movie_title)
+
             var call = retrofitInterface.executeWatchAloneEnd(map)
 
             call!!.enqueue(object : Callback<WatchAloneMovie?> {
@@ -1096,6 +1099,9 @@ class WatchAloneActivity : AppCompatActivity(), SurfaceHolder.Callback {
                             map.put("id", id)
                             map.put("movieTitle", movie_title)
                             map.put("signal", "end")
+
+                            map_SceneAnalyze.put("id", id)
+                            map_SceneAnalyze.put("movieTitle", movie_title)
 
                             var call = retrofitInterface.executeWatchAloneEnd(map)
 
