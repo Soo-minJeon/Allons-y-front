@@ -218,13 +218,12 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
         ) // first is now full view
 
         Toast.makeText(this@TogetherActivity,
-            "Channel Name: " + channelName + "\nUser uid: " + myUid,
+            "Channel Name: " + channelName + "\nUser: " + id,
             Toast.LENGTH_SHORT).show()
 
 
         if (channelName != null) {
             //val myUid = config().mUid
-
             //rtcEngine().joinChannel(roomToken, channelName, "1:N Group Call", myUid)
             rtcEngine().joinChannelWithUserAccount(roomToken, channelName, id)
 
@@ -292,7 +291,7 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
 
     // 화면 캡처 > 이미지 파일 > s3버킷 전달
     private fun captureScreen(s3Bucket_FolderName: String, channelName: String, time: Int) { // , fileName: String, user_id: String, channelName: String, time: Int
-        val fileName = channelName + "_" + time + ".jpg" // 0 + ".jpg" // roomCode+"_"+id+"_"+time+".jpg"
+        val fileName = channelName + "_" + id + "_" + time + ".jpg"
         val timeStamp : String = SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.KOREA).format(Date())
 
         // 캡처하기
@@ -583,6 +582,11 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
         Log.d("TogetherActivity","스피커폰 on/off 버튼 클릭")
     }
 
+    override fun onBackPressed() {
+        // super.onBackPressed()
+        // 주석처리 시 뒤로가기 버튼 막힘
+    }
+
     override fun deInitUIandEvent() {
         cameraHandler.sendEmptyMessage(SHARE_END) // Together //thread 종료!
         Log.w("TogetherActivity", "onDestroy() > deInitUIandEvent() SHARE_END 메세지 전달 > thread 종료")
@@ -651,7 +655,8 @@ class TogetherActivity : BaseActivity(), DuringCallEventHandler {
                     intent.putExtra("reco4_posterArray", reco4_posterArray)
                     intent.putExtra("reco6_titleArray", reco6_titleArray)
                     intent.putExtra("reco6_posterArray", reco6_posterArray)
-                    startActivity(intent)
+                    intent.putExtra("hasJoined", true)
+                    startActivity(intent)   // startActivityForResult(intent, 1)
                 }
                 else if (response.code() == 400) {
                     Log.w("TogetherActivity", "방 삭제 중 오류 발생")
