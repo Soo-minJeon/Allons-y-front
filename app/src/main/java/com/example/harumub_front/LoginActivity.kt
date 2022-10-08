@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
             map.put("id", id)
             map.put("password", pw)
 
-            /*
+            ///*
             val call = retrofitInterface.executeLogin(map)
             call!!.enqueue(object : Callback<LoginResult?> {
                 override fun onResponse(call: Call<LoginResult?>, response: Response<LoginResult?>) {
@@ -180,9 +180,9 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("LoginActivity", t.message.toString())
                 }
             })
-            */
+            //*/
 
-            ///*
+            /*
             // 추천 오류 실행용
             val reco1_titleArray: ArrayList<String> = ArrayList<String>(10)
             for (i in 0..9) reco1_titleArray.add("Toy Story")
@@ -294,7 +294,7 @@ class LoginActivity : AppCompatActivity() {
             dig.show()
 
             startActivityForResult(intent, 0)
-        // */
+            */
         }
 
         // 양방향 액티비티 (회원가입 <-> 로그인)
